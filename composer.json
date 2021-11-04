@@ -1,0 +1,38 @@
+{
+  "name": "acpl/flarum-lscache",
+  "description": "LSCache for Flarum",
+  "keywords": [
+    "flarum"
+  ],
+  "type": "flarum-extension",
+  "license": "MIT",
+  "require": {
+    "flarum/core": "^1.0.0"
+  },
+  "require-dev": {
+    "flarum/testing": "^1.0.0"
+  },
+  "authors": [
+    {
+      "name": "Rafał Całka",
+      "email": "rafal.calka@android.com.pl",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "ACPL\\FlarumCache\\": "src/"
+    }
+  },
+  "extra": {
+    "flarum-extension": {
+      "title": "LSCache",
+      "category": "feature",
+      "icon": {
+        "name": "fas fa-bolt",
+        "backgroundColor": "#2b82d9",
+        "color": "#fff"
+      }
+    }
+  }
+}
