@@ -21,6 +21,7 @@ class LSCacheMiddleware implements MiddlewareInterface
         $currentRoute = $request->getUri()->getPath();
 
         if (in_array($method, ['POST', 'PUT', 'DELETE'])) {
+            //TODO purge homepage, discussion api, etc on post update
             return $response->withHeader('X-LiteSpeed-Purge', $currentRoute);
         }
 
