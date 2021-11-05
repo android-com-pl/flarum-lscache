@@ -52,6 +52,7 @@ class LSCacheMiddleware implements MiddlewareInterface
             array_push($lscacheString, 'public');
             //TODO get TTL from forum settings
             array_push($lscacheString, 'max-age=60');
+            array_push($lscacheString,'esi=on');
             if (!$response->hasHeader('X-LiteSpeed-Cache-Control')) {
                 $response = $response->withHeader('X-LiteSpeed-Cache-Control', implode(',', $lscacheString));
             }
