@@ -12,6 +12,7 @@
 namespace ACPL\FlarumCache;
 
 use Flarum\Extend;
+use Flarum\Http\Middleware\CheckCsrfToken;
 
 return [
     //    (new Extend\Frontend('admin'))->js(__DIR__ . '/js/dist/admin.js')->css(__DIR__ . '/less/admin.less'),
@@ -22,6 +23,6 @@ return [
     (new Extend\Middleware('api'))->add(LSTagsMiddleware::class),
 
     // Cache and purge routes
-    (new Extend\Middleware('forum'))->add(LSCacheMiddleware::class),
-    (new Extend\Middleware('api'))->add(LSCacheMiddleware::class),
+    (new Extend\Middleware('forum'))->insertAfter(CheckCsrfToken::class,LSCacheMiddleware::class),
+    (new Extend\Middleware('api'))->insertAfter(CheckCsrfToken::class,LSCacheMiddleware::class),
 ];

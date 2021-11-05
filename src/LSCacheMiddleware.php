@@ -27,7 +27,6 @@ class LSCacheMiddleware implements MiddlewareInterface
         if (in_array($method, ['POST', 'PUT', 'DELETE'])) {
             $lscachePurgeString = [$currentRoute];
 
-            //TODO bump PHP version to 8.0 and use str_ends_with
             if (Str::endsWith($routeName, ['.create', '.update', '.delete'])) {
                 $rootRouteName = Utils::extractRootRouteName($routeName);
                 array_push($lscachePurgeString,  "tag=$rootRouteName.index");
@@ -36,7 +35,6 @@ class LSCacheMiddleware implements MiddlewareInterface
                     array_push($lscachePurgeString, "tag=$rootRouteName{$params['id']}");
                 }
             }
-
 
             if (Str::startsWith($routeName, 'discussions') || Str::startsWith($routeName, 'posts')) {
                 //TODO get additional routes to purge from forum settings
