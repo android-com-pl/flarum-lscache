@@ -2,6 +2,7 @@
 namespace ACPL\FlarumCache;
 
 use Flarum\Http\RequestUtil;
+use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -19,24 +20,48 @@ class LSCacheMiddleware implements MiddlewareInterface
         }
 
         $currentRoute = $request->getUri()->getPath();
+        $routeName = $request->getAttribute('routeName');
+        $params = $request->getAttribute('routeParameters');
 
+        //Purge cache
         if (in_array($method, ['POST', 'PUT', 'DELETE'])) {
-            //TODO purge homepage, discussion api, etc on post update
-            return $response->withHeader('X-LiteSpeed-Purge', $currentRoute);
+            $lscachePurgeString = [$currentRoute];
+
+            //TODO bump PHP version to 8.0 and use str_ends_with
+            if (Str::endsWith($routeName, ['.create', '.update', '.delete'])) {
+                $rootRouteName = Utils::extractRootRouteName($routeName);
+                array_push($lscachePurgeString,  "tag=$rootRouteName.index");
+
+                if(!empty($params) && !empty($params['id'])){
+                    array_push($lscachePurgeString, "tag=$rootRouteName{$params['id']}");
+                }
+            }
+
+
+            if (Str::startsWith($routeName, 'discussions') || Str::startsWith($routeName, 'posts')) {
+                //TODO get additional routes to purge from forum settings
+                array_push($lscachePurgeString, 'tag=default', 'tag=index');
+            }
+
+            return $response->withHeader('X-LiteSpeed-Purge', implode(',', $lscachePurgeString));
         }
 
-        $lscacheString = ['max-age=300'];
+        $lscacheString = [];
 
+        //Guest only cache for now
         $user = RequestUtil::getActor($request);
         if ($user->isGuest()) {
             array_push($lscacheString, 'public');
+            //TODO get TTL from forum settings
+            array_push($lscacheString, 'max-age=604800');
+            if (!$response->hasHeader('X-LiteSpeed-Cache-Control')) {
+                $response = $response->withHeader('X-LiteSpeed-Cache-Control', implode(',', $lscacheString));
+            }
         }
-        //TODO User Group cache vary
-
-        if (!$response->hasHeader('X-LiteSpeed-Cache-Control')) {
-            $response = $response->withHeader('X-LiteSpeed-Cache-Control', implode(',', $lscacheString));
-        }
+        //TODO user group cache vary https://docs.litespeedtech.com/lscache/devguide/#cache-vary
+        //TODO private cache
 
         return $response;
     }
+
 }
