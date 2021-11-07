@@ -1,13 +1,14 @@
 <?php
-namespace ACPL\FlarumCache;
+namespace ACPL\FlarumCache\Middleware;
 
+use ACPL\FlarumCache\Utils;
 use Flarum\Http\RequestUtil;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class LSTagsMiddleware implements MiddlewareInterface
+class AddLSTagsHeader implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -19,7 +20,6 @@ class LSTagsMiddleware implements MiddlewareInterface
 
         $routeName = $request->getAttribute('routeName');
         $rootRouteName = Utils::extractRootRouteName($routeName);
-
 
         $user = RequestUtil::getActor($request);
         if ($user->isGuest()) {
