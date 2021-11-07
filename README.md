@@ -5,17 +5,18 @@
 
 A [Flarum](http://flarum.org) extension. Integrates LsCache with your forum.
 
-Requires a LiteSpeed server.
+Requires a LiteSpeed Web Server.
 
 > 🚨 This extension is not yet ready - do not install it on production. If you are interested, you are welcome to contribute.
 
 TODO:
 - Handling logged-in cookies
 - CSRF support
+- Purge cache command
 
 # Installation
 
-- Add this to your `.htaccess` file:
+### Add this to your `.htaccess` file:
 
 ```apacheconf
 <IfModule LiteSpeed>
@@ -30,27 +31,28 @@ TODO:
     RewriteRule .* - [E=Cache-Control:private]
 </IfModule>
 ```
+Rules in `.htaccess` have a higher priority than those added by the extension. For example, you can exclude specific URLs from the cache or change their expiration time. For more options, see here: https://docs.litespeedtech.com/lscache/noplugin/settings/#rewrite-rules
 
 
-[comment]: <> (Install with composer:)
+### Install with composer:
 
-[comment]: <> (```sh)
+```sh
 
-[comment]: <> (composer require acpl/flarum-lscache:"*")
+composer require acpl/flarum-lscache:"*"
 
-[comment]: <> (```)
+```
 
-[comment]: <> (## Updating)
+### Updating
 
-[comment]: <> (```sh)
+```sh
 
-[comment]: <> (composer update acpl/flarum-lscache:"*")
+composer update acpl/flarum-lscache:"*"
 
-[comment]: <> (php flarum migrate)
+php flarum migrate
 
-[comment]: <> (php flarum cache:clear)
+php flarum cache:clear
 
-[comment]: <> (```)
+```
 
 [comment]: <> (## Links)
 
