@@ -5,6 +5,7 @@ use Dflydev\FigCookies\FigResponseCookies;
 use Dflydev\FigCookies\SetCookie;
 use Flarum\Http\CookieFactory;
 use Flarum\Http\RequestUtil;
+use Flarum\User\User;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Session\Session;
 use Psr\Http\Message\ResponseInterface;
@@ -31,7 +32,7 @@ class AddVaryCookie implements MiddlewareInterface
         return $this->withVaryCookie($response, $session, $user);
     }
 
-    private function withVaryCookie(Response $response, Session $session, \Flarum\User\User $user): Response
+    private function withVaryCookie(Response $response, Session $session, User $user): Response
     {
         $setCookie = $this->makeCookie($session);
 

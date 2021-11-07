@@ -1,10 +1,23 @@
 # [WIP] LiteSpeed Cache for Flarum
 
+
 [comment]: <> (![License]&#40;https://img.shields.io/badge/license-MIT-blue.svg&#41; [![Latest Stable Version]&#40;https://img.shields.io/packagist/v/acpl/flarum-lscache.svg&#41;]&#40;https://packagist.org/packages/acpl/flarum-lscache&#41; [![Total Downloads]&#40;https://img.shields.io/packagist/dt/acpl/flarum-lscache.svg&#41;]&#40;https://packagist.org/packages/acpl/flarum-lscache&#41;)
 
-[comment]: <> (A [Flarum]&#40;http://flarum.org&#41; extension.)
+A [Flarum](http://flarum.org) extension. Integrates LsCache with your forum.
 
-[comment]: <> (## Installation)
+Requires a LiteSpeed server.
+
+# Installation
+
+- Add this to your `.htaccess` file:
+
+```apacheconf
+<IfModule LiteSpeed>
+    CacheLookup on
+    RewriteRule .* - [E=Cache-Vary:flarum_remember,flarum_lscache_vary]
+</IfModule>
+```
+
 
 [comment]: <> (Install with composer:)
 
