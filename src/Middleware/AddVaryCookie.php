@@ -34,18 +34,16 @@ class AddVaryCookie implements MiddlewareInterface
 
     private function withVaryCookie(Response $response, Session $session, User $user): Response
     {
-        $setCookie = $this->makeCookie($session);
-
         if ($user->isGuest()) {
-            return FigResponseCookies::set($response, $setCookie->expire());
+            return FigResponseCookies::set($response, $this->makeCookie($session)->expire());
         }
 
-        return FigResponseCookies::set($response, $setCookie);
+        return FigResponseCookies::set($response, $this->makeCookie($session, $this->getSessionLifetimeInSeconds()));
     }
 
-    private function makeCookie(Session $session): SetCookie
+    private function makeCookie(Session $session, $maxAge = null): SetCookie
     {
-        return $this->cookie->make($this->getCookieName(), $session->getId(), $this->getSessionLifetimeInSeconds());
+        return $this->cookie->make($this->getCookieName(), $session->getId(), $maxAge);
     }
 
     private function getCookieName(): string
