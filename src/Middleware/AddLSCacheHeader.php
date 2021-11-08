@@ -54,6 +54,8 @@ class AddLSCacheHeader implements MiddlewareInterface
             //TODO get TTL from forum settings
             array_push($lscacheString, 'max-age=60');
             $response = $response->withHeader('X-LiteSpeed-Cache-Control', implode(',', $lscacheString));
+        } else {
+            $response = $response->withHeader('X-LiteSpeed-Cache-Control', 'private,no-cache');
         }
         //TODO user group cache vary https://docs.litespeedtech.com/lscache/devguide/#cache-vary
         //TODO private cache

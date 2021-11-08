@@ -13,7 +13,8 @@ namespace ACPL\FlarumCache;
 
 use ACPL\FlarumCache\Middleware\AddLSCacheHeader;
 use ACPL\FlarumCache\Middleware\AddLSTagsHeader;
-use ACPL\FlarumCache\Middleware\AddVaryCookie;
+use ACPL\FlarumCache\Middleware\LogoutMiddleware;
+use ACPL\FlarumCache\Middleware\VaryCookieMiddleware;
 use Flarum\Extend;
 use Flarum\Http\Middleware\CheckCsrfToken;
 use Flarum\Http\Middleware\StartSession;
@@ -23,8 +24,11 @@ return [
     //    new Extend\Locales(__DIR__ . '/locale'),
 
     // Vary cookie
-    (new Extend\Middleware('forum'))->insertAfter(StartSession::class, AddVaryCookie::class),
-    (new Extend\Middleware('api'))->insertAfter(StartSession::class, AddVaryCookie::class),
+    (new Extend\Middleware('forum'))->insertAfter(StartSession::class, VaryCookieMiddleware::class),
+    (new Extend\Middleware('admin'))->insertAfter(StartSession::class, VaryCookieMiddleware::class),
+    (new Extend\Middleware('api'))->insertAfter(StartSession::class, VaryCookieMiddleware::class),
+    // Logout
+    (new Extend\Middleware('forum'))->insertAfter(VaryCookieMiddleware::class, LogoutMiddleware::class),
 
     // Tag routes
     (new Extend\Middleware('forum'))->add(AddLSTagsHeader::class),

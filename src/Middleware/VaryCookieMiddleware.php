@@ -2,10 +2,8 @@
 namespace ACPL\FlarumCache\Middleware;
 
 use Dflydev\FigCookies\FigResponseCookies;
-use Dflydev\FigCookies\SetCookie;
 use Flarum\Http\CookieFactory;
 use Flarum\Http\RequestUtil;
-use Flarum\User\User;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Session\Session;
 use Psr\Http\Message\ResponseInterface;
@@ -14,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class AddVaryCookie implements MiddlewareInterface
+class VaryCookieMiddleware implements MiddlewareInterface
 {
     public function __construct(CookieFactory $cookie, ConfigRepository $config)
     {
@@ -29,30 +27,15 @@ class AddVaryCookie implements MiddlewareInterface
 
         $user = RequestUtil::getActor($request);
 
-        return $this->withVaryCookie($response, $session, $user);
-    }
-
-    private function withVaryCookie(Response $response, Session $session, User $user): Response
-    {
         if ($user->isGuest()) {
-            return FigResponseCookies::set($response, $this->makeCookie($session)->expire());
+            return $response;
         }
 
-        return FigResponseCookies::set($response, $this->makeCookie($session, $this->getSessionLifetimeInSeconds()));
+        return $this->withVaryCookie($response, $session);
     }
 
-    private function makeCookie(Session $session, $maxAge = null): SetCookie
+    private function withVaryCookie(Response $response, Session $session): Response
     {
-        return $this->cookie->make($this->getCookieName(), $session->getId(), $maxAge);
-    }
-
-    private function getCookieName(): string
-    {
-        return 'lscache_vary';
-    }
-
-    private function getSessionLifetimeInSeconds(): int
-    {
-        return $this->config['lifetime'] * 60;
+        return FigResponseCookies::set($response, $this->cookie->make('lscache_vary', $session->token(), $this->config['lifetime'] * 60));
     }
 }
