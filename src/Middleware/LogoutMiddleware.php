@@ -3,10 +3,9 @@ namespace ACPL\FlarumCache\Middleware;
 
 use Dflydev\FigCookies\FigResponseCookies;
 use Flarum\Http\CookieFactory;
-use Flarum\Http\RequestUtil;
 use Flarum\Http\UrlGenerator;
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Session\Session;
+use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Diactoros\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -19,10 +18,9 @@ class LogoutMiddleware implements MiddlewareInterface
     private CookieFactory $cookie;
     private UrlGenerator $url;
 
-    public function __construct(CookieFactory $cookie, ConfigRepository $config, UrlGenerator $url)
+    public function __construct(CookieFactory $cookie, UrlGenerator $url)
     {
         $this->cookie = $cookie;
-        $this->config = $config->get('session');
         $this->url = $url;
     }
 
@@ -30,12 +28,8 @@ class LogoutMiddleware implements MiddlewareInterface
     {
         $logoutUri = new Uri($this->url->to('forum')->path('/logout'));
         $response = $handler->handle($request);
-        if ($request->getUri()->getPath() === $logoutUri->getPath()) {
-            $user = RequestUtil::getActor($request);
-
-            if ($user->isGuest()) {
-                return $this->withExpiredVaryCookie($response, $request->getAttribute('session'));
-            }
+        if ($request->getUri()->getPath() === $logoutUri->getPath() && $response instanceof RedirectResponse) {
+            return $this->withExpiredVaryCookie($response, $request->getAttribute('session'));
         }
 
         return $response;
