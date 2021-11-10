@@ -13,6 +13,7 @@ namespace ACPL\FlarumCache;
 
 use ACPL\FlarumCache\Middleware\AddLSCacheHeader;
 use ACPL\FlarumCache\Middleware\AddLSTagsHeader;
+use ACPL\FlarumCache\Middleware\LoginMiddleware;
 use ACPL\FlarumCache\Middleware\LogoutMiddleware;
 use ACPL\FlarumCache\Middleware\VaryCookieMiddleware;
 use Flarum\Extend;
@@ -27,7 +28,9 @@ return [
     (new Extend\Middleware('forum'))->insertAfter(StartSession::class, VaryCookieMiddleware::class),
     (new Extend\Middleware('admin'))->insertAfter(StartSession::class, VaryCookieMiddleware::class),
     (new Extend\Middleware('api'))->insertAfter(StartSession::class, VaryCookieMiddleware::class),
-    // Logout
+    // LogIn
+    (new Extend\Middleware('forum'))->insertAfter(VaryCookieMiddleware::class, LoginMiddleware::class),
+    // LogOut
     (new Extend\Middleware('forum'))->insertAfter(VaryCookieMiddleware::class, LogoutMiddleware::class),
 
     // Tag routes
