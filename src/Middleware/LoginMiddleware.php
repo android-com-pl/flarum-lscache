@@ -6,7 +6,6 @@ use Flarum\Http\CookieFactory;
 use Flarum\Http\UrlGenerator;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Session\Session;
-use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Diactoros\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Response;

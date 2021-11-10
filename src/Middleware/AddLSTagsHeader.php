@@ -2,7 +2,6 @@
 namespace ACPL\FlarumCache\Middleware;
 
 use ACPL\FlarumCache\Utils;
-use Flarum\Http\RequestUtil;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -21,19 +20,14 @@ class AddLSTagsHeader implements MiddlewareInterface
         $routeName = $request->getAttribute('routeName');
         $rootRouteName = Utils::extractRootRouteName($routeName);
 
-        $user = RequestUtil::getActor($request);
-        if ($user->isGuest()) {
-            $lsTagsString = 'public:' . $routeName;
+        $params = $request->getAttribute('routeParameters');
 
-            $params = $request->getAttribute('routeParameters');
-            if (!empty($params) && !empty($params['id'])) {
-                $lsTagsString .= ",public:$rootRouteName{$params['id']}";
-            }
-            return $response->withHeader('X-LiteSpeed-Tag', $lsTagsString);
+        $lsTagsString = $routeName;
+
+        if (!empty($params) && !empty($params['id'])) {
+            $lsTagsString .= ",$rootRouteName{$params['id']}";
         }
 
-        //TODO private cache
-
-        return $response;
+        return $response->withHeader('X-LiteSpeed-Tag', $lsTagsString);
     }
 }
