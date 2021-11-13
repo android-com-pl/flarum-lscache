@@ -24,6 +24,10 @@ class AddLSCacheHeader implements MiddlewareInterface
         $routeName = $request->getAttribute('routeName');
         $params = $request->getAttribute('routeParameters');
 
+        if ($routeName === 'lscache.csrf') {
+            return $response->withHeader('X-LiteSpeed-Cache-Control', 'no-cache');
+        }
+
         //Purge cache
         if (in_array($method, ['POST', 'PUT', 'DELETE'])) {
             $lscachePurgeString = [$currentRoute];
@@ -52,7 +56,7 @@ class AddLSCacheHeader implements MiddlewareInterface
         if ($user->isGuest()) {
             array_push($lscacheString, 'public');
             //TODO get TTL from forum settings
-            array_push($lscacheString, 'max-age=60');
+            array_push($lscacheString, 'max-age=300');
         } else {
             array_push($lscacheString, 'private', 'no-cache');
         }

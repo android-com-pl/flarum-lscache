@@ -24,6 +24,8 @@ return [
     //    (new Extend\Frontend('admin'))->js(__DIR__ . '/js/dist/admin.js')->css(__DIR__ . '/less/admin.less'),
     //    new Extend\Locales(__DIR__ . '/locale'),
 
+    (new Extend\Frontend('forum'))->js(__DIR__ . '/js/dist/forum.js'),
+
     // Vary cookie
     (new Extend\Middleware('forum'))->insertAfter(StartSession::class, VaryCookieMiddleware::class),
     (new Extend\Middleware('admin'))->insertAfter(StartSession::class, VaryCookieMiddleware::class),
@@ -40,4 +42,7 @@ return [
     // Cache and purge routes
     (new Extend\Middleware('forum'))->insertAfter(CheckCsrfToken::class, AddLSCacheHeader::class),
     (new Extend\Middleware('api'))->insertAfter(CheckCsrfToken::class, AddLSCacheHeader::class),
+
+    // A workaround for the CSRF cache issue. The JS script fetches this path to update the CSRF
+    (new Extend\Routes('api'))->get('/lscache-csrf', 'lscache.csrf', LsCacheCsrfResponse::class),
 ];
