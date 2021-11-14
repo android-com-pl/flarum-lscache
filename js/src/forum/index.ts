@@ -5,9 +5,9 @@ import updateCSRF from './utils/updateCSRF';
 import SignUpModal from 'flarum/forum/components/SignUpModal';
 
 app.initializers.add('acpl-lscache', () => {
-  [LogInModal.prototype, SignUpModal.prototype].forEach((prototype) => {
-    extend(prototype, 'oninit', () => {
-      updateCSRF().then(() => console.log(app.session.csrfToken));
+  [LogInModal, SignUpModal].forEach((Component) => {
+    extend(Component.prototype, 'oninit', () => {
+      updateCSRF();
     });
   });
 });
