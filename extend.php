@@ -11,8 +11,8 @@
 
 namespace ACPL\FlarumCache;
 
-use ACPL\FlarumCache\Middleware\AddLSCacheHeader;
-use ACPL\FlarumCache\Middleware\AddLSTagsHeader;
+use ACPL\FlarumCache\Middleware\LSCacheMiddleware;
+use ACPL\FlarumCache\Middleware\LSTagsMiddleware;
 use ACPL\FlarumCache\Middleware\LoginMiddleware;
 use ACPL\FlarumCache\Middleware\LogoutMiddleware;
 use ACPL\FlarumCache\Middleware\VaryCookieMiddleware;
@@ -21,10 +21,9 @@ use Flarum\Http\Middleware\CheckCsrfToken;
 use Flarum\Http\Middleware\StartSession;
 
 return [
-    //    (new Extend\Frontend('admin'))->js(__DIR__ . '/js/dist/admin.js')->css(__DIR__ . '/less/admin.less'),
-    //    new Extend\Locales(__DIR__ . '/locale'),
-
+    (new Extend\Frontend('admin'))->js(__DIR__ . '/js/dist/admin.js'),
     (new Extend\Frontend('forum'))->js(__DIR__ . '/js/dist/forum.js'),
+    new Extend\Locales(__DIR__ . '/locale'),
 
     // Vary cookie
     (new Extend\Middleware('forum'))->insertAfter(StartSession::class, VaryCookieMiddleware::class),
@@ -36,12 +35,12 @@ return [
     (new Extend\Middleware('forum'))->insertAfter(VaryCookieMiddleware::class, LogoutMiddleware::class),
 
     // Tag routes
-    (new Extend\Middleware('forum'))->add(AddLSTagsHeader::class),
-    (new Extend\Middleware('api'))->add(AddLSTagsHeader::class),
+    (new Extend\Middleware('forum'))->add(LSTagsMiddleware::class),
+    (new Extend\Middleware('api'))->add(LSTagsMiddleware::class),
 
     // Cache and purge routes
-    (new Extend\Middleware('forum'))->insertAfter(CheckCsrfToken::class, AddLSCacheHeader::class),
-    (new Extend\Middleware('api'))->insertAfter(CheckCsrfToken::class, AddLSCacheHeader::class),
+    (new Extend\Middleware('forum'))->insertAfter(CheckCsrfToken::class, LSCacheMiddleware::class),
+    (new Extend\Middleware('api'))->insertAfter(CheckCsrfToken::class, LSCacheMiddleware::class),
 
     // A workaround for the CSRF cache issue. The JS script fetches this path to update the CSRF
     (new Extend\Routes('api'))->get('/lscache-csrf', 'lscache.csrf', LsCacheCsrfResponse::class),

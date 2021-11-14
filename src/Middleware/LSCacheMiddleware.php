@@ -3,14 +3,22 @@ namespace ACPL\FlarumCache\Middleware;
 
 use ACPL\FlarumCache\Utils;
 use Flarum\Http\RequestUtil;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class AddLSCacheHeader implements MiddlewareInterface
+class LSCacheMiddleware implements MiddlewareInterface
 {
+    private SettingsRepositoryInterface $settings;
+
+    public function __construct(SettingsRepositoryInterface $settings)
+    {
+        $this->settings = $settings;
+    }
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
@@ -42,8 +50,14 @@ class AddLSCacheHeader implements MiddlewareInterface
             }
 
             if (Str::startsWith($routeName, 'discussions') || Str::startsWith($routeName, 'posts')) {
-                //TODO get additional routes to purge from forum settings
                 array_push($lscachePurgeString, 'tag=default', 'tag=index');
+
+                $purgeList = $this->settings->get('acpl-lscache.purge_on_discussion_update');
+                if (!empty($purgeList)) {
+                    $purgeList = explode("\n", $purgeList);
+                    $purgeList = array_filter($purgeList, fn($item) => Str::startsWith($item, ['/', 'tag=']));
+                    $lscachePurgeString = array_merge($lscachePurgeString, $purgeList);
+                }
             }
 
             return $response->withHeader('X-LiteSpeed-Purge', implode(',', $lscachePurgeString));
@@ -55,8 +69,9 @@ class AddLSCacheHeader implements MiddlewareInterface
         $user = RequestUtil::getActor($request);
         if ($user->isGuest()) {
             array_push($lscacheString, 'public');
-            //TODO get TTL from forum settings
-            array_push($lscacheString, 'max-age=300');
+
+            $publicTtl = $this->settings->get('acpl-lscache.public_cache_ttl') ?: 300;
+            array_push($lscacheString, "max-age=$publicTtl");
         } else {
             array_push($lscacheString, 'private', 'no-cache');
         }
