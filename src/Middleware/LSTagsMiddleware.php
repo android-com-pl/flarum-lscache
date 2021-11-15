@@ -13,7 +13,7 @@ class LSTagsMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
-        if (!in_array($request->getMethod(), ['GET', 'HEAD']) || $response->hasHeader('X-LiteSpeed-Tag')) {
+        if ($response->hasHeader('X-LiteSpeed-Tag')) {
             return $response;
         }
 
@@ -25,7 +25,9 @@ class LSTagsMiddleware implements MiddlewareInterface
         $lsTagsString = $routeName;
 
         if (!empty($params) && !empty($params['id'])) {
-            $lsTagsString .= ",$rootRouteName{$params['id']}";
+            // The id parameter contains the slug. We only need the id (int)
+            $id = explode('-', $params['id'], 2)[0];
+            $lsTagsString .= ",$rootRouteName" . $id ?: $params['id'];
         }
 
         return $response->withHeader('X-LiteSpeed-Tag', $lsTagsString);

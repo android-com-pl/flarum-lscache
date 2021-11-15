@@ -3,7 +3,9 @@ namespace ACPL\FlarumCache\Middleware;
 
 use ACPL\FlarumCache\Utils;
 use Flarum\Http\RequestUtil;
+use Flarum\Post\Post;
 use Flarum\Settings\SettingsRepositoryInterface;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,7 +26,7 @@ class LSCacheMiddleware implements MiddlewareInterface
         $response = $handler->handle($request);
         $method = $request->getMethod();
 
-        if (!in_array($method, ['GET', 'HEAD', 'POST', 'PUT', 'DELETE']) || $response->hasHeader('X-LiteSpeed-Cache-Control')) {
+        if (!in_array($method, ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE']) || $response->hasHeader('X-LiteSpeed-Cache-Control')) {
             return $response;
         }
 
@@ -37,7 +39,7 @@ class LSCacheMiddleware implements MiddlewareInterface
         }
 
         //Purge cache
-        if (in_array($method, ['POST', 'PUT', 'DELETE'])) {
+        if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
             $lscachePurgeString = [$currentRoute];
 
             if (Str::endsWith($routeName, ['.create', '.update', '.delete'])) {
@@ -49,7 +51,10 @@ class LSCacheMiddleware implements MiddlewareInterface
                 }
             }
 
-            if (Str::startsWith($routeName, 'discussions') || Str::startsWith($routeName, 'posts')) {
+            $isDiscussion = Str::startsWith($routeName, 'discussions');
+            $isPost = Str::startsWith($routeName, 'posts');
+
+            if ($isDiscussion || $isPost) {
                 array_push($lscachePurgeString, 'tag=default', 'tag=index');
 
                 $purgeList = $this->settings->get('acpl-lscache.purge_on_discussion_update');
@@ -57,6 +62,14 @@ class LSCacheMiddleware implements MiddlewareInterface
                     $purgeList = explode("\n", $purgeList);
                     $purgeList = array_filter($purgeList, fn($item) => Str::startsWith($item, ['/', 'tag=']));
                     $lscachePurgeString = array_merge($lscachePurgeString, $purgeList);
+                }
+            }
+
+            if ($isPost) {
+                $postId = Arr::get($request->getParsedBody(), 'data.id');
+                if ($postId) {
+                    $discussionId = Post::find($postId)->discussion_id;
+                    array_push($lscachePurgeString, "tag=discussions$discussionId", "tag=discussion$discussionId");
                 }
             }
 
@@ -73,7 +86,7 @@ class LSCacheMiddleware implements MiddlewareInterface
             $publicTtl = $this->settings->get('acpl-lscache.public_cache_ttl') ?: 300;
             array_push($lscacheString, "max-age=$publicTtl");
         } else {
-            array_push($lscacheString, 'private', 'no-cache');
+            array_push($lscacheString, 'no-cache');
         }
 
         //TODO user group cache vary https://docs.litespeedtech.com/lscache/devguide/#cache-vary
