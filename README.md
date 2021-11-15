@@ -10,8 +10,6 @@ Requires a LiteSpeed Web Server.
 > 🚨 This extension is not yet ready - do not install it on production. If you are interested, you are welcome to contribute.
 
 TODO:
-- Handling logged-in cookies
-- CSRF support
 - Purge cache command
 
 # Installation
