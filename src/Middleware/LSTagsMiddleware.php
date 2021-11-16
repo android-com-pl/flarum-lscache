@@ -13,7 +13,7 @@ class LSTagsMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
-        if ($response->hasHeader('X-LiteSpeed-Tag')) {
+        if (!in_array($request->getMethod(), ['GET', 'HEAD']) || $response->hasHeader('X-LiteSpeed-Tag')) {
             return $response;
         }
 
