@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\Console\Input\InputOption;
 
-class LsCacheClearCommand extends AbstractCommand
+class LSCacheClearCommand extends AbstractCommand
 {
     protected UrlGenerator $url;
 
