@@ -1,6 +1,6 @@
 {
   "name": "acpl/flarum-lscache",
-  "description": "LSCache for Flarum",
+  "description": "Speed up your forum on LiteSpeed Web server.",
   "keywords": [
     "flarum"
   ],
@@ -8,7 +8,8 @@
   "license": "MIT",
   "require": {
     "flarum/core": "^1.0.0",
-    "php": "^7.4||^8.0"
+    "php": "^7.4||^8.0",
+    "guzzlehttp/guzzle": "^7.4"
   },
   "authors": [
     {

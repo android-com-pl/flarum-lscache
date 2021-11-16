@@ -1,5 +1,6 @@
 import app from 'flarum/admin/app';
 import Link from 'flarum/common/components/Link';
+import addPurgeLSCacheButton from './addPurgeLSCacheButton';
 
 app.initializers.add('acpl-lscache', () => {
   app.extensionData
@@ -32,4 +33,6 @@ app.initializers.add('acpl-lscache', () => {
         </div>
       );
     });
+
+  addPurgeLSCacheButton();
 });

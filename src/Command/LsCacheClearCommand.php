@@ -23,7 +23,7 @@ class LsCacheClearCommand extends AbstractCommand
     {
         $this->setName('lscache:clear')
             ->setDescription('Purge all LsCache.')
-            ->addOption('userId', null, InputOption::VALUE_REQUIRED, 'The id of the user who is an admin. If not specified, Id 1 is used.', 1);
+            ->addOption('userId', null, InputOption::VALUE_REQUIRED, 'The ID of the user who is an admin. If not specified, ID 1 is used.', 1);
     }
 
     protected function fire()
@@ -52,6 +52,7 @@ class LsCacheClearCommand extends AbstractCommand
 
             return 1;
         }
+
         $apiKey->delete();
         $this->info('Notified LiteSpeed Web Server to purge all LSCache entries');
     }

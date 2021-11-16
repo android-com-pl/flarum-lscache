@@ -1,16 +1,11 @@
-# [WIP] LiteSpeed Cache for Flarum
+# LiteSpeed Cache for Flarum
 
 
 [comment]: <> (![License]&#40;https://img.shields.io/badge/license-MIT-blue.svg&#41; [![Latest Stable Version]&#40;https://img.shields.io/packagist/v/acpl/flarum-lscache.svg&#41;]&#40;https://packagist.org/packages/acpl/flarum-lscache&#41; [![Total Downloads]&#40;https://img.shields.io/packagist/dt/acpl/flarum-lscache.svg&#41;]&#40;https://packagist.org/packages/acpl/flarum-lscache&#41;)
 
-A [Flarum](http://flarum.org) extension. Integrates LsCache with your forum.
+A [Flarum](http://flarum.org) extension. Integrates LSCache with your forum.
 
 Requires a LiteSpeed Web Server.
-
-> 🚨 This extension is not yet ready - do not install it on production. If you are interested, you are welcome to contribute.
-
-TODO:
-- Purge cache command
 
 # Installation
 
