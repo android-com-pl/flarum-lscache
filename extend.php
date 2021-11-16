@@ -11,12 +11,17 @@
 
 namespace ACPL\FlarumCache;
 
-use ACPL\FlarumCache\Middleware\LSCacheMiddleware;
-use ACPL\FlarumCache\Middleware\LSTagsMiddleware;
+use ACPL\FlarumCache\Api\Controller\LsCacheCsrfResponseController;
+use ACPL\FlarumCache\Api\Controller\PurgeLsCacheController;
+use ACPL\FlarumCache\Command\LsCacheClearCommand;
+use ACPL\FlarumCache\Listener\ClearingCacheListener;
 use ACPL\FlarumCache\Middleware\LoginMiddleware;
 use ACPL\FlarumCache\Middleware\LogoutMiddleware;
+use ACPL\FlarumCache\Middleware\LSCacheMiddleware;
+use ACPL\FlarumCache\Middleware\LSTagsMiddleware;
 use ACPL\FlarumCache\Middleware\VaryCookieMiddleware;
 use Flarum\Extend;
+use Flarum\Foundation\Event\ClearingCache;
 use Flarum\Http\Middleware\CheckCsrfToken;
 use Flarum\Http\Middleware\StartSession;
 
@@ -43,5 +48,11 @@ return [
     (new Extend\Middleware('api'))->insertAfter(CheckCsrfToken::class, LSCacheMiddleware::class),
 
     // A workaround for the CSRF cache issue. The JS script fetches this path to update the CSRF
-    (new Extend\Routes('api'))->get('/lscache-csrf', 'lscache.csrf', LsCacheCsrfResponse::class),
+    (new Extend\Routes('api'))->get('/lscache-csrf', 'lscache.csrf', LsCacheCsrfResponseController::class),
+
+    // Purge cache
+    (new Extend\Routes('api'))->delete('/lscache-purge', 'lscache.purge', PurgeLsCacheController::class),
+    (new Extend\Console())->command(LsCacheClearCommand::class),
+    // Purge LsCache while Flarum cache is being cleared
+    (new Extend\Event())->listen(ClearingCache::class, ClearingCacheListener::class),
 ];

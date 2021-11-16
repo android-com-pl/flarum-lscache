@@ -1,13 +1,13 @@
 <?php
 
-namespace ACPL\FlarumCache;
+namespace ACPL\FlarumCache\Api\Controller;
 
 use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class LsCacheCsrfResponse implements RequestHandlerInterface
+class LsCacheCsrfResponseController implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
