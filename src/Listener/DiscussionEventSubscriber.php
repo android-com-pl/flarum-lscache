@@ -4,9 +4,9 @@ namespace ACPL\FlarumCache\Listener;
 
 use Flarum\Discussion\Event\Deleted;
 use Flarum\Discussion\Event\Hidden;
-use Flarum\Discussion\Event\Started;
-use Flarum\Discussion\Event\Restored;
 use Flarum\Discussion\Event\Renamed;
+use Flarum\Discussion\Event\Restored;
+use Flarum\Discussion\Event\Started;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber

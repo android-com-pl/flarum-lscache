@@ -16,7 +16,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class LogoutMiddleware implements MiddlewareInterface
 {
-    public function __construct(protected CookieFactory $cookie) { }
+    public function __construct(protected CookieFactory $cookie)
+    {
+    }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

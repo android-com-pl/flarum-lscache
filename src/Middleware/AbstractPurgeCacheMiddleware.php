@@ -17,8 +17,7 @@ abstract class AbstractPurgeCacheMiddleware implements MiddlewareInterface
     public function __construct(
         protected SettingsRepositoryInterface $settings,
         protected LSCachePurger $cachePurger,
-    )
-    {
+    ) {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

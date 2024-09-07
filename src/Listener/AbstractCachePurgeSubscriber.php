@@ -7,7 +7,9 @@ use Illuminate\Contracts\Events\Dispatcher;
 
 abstract class AbstractCachePurgeSubscriber
 {
-    public function __construct(protected LSCachePurger $purger) { }
+    public function __construct(protected LSCachePurger $purger)
+    {
+    }
 
     abstract public function subscribe(Dispatcher $events): void;
 

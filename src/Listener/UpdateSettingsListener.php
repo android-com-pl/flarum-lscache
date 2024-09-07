@@ -9,7 +9,9 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class UpdateSettingsListener
 {
-    public function __construct(protected HtaccessManager $htaccessManager, protected LSCachePurger $purger) { }
+    public function __construct(protected HtaccessManager $htaccessManager, protected LSCachePurger $purger)
+    {
+    }
 
     /**
      * @throws FileNotFoundException
