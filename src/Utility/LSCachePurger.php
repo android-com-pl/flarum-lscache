@@ -3,9 +3,10 @@
 namespace ACPL\FlarumCache\Utility;
 
 use ACPL\FlarumCache\Command\LSCacheClearCommand;
+use Illuminate\Contracts\Queue\Queue;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
-use Illuminate\Contracts\Queue\Queue;
+
 use const PHP_SAPI;
 
 /**
