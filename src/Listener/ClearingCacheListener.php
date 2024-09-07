@@ -2,30 +2,21 @@
 
 namespace ACPL\FlarumCache\Listener;
 
-use ACPL\FlarumCache\Command\LSCacheClearCommand;
+use ACPL\FlarumCache\Utility\LSCachePurger;
 use Flarum\Settings\SettingsRepositoryInterface;
-use Symfony\Component\Console\Exception\ExceptionInterface;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
+use Illuminate\Contracts\Events\Dispatcher;
 
-class ClearingCacheListener
+class ClearingCacheListener extends AbstractCachePurgeListener
 {
-    private LSCacheClearCommand $command;
-    private SettingsRepositoryInterface $settings;
-
-    public function __construct(LSCacheClearCommand $command, SettingsRepositoryInterface $settings)
+    public function __construct(protected LSCachePurger $purger, protected SettingsRepositoryInterface $settings)
     {
-        $this->command = $command;
-        $this->settings = $settings;
+        parent::__construct($this->purger);
     }
 
-    /**
-     * @throws ExceptionInterface
-     */
-    public function handle(): void
+    protected function addPurgeData(Dispatcher $event): void
     {
         if ($this->settings->get('acpl-lscache.clearing_cache_listener')) {
-            $this->command->run(new ArrayInput([]), new NullOutput());
+            $this->purger->addPurgePath('*');
         }
     }
 }

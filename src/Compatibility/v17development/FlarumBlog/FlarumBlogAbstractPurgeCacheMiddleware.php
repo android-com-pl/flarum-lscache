@@ -2,8 +2,8 @@
 
 namespace ACPL\FlarumCache\Compatibility\v17development\FlarumBlog;
 
-use ACPL\FlarumCache\Abstract\PurgeMiddleware;
-use ACPL\FlarumCache\LSCacheHeadersEnum;
+use ACPL\FlarumCache\LSCacheHeader;
+use ACPL\FlarumCache\Middleware\AbstractPurgeCacheMiddleware;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
@@ -11,12 +11,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use V17Development\FlarumBlog\BlogMeta\BlogMeta;
 
-class FlarumBlogPurgeMiddleware extends PurgeMiddleware
+class FlarumBlogAbstractPurgeCacheMiddleware extends AbstractPurgeCacheMiddleware
 {
     protected function processPurge(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
-        ResponseInterface $response
+        ResponseInterface $response,
     ): ResponseInterface {
         $isDiscussion = $this->isDiscussion;
         $isPost = $this->isPost;
@@ -32,7 +32,7 @@ class FlarumBlogPurgeMiddleware extends PurgeMiddleware
             }
         }
 
-        $currentPurgeParams = $response->getHeaderLine(LSCacheHeadersEnum::PURGE);
+        $currentPurgeParams = $response->getHeaderLine(LSCacheHeader::PURGE);
         if (empty($currentPurgeParams)) {
             return $response;
         }
@@ -43,7 +43,7 @@ class FlarumBlogPurgeMiddleware extends PurgeMiddleware
         // Blog extension is using default Flarum discussion api routes, so we can just reuse previous middleware to get the blog post id
         $discussionParam = Arr::first(
             $currentPurgeParams,
-            fn (string $param) => Str::startsWith($param, ['tag=discussion_', 'tag=discussions_'])
+            fn (string $param) => Str::startsWith($param, ['tag=discussion_', 'tag=discussions_']),
         );
         if (empty($discussionParam)) {
             return $response;

@@ -2,7 +2,7 @@
 
 namespace ACPL\FlarumCache;
 
-final class LSCacheHeadersEnum
+final class LSCacheHeader
 {
     const CACHE_CONTROL = 'X-LiteSpeed-Cache-Control';
     const PURGE = 'X-LiteSpeed-Purge';

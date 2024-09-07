@@ -2,6 +2,8 @@
 
 namespace ACPL\FlarumCache;
 
+use Illuminate\Support\Str;
+
 class LSCache
 {
     const VARY_COOKIE = 'lscache_vary';
@@ -9,6 +11,6 @@ class LSCache
 
     public static function extractRootRouteName(string $name): string
     {
-        return explode('.', $name, 2)[0];
+        return Str::singular(explode('.', $name, 2)[0]);
     }
 }

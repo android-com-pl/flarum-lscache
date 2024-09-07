@@ -2,18 +2,17 @@
 
 namespace ACPL\FlarumCache\Middleware;
 
-use ACPL\FlarumCache\Abstract\CacheTagsMiddleware;
 use ACPL\FlarumCache\LSCache;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class LSTagsMiddleware extends CacheTagsMiddleware
+class LSTagsMiddlewareAbstract extends AbstractCacheTagsMiddleware
 {
     protected function processTags(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
-        ResponseInterface $response
+        ResponseInterface $response,
     ): ResponseInterface {
         $routeName = $this->currentRouteName;
         $params = $request->getAttribute('routeParameters');

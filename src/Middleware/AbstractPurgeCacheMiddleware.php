@@ -1,26 +1,24 @@
 <?php
 
-namespace ACPL\FlarumCache\Abstract;
+namespace ACPL\FlarumCache\Middleware;
 
-use ACPL\FlarumCache\LSCacheHeadersEnum;
+use ACPL\FlarumCache\LSCacheHeader;
+use ACPL\FlarumCache\Utility\LSCachePurger;
 use Flarum\Settings\SettingsRepositoryInterface;
-use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-abstract class PurgeMiddleware implements MiddlewareInterface
+abstract class AbstractPurgeCacheMiddleware implements MiddlewareInterface
 {
-    protected SettingsRepositoryInterface $settings;
-
     protected string $currentRouteName;
-    protected bool $isDiscussion;
-    protected bool $isPost;
 
-    public function __construct(SettingsRepositoryInterface $settings)
+    public function __construct(
+        protected SettingsRepositoryInterface $settings,
+        protected LSCachePurger $cachePurger,
+    )
     {
-        $this->settings = $settings;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -35,17 +33,6 @@ abstract class PurgeMiddleware implements MiddlewareInterface
         }
 
         $this->currentRouteName = $request->getAttribute('routeName');
-        $this->isDiscussion = str_starts_with($this->currentRouteName, 'discussions');
-        $this->isPost = str_starts_with($this->currentRouteName, 'posts');
-
-        // If this is just an update of the last read post, there is no point in clearing the public cache
-        if ($this->isDiscussion && Arr::get(
-            $request->getParsedBody(),
-            'data.attributes.lastReadPostNumber'
-        )
-        ) {
-            return $response;
-        }
 
         return $this->processPurge($request, $handler, $response);
     }
@@ -53,13 +40,13 @@ abstract class PurgeMiddleware implements MiddlewareInterface
     abstract protected function processPurge(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
-        ResponseInterface $response
+        ResponseInterface $response,
     ): ResponseInterface;
 
     protected function addPurgeParamsToResponse(ResponseInterface $response, array $newPurgeParams): ResponseInterface
     {
-        if ($response->hasHeader(LSCacheHeadersEnum::PURGE)) {
-            $existingPurgeParams = explode(',', $response->getHeaderLine(LSCacheHeadersEnum::PURGE));
+        if ($response->hasHeader(LSCacheHeader::PURGE)) {
+            $existingPurgeParams = explode(',', $response->getHeaderLine(LSCacheHeader::PURGE));
             $newPurgeParams = array_unique(array_merge($existingPurgeParams, $newPurgeParams));
         }
 
@@ -71,7 +58,7 @@ abstract class PurgeMiddleware implements MiddlewareInterface
             array_unshift($newPurgeParams, 'stale');
         }
 
-        return $response->withHeader(LSCacheHeadersEnum::PURGE, implode(',', $newPurgeParams));
+        return $response->withHeader(LSCacheHeader::PURGE, implode(',', $newPurgeParams));
     }
 
     protected function getRouteParams(ServerRequestInterface $request): array

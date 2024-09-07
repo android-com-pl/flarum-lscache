@@ -2,18 +2,18 @@
 
 namespace ACPL\FlarumCache\Compatibility\Flarum\Likes;
 
-use ACPL\FlarumCache\Abstract\PurgeMiddleware;
+use ACPL\FlarumCache\Middleware\AbstractPurgeCacheMiddleware;
 use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class FlarumLikesPurgeMiddleware extends PurgeMiddleware
+class FlarumLikesAbstractPurgeCacheMiddleware extends AbstractPurgeCacheMiddleware
 {
     protected function processPurge(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
-        ResponseInterface $response
+        ResponseInterface $response,
     ): ResponseInterface {
         if ($this->currentRouteName !== 'posts.update') {
             return $response;

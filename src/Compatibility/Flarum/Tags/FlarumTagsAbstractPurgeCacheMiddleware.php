@@ -2,7 +2,7 @@
 
 namespace ACPL\FlarumCache\Compatibility\Flarum\Tags;
 
-use ACPL\FlarumCache\Abstract\PurgeMiddleware;
+use ACPL\FlarumCache\Middleware\AbstractPurgeCacheMiddleware;
 use Flarum\Discussion\Discussion;
 use Flarum\Http\UrlGenerator;
 use Flarum\Post\Post;
@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class FlarumTagsPurgeMiddleware extends PurgeMiddleware
+class FlarumTagsAbstractPurgeCacheMiddleware extends AbstractPurgeCacheMiddleware
 {
     protected UrlGenerator $url;
 
@@ -26,7 +26,7 @@ class FlarumTagsPurgeMiddleware extends PurgeMiddleware
     protected function processPurge(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
-        ResponseInterface $response
+        ResponseInterface $response,
     ): ResponseInterface {
         $isDiscussion = $this->isDiscussion;
         $isPost = $this->isPost;

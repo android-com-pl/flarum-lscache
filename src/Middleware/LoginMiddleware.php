@@ -15,12 +15,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class LoginMiddleware implements MiddlewareInterface
 {
-    private CookieFactory $cookie;
     private array $session;
 
-    public function __construct(CookieFactory $cookie, ConfigRepository $config)
+    public function __construct(protected CookieFactory $cookie, ConfigRepository $config)
     {
-        $this->cookie = $cookie;
         $this->session = $config->get('session');
     }
 
@@ -43,7 +41,7 @@ class LoginMiddleware implements MiddlewareInterface
     {
         return FigResponseCookies::set(
             $response,
-            $this->cookie->make(LSCache::VARY_COOKIE, $session->token(), $this->session['lifetime'] * 60)
+            $this->cookie->make(LSCache::VARY_COOKIE, $session->token(), $this->session['lifetime'] * 60),
         );
     }
 }
