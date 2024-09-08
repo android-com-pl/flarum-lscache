@@ -13,12 +13,12 @@ class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
 {
     public function subscribe(Dispatcher $events): void
     {
-        $this->addPurgeListener($events, Deleted::class, [$this, 'handleDeleted']);
-
         $shared = [Hidden::class, Started::class, Restored::class, Renamed::class];
-        foreach ($shared as $method) {
-            $this->addPurgeListener($events, $method, [$this, 'handle']);
+        foreach ($shared as $event) {
+            $this->addPurgeListener($events, $event, [$this, 'handle']);
         }
+
+        $this->addPurgeListener($events, Deleted::class, [$this, 'handleDeleted']);
     }
 
     protected function handle(Deleted|Hidden|Started|Restored|Renamed $event): void
@@ -28,8 +28,8 @@ class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
             'index',
             'discussions.index',
             "discussion_{$event->discussion->id}",
-            "user_{$event->actor->id}",
-            "user_{$event->actor->username}",
+            "user_{$event->discussion->user->id}",
+            "user_{$event->discussion->user->username}",
         ]);
     }
 

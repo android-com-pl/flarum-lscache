@@ -16,7 +16,8 @@ class PurgeCacheMiddleware extends AbstractPurgeCacheMiddleware
         ResponseInterface $response,
     ): ResponseInterface {
         $purgeParams = $this->getPurgeParamsFromCachePurger();
-        $purgeParams = array_merge($purgeParams, $this->getPurgeParamsFromRoute($request));
+        $purgeParams = array_merge($purgeParams, $this->getPurgeParamsForRoute($request));
+        $this->cachePurger->clearPurgeData();
 
         return $this->addPurgeParamsToResponse($response, array_unique($purgeParams));
     }
@@ -30,7 +31,7 @@ class PurgeCacheMiddleware extends AbstractPurgeCacheMiddleware
         return array_merge($paths, $tags);
     }
 
-    private function getPurgeParamsFromRoute(ServerRequestInterface $request): array
+    private function getPurgeParamsForRoute(ServerRequestInterface $request): array
     {
         $routeName = $this->currentRouteName;
         $rootRouteName = LSCache::extractRootRouteName($routeName);
