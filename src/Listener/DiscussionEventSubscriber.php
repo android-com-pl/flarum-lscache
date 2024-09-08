@@ -23,6 +23,10 @@ class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
 
     protected function handle(Deleted|Hidden|Started|Restored|Renamed $event): void
     {
+        if (! $this->shouldPurge($event)) {
+            return;
+        }
+
         $this->purger->addPurgeTags([
             'default',
             'index',
@@ -36,8 +40,17 @@ class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
     protected function handleDeleted(Deleted $event): void
     {
         // If discussion was hidden before, there is no need to purge cache, because it is not visible for guests anyway
-        if ($event->discussion->hidden_at === null) {
+        if ($event->discussion->hidden_at === null && $this->shouldPurge($event)) {
             $this->handle($event);
         }
+    }
+
+    protected function shouldPurge(
+        Deleted|Hidden|Started|Restored|Renamed $event,
+    ): bool {
+        return ! (
+            $event->discussion->is_private
+            || $event->discussion?->is_approved === false
+        );
     }
 }

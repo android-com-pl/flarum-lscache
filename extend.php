@@ -14,6 +14,7 @@ namespace ACPL\FlarumCache;
 use ACPL\FlarumCache\Api\Controller\LSCacheCsrfResponseController;
 use ACPL\FlarumCache\Api\Controller\PurgeLSCacheController;
 use ACPL\FlarumCache\Command\LSCacheClearCommand;
+use ACPL\FlarumCache\Compatibility\Flarum\Approval\FlarumApprovalEventSubscriber;
 use ACPL\FlarumCache\Compatibility\Flarum\Likes\FlarumLikesAbstractPurgeCacheMiddleware;
 use ACPL\FlarumCache\Compatibility\Flarum\Tags\FlarumTagsAbstractPurgeCacheMiddleware;
 use ACPL\FlarumCache\Compatibility\FriendsOfFlarum\Masquerade\FofMasqueradeAbstractPurgeCacheMiddleware;
