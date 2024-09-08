@@ -14,11 +14,7 @@ namespace ACPL\FlarumCache;
 use ACPL\FlarumCache\Api\Controller\LSCacheCsrfResponseController;
 use ACPL\FlarumCache\Api\Controller\PurgeLSCacheController;
 use ACPL\FlarumCache\Command\LSCacheClearCommand;
-use ACPL\FlarumCache\Compatibility\Flarum\Approval\FlarumApprovalEventSubscriber;
-use ACPL\FlarumCache\Compatibility\Flarum\Likes\FlarumLikesAbstractPurgeCacheMiddleware;
-use ACPL\FlarumCache\Compatibility\Flarum\Tags\FlarumTagsAbstractPurgeCacheMiddleware;
-use ACPL\FlarumCache\Compatibility\FriendsOfFlarum\Masquerade\FofMasqueradeAbstractPurgeCacheMiddleware;
-use ACPL\FlarumCache\Compatibility\v17development\FlarumBlog\FlarumBlogAbstractPurgeCacheMiddleware;
+use ACPL\FlarumCache\Compatibility\Flarum\Likes\FlarumLikesEventSubscriber;
 use ACPL\FlarumCache\Listener\ClearingCacheListener;
 use ACPL\FlarumCache\Listener\DiscussionEventSubscriber;
 use ACPL\FlarumCache\Listener\PostEventSubscriber;
@@ -81,23 +77,8 @@ return [
     (new Extend\Event)->subscribe(PostEventSubscriber::class),
     (new Extend\Event)->subscribe(UserEventSubscriber::class),
 
-    /*// Compatibility with extensions
-        (new Extend\Conditional)
-            ->whenExtensionEnabled('flarum-tags', [
-                (new Extend\Middleware('api'))->add(FlarumTagsAbstractPurgeCacheMiddleware::class),
-            ])
-            ->whenExtensionEnabled('flarum-likes', [
-                (new Extend\Middleware('api'))->add(FlarumLikesAbstractPurgeCacheMiddleware::class),
-            ])
-            ->whenExtensionEnabled('fof-masquerade', [
-                (new Extend\Middleware('api'))->add(FofMasqueradeAbstractPurgeCacheMiddleware::class),
-            ])
-            ->whenExtensionEnabled('v17development-blog', [
-                // Using insertBefore enables reading headers set by LSCachePurgeMiddleware, while insertAfter does not.
-                // This suggests Flarum processes middleware in a reverse order 🤔.
-                (new Extend\Middleware('api'))->insertBefore(
-                    PurgeCacheMiddleware::class,
-                    FlarumBlogAbstractPurgeCacheMiddleware::class,
-                ),
-            ]),*/
+    (new Extend\Conditional)
+        ->whenExtensionEnabled('flarum-likes', [
+            (new Extend\Event)->subscribe(FlarumLikesEventSubscriber::class),
+        ]),
 ];
