@@ -19,7 +19,7 @@ class FlarumLikesEventSubscriber extends AbstractCachePurgeSubscriber
     protected function handle(PostWasLiked|PostWasUnliked $event): void
     {
         $this->purger->addPurgeTags([
-            "posts.index",
+            'posts.index',
             "post_{$event->post->id}",
             "discussion_{$event->post->discussion->id}",
             "user_{$event->post->user->id}",

@@ -46,7 +46,7 @@ class FlarumTagsEventSubscriber extends AbstractCachePurgeSubscriber
             "discussion_{$event->discussion->id}",
             "user_{$event->discussion->user->id}",
             "user_{$event->discussion->user->username}",
-            "tags.index",
+            'tags.index',
             ...$this->generateCacheTagsForDiscussionTags($event->discussion),
         ]);
     }
