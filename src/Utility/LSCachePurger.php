@@ -20,7 +20,7 @@ class LSCachePurger
     /**
      * @var array|string[]
      */
-    public static array $resourcesSupportedByEvent = ['discussion', 'post'];
+    public static array $resourcesSupportedByEvent = ['discussion', 'post', 'user'];
 
     public function __construct(protected readonly LSCacheClearCommand $cacheClearCommand, protected Queue $queue)
     {

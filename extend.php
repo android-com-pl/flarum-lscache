@@ -21,6 +21,7 @@ use ACPL\FlarumCache\Compatibility\v17development\FlarumBlog\FlarumBlogAbstractP
 use ACPL\FlarumCache\Listener\ClearingCacheListener;
 use ACPL\FlarumCache\Listener\DiscussionEventSubscriber;
 use ACPL\FlarumCache\Listener\PostEventSubscriber;
+use ACPL\FlarumCache\Listener\UserEventSubscriber;
 use ACPL\FlarumCache\Middleware\CacheControlMiddleware;
 use ACPL\FlarumCache\Middleware\LoginMiddleware;
 use ACPL\FlarumCache\Middleware\LogoutMiddleware;
@@ -77,6 +78,7 @@ return [
 
     (new Extend\Event)->subscribe(DiscussionEventSubscriber::class),
     (new Extend\Event)->subscribe(PostEventSubscriber::class),
+    (new Extend\Event)->subscribe(UserEventSubscriber::class),
 
     /*// Compatibility with extensions
         (new Extend\Conditional)
