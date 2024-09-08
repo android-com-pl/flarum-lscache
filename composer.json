@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "flarum/phpstan": "^1.8",
-        "flarum/tags": "*",
+        "flarum/tags": "^1.8",
         "v17development/flarum-blog": "^0.7.7",
         "flarum/approval": "^1.8",
         "flarum/likes": "^1.8"
