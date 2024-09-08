@@ -16,6 +16,7 @@ use ACPL\FlarumCache\Api\Controller\PurgeLSCacheController;
 use ACPL\FlarumCache\Command\LSCacheClearCommand;
 use ACPL\FlarumCache\Compatibility\Flarum\Likes\FlarumLikesEventSubscriber;
 use ACPL\FlarumCache\Compatibility\Flarum\Tags\FlarumTagsEventSubscriber;
+use ACPL\FlarumCache\Compatibility\FriendsOfFlarum\Masquerade\FofMasqueradePurgeCacheMiddleware;
 use ACPL\FlarumCache\Listener\ClearingCacheListener;
 use ACPL\FlarumCache\Listener\DiscussionEventSubscriber;
 use ACPL\FlarumCache\Listener\PostEventSubscriber;
@@ -84,5 +85,8 @@ return [
         ])
         ->whenExtensionEnabled('flarum-tags', [
             (new Extend\Event)->subscribe(FlarumTagsEventSubscriber::class),
+        ])
+        ->whenExtensionEnabled('fof-masquerade', [
+            (new Extend\Middleware('api'))->add(FofMasqueradePurgeCacheMiddleware::class),
         ]),
 ];

@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class FofMasqueradeAbstractPurgeCacheMiddleware extends AbstractPurgeCacheMiddleware
+class FofMasqueradePurgeCacheMiddleware extends AbstractPurgeCacheMiddleware
 {
     protected function processPurge(
         ServerRequestInterface $request,
@@ -24,9 +24,7 @@ class FofMasqueradeAbstractPurgeCacheMiddleware extends AbstractPurgeCacheMiddle
                 $response,
                 [
                     "tag=user_$user->id",
-                    "tag=users_$user->id",
                     "tag=user_$user->username",
-                    "tag=users_$user->username",
                     "tag=masquerade_$user->id",
                 ],
             );
