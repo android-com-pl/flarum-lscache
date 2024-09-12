@@ -28,9 +28,9 @@ use ACPL\FlarumCache\Listener\{
 };
 use ACPL\FlarumCache\Middleware\{
     CacheControlMiddleware,
+    LSTagsMiddlewareAbstract,
     LoginMiddleware,
     LogoutMiddleware,
-    LSTagsMiddlewareAbstract,
     PurgeCacheMiddleware,
     VaryCookieMiddleware
 };
