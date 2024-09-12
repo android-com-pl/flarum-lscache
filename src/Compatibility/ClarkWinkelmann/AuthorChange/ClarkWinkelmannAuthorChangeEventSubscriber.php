@@ -2,7 +2,6 @@
 
 namespace ACPL\FlarumCache\Compatibility\ClarkWinkelmann\AuthorChange;
 
-
 use ACPL\FlarumCache\Listener\AbstractCachePurgeSubscriber;
 use ClarkWinkelmann\AuthorChange\Event\DiscussionCreateDateChanged;
 use ClarkWinkelmann\AuthorChange\Event\DiscussionUserChanged;
@@ -47,7 +46,7 @@ class ClarkWinkelmannAuthorChangeEventSubscriber extends AbstractCachePurgeSubsc
     {
         $this->purger->addPurgeTags([
             "discussion_{$event->post->discussion->id}",
-            "posts.index",
+            'posts.index',
             "post_{$event->post->id}",
             "user_{$event->post->user->id}",
             "user_{$event->post->user->username}",
