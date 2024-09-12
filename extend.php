@@ -18,6 +18,7 @@ use ACPL\FlarumLSCache\Compatibility\{
     Flarum\Likes\FlarumLikesEventSubscriber,
     Flarum\Tags\FlarumTagsEventSubscriber,
     FriendsOfFlarum\Masquerade\FofMasqueradePurgeCacheMiddleware,
+    SychO\MovePosts\SychOMovePostsSubscriber,
     v17development\FlarumBlog\FlarumBlogEventSubscriber
 };
 use ACPL\FlarumLSCache\Listener\{
@@ -101,5 +102,8 @@ return [
         ])
         ->whenExtensionEnabled('clarkwinkelmann-author-change', [
             (new Extend\Event)->subscribe(ClarkWinkelmannAuthorChangeEventSubscriber::class),
+        ])
+        ->whenExtensionEnabled('sycho-move-posts', [
+            (new Extend\Event)->subscribe(SychOMovePostsSubscriber::class),
         ]),
 ];

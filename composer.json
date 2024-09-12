@@ -31,7 +31,8 @@
         "flarum/approval": "^1.8",
         "flarum/likes": "^1.8",
         "fof/masquerade": "^2.1",
-        "clarkwinkelmann/flarum-ext-author-change": "^1.0"
+        "clarkwinkelmann/flarum-ext-author-change": "^1.0",
+        "sycho/flarum-move-posts": "^0.1.7"
     },
     "suggest": {
         "blomstra/flarum-redis": "This library allows using Redis as cache, session and for the queue. https://github.com/blomstra/flarum-redis#set-up"
@@ -62,7 +63,9 @@
                 "flarum/tags",
                 "flarum/likes",
                 "fof/masquerade",
-                "v17development/flarum-blog"
+                "v17development/flarum-blog",
+                "clarkwinkelmann/flarum-ext-author-change",
+                "sycho/flarum-move-posts"
             ]
         },
         "flarum-cli": {
