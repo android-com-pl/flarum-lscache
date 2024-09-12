@@ -6,7 +6,7 @@ use ACPL\FlarumCache\LSCache;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-class LSTagsMiddlewareAbstract extends AbstractCacheTagsMiddleware
+class LSTagsMiddleware extends AbstractCacheTagsMiddleware
 {
     protected function processTags(
         ServerRequestInterface $request,
