@@ -16,11 +16,12 @@ class SychOMovePostsSubscriber extends AbstractCachePurgeSubscriber
 
     protected function handlePostsMoved(PostsMoved $event): void
     {
-        $postUserTags = [];
-        $event->posts->each(function ($post) use (&$postUserTags) {
+        $cacheTags = [];
+        $event->posts->each(function ($post) use (&$cacheTags) {
             /** @var CommentPost $post */
-            $postUserTags[] = "user_{$post->user->id}";
-            $postUserTags[] = "user_{$post->user->username}";
+            $cacheTags[] = "post_{$post->id}";
+            $cacheTags[] = "user_{$post->user->id}";
+            $cacheTags[] = "user_{$post->user->username}";
         });
 
         $this->purger->addPurgeTags([
@@ -30,8 +31,7 @@ class SychOMovePostsSubscriber extends AbstractCachePurgeSubscriber
             'discussions.index',
             "discussion_{$event->sourceDiscussion->id}",
             "discussion_{$event->targetDiscussion->id}",
-            ...array_map(fn ($postId) => "post_$postId", $event->posts->pluck('id')->toArray()),
-            ...$postUserTags,
+            ...$cacheTags,
         ]);
     }
 }
