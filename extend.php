@@ -14,6 +14,7 @@ namespace ACPL\FlarumCache;
 use ACPL\FlarumCache\Api\Controller\LSCacheCsrfResponseController;
 use ACPL\FlarumCache\Api\Controller\PurgeLSCacheController;
 use ACPL\FlarumCache\Command\LSCacheClearCommand;
+use ACPL\FlarumCache\Compatibility\ClarkWinkelmann\AuthorChange\ClarkWinkelmannAuthorChangeEventSubscriber;
 use ACPL\FlarumCache\Compatibility\Flarum\Likes\FlarumLikesEventSubscriber;
 use ACPL\FlarumCache\Compatibility\Flarum\Tags\FlarumTagsEventSubscriber;
 use ACPL\FlarumCache\Compatibility\FriendsOfFlarum\Masquerade\FofMasqueradePurgeCacheMiddleware;
@@ -92,5 +93,8 @@ return [
         ])
         ->whenExtensionEnabled('v17development-blog', [
             (new Extend\Event)->subscribe(FlarumBlogEventSubscriber::class),
+        ])
+        ->whenExtensionEnabled('clarkwinkelmann-author-change', [
+            (new Extend\Event)->subscribe(ClarkWinkelmannAuthorChangeEventSubscriber::class),
         ]),
 ];
