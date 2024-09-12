@@ -5,6 +5,7 @@ namespace ACPL\FlarumCache\Middleware;
 use ACPL\FlarumCache\Event\LSCachePurging;
 use ACPL\FlarumCache\LSCacheHeader;
 use ACPL\FlarumCache\Utility\LSCachePurger;
+use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Events\Dispatcher;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
@@ -28,7 +29,7 @@ abstract class AbstractPurgeCacheMiddleware implements MiddlewareInterface
 
         if ($this->shouldProcessPurge($request, $response)) {
             $this->preparePurgeData($request);
-            $this->dispatchLSCachePurgingEvent();
+            $this->dispatchLSCachePurgingEvent($request);
             $response = $this->addPurgeParamsToResponse($response);
         }
 
@@ -88,9 +89,9 @@ abstract class AbstractPurgeCacheMiddleware implements MiddlewareInterface
         return $request->getAttribute('routeParameters');
     }
 
-    protected function dispatchLSCachePurgingEvent(): void
+    protected function dispatchLSCachePurgingEvent(ServerRequestInterface $request): void
     {
         $purgeData = $this->cachePurger->getPurgeData();
-        $this->events->dispatch(new LSCachePurging($purgeData));
+        $this->events->dispatch(new LSCachePurging($purgeData), RequestUtil::getActor($request));
     }
 }
