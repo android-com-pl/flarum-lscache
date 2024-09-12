@@ -1,9 +1,9 @@
 <?php
 
-namespace ACPL\FlarumCache\Listener;
+namespace ACPL\FlarumLSCache\Listener;
 
-use ACPL\FlarumCache\Utility\HtaccessManager;
-use ACPL\FlarumCache\Utility\LSCachePurger;
+use ACPL\FlarumLSCache\Utility\HtaccessManager;
+use ACPL\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Settings\Event\Saved;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 

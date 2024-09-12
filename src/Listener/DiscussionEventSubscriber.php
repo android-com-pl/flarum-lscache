@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumCache\Listener;
+namespace ACPL\FlarumLSCache\Listener;
 
 use Flarum\Discussion\Event\Deleted;
 use Flarum\Discussion\Event\Hidden;

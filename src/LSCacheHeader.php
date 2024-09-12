@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumCache;
+namespace ACPL\FlarumLSCache;
 
 final class LSCacheHeader
 {

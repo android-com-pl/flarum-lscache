@@ -1,9 +1,9 @@
 <?php
 
-namespace ACPL\FlarumCache\Middleware;
+namespace ACPL\FlarumLSCache\Middleware;
 
-use ACPL\FlarumCache\LSCache;
-use ACPL\FlarumCache\LSCacheHeader;
+use ACPL\FlarumLSCache\LSCache;
+use ACPL\FlarumLSCache\LSCacheHeader;
 use Dflydev\FigCookies\FigResponseCookies;
 use Flarum\Http\CookieFactory;
 use Flarum\Http\RequestUtil;

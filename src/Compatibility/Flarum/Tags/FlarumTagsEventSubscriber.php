@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumCache\Compatibility\Flarum\Tags;
+namespace ACPL\FlarumLSCache\Compatibility\Flarum\Tags;
 
-use ACPL\FlarumCache\Listener\AbstractCachePurgeSubscriber;
+use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
 use Flarum\Discussion\Discussion;
 use Flarum\Discussion\Event\Deleted as DiscussionDeleted;
 use Flarum\Discussion\Event\Hidden as DiscussionHidden;

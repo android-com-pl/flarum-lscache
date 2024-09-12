@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumCache\Compatibility\ClarkWinkelmann\AuthorChange;
+namespace ACPL\FlarumLSCache\Compatibility\ClarkWinkelmann\AuthorChange;
 
-use ACPL\FlarumCache\Listener\AbstractCachePurgeSubscriber;
+use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
 use ClarkWinkelmann\AuthorChange\Event\DiscussionCreateDateChanged;
 use ClarkWinkelmann\AuthorChange\Event\DiscussionUserChanged;
 use ClarkWinkelmann\AuthorChange\Event\PostCreateDateChanged;

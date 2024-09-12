@@ -1,9 +1,9 @@
 <?php
 
-namespace ACPL\FlarumCache\Utility;
+namespace ACPL\FlarumLSCache\Utility;
 
-use ACPL\FlarumCache\Command\LSCacheClearCommand;
-use ACPL\FlarumCache\Event\LSCachePurging;
+use ACPL\FlarumLSCache\Command\LSCacheClearCommand;
+use ACPL\FlarumLSCache\Event\LSCachePurging;
 use Illuminate\Events\Dispatcher;
 use Symfony\Component\Console\{Input\ArrayInput, Output\NullOutput};
 

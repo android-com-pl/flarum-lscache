@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumCache\Middleware;
+namespace ACPL\FlarumLSCache\Middleware;
 
-use ACPL\FlarumCache\LSCacheHeader;
+use ACPL\FlarumLSCache\LSCacheHeader;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;

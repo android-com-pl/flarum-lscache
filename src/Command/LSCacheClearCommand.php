@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumCache\Command;
+namespace ACPL\FlarumLSCache\Command;
 
 use Flarum\Api\ApiKey;
 use Flarum\Console\AbstractCommand;

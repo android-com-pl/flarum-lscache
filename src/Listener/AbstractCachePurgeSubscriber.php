@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumCache\Listener;
+namespace ACPL\FlarumLSCache\Listener;
 
-use ACPL\FlarumCache\Utility\LSCachePurger;
+use ACPL\FlarumLSCache\Utility\LSCachePurger;
 use Illuminate\Contracts\Events\Dispatcher;
 
 abstract class AbstractCachePurgeSubscriber

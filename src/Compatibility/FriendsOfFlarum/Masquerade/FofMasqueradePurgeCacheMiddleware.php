@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumCache\Compatibility\FriendsOfFlarum\Masquerade;
+namespace ACPL\FlarumLSCache\Compatibility\FriendsOfFlarum\Masquerade;
 
-use ACPL\FlarumCache\Middleware\AbstractPurgeCacheMiddleware;
+use ACPL\FlarumLSCache\Middleware\AbstractPurgeCacheMiddleware;
 use Flarum\User\User;
 use Psr\Http\Message\ServerRequestInterface;
 

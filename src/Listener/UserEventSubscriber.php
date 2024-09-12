@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumCache\Listener;
+namespace ACPL\FlarumLSCache\Listener;
 
 use Flarum\User\Event\AvatarChanged;
 use Flarum\User\Event\Deleted;

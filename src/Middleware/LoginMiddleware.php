@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumCache\Middleware;
+namespace ACPL\FlarumLSCache\Middleware;
 
-use ACPL\FlarumCache\LSCache;
+use ACPL\FlarumLSCache\LSCache;
 use Dflydev\FigCookies\FigResponseCookies;
 use Flarum\Http\CookieFactory;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;

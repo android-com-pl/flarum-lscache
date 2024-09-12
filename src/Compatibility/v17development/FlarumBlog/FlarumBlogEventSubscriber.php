@@ -1,9 +1,9 @@
 <?php
 
-namespace ACPL\FlarumCache\Compatibility\v17development\FlarumBlog;
+namespace ACPL\FlarumLSCache\Compatibility\v17development\FlarumBlog;
 
-use ACPL\FlarumCache\Event\LSCachePurging;
-use ACPL\FlarumCache\Listener\AbstractCachePurgeSubscriber;
+use ACPL\FlarumLSCache\Event\LSCachePurging;
+use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
 use V17Development\FlarumBlog\Event\BlogMetaSaving;

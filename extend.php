@@ -9,24 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace ACPL\FlarumCache;
+namespace ACPL\FlarumLSCache;
 
-use ACPL\FlarumCache\Api\Controller\{LSCacheCsrfResponseController, PurgeLSCacheController};
-use ACPL\FlarumCache\Command\LSCacheClearCommand;
-use ACPL\FlarumCache\Compatibility\{
+use ACPL\FlarumLSCache\Api\Controller\{LSCacheCsrfResponseController, PurgeLSCacheController};
+use ACPL\FlarumLSCache\Command\LSCacheClearCommand;
+use ACPL\FlarumLSCache\Compatibility\{
     ClarkWinkelmann\AuthorChange\ClarkWinkelmannAuthorChangeEventSubscriber,
     Flarum\Likes\FlarumLikesEventSubscriber,
     Flarum\Tags\FlarumTagsEventSubscriber,
     FriendsOfFlarum\Masquerade\FofMasqueradePurgeCacheMiddleware,
     v17development\FlarumBlog\FlarumBlogEventSubscriber
 };
-use ACPL\FlarumCache\Listener\{
+use ACPL\FlarumLSCache\Listener\{
     ClearingCacheListener,
     DiscussionEventSubscriber,
     PostEventSubscriber,
     UserEventSubscriber
 };
-use ACPL\FlarumCache\Middleware\{
+use ACPL\FlarumLSCache\Middleware\{
     CacheControlMiddleware,
     LSTagsMiddleware,
     LoginMiddleware,
