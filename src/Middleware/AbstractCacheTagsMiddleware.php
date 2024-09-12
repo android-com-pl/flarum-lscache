@@ -3,10 +3,8 @@
 namespace ACPL\FlarumCache\Middleware;
 
 use ACPL\FlarumCache\LSCacheHeader;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
+use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 
 abstract class AbstractCacheTagsMiddleware implements MiddlewareInterface
 {

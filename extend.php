@@ -11,24 +11,29 @@
 
 namespace ACPL\FlarumCache;
 
-use ACPL\FlarumCache\Api\Controller\LSCacheCsrfResponseController;
-use ACPL\FlarumCache\Api\Controller\PurgeLSCacheController;
+use ACPL\FlarumCache\Api\Controller\{LSCacheCsrfResponseController, PurgeLSCacheController};
 use ACPL\FlarumCache\Command\LSCacheClearCommand;
-use ACPL\FlarumCache\Compatibility\ClarkWinkelmann\AuthorChange\ClarkWinkelmannAuthorChangeEventSubscriber;
-use ACPL\FlarumCache\Compatibility\Flarum\Likes\FlarumLikesEventSubscriber;
-use ACPL\FlarumCache\Compatibility\Flarum\Tags\FlarumTagsEventSubscriber;
-use ACPL\FlarumCache\Compatibility\FriendsOfFlarum\Masquerade\FofMasqueradePurgeCacheMiddleware;
-use ACPL\FlarumCache\Compatibility\v17development\FlarumBlog\FlarumBlogEventSubscriber;
-use ACPL\FlarumCache\Listener\ClearingCacheListener;
-use ACPL\FlarumCache\Listener\DiscussionEventSubscriber;
-use ACPL\FlarumCache\Listener\PostEventSubscriber;
-use ACPL\FlarumCache\Listener\UserEventSubscriber;
-use ACPL\FlarumCache\Middleware\CacheControlMiddleware;
-use ACPL\FlarumCache\Middleware\LoginMiddleware;
-use ACPL\FlarumCache\Middleware\LogoutMiddleware;
-use ACPL\FlarumCache\Middleware\LSTagsMiddlewareAbstract;
-use ACPL\FlarumCache\Middleware\PurgeCacheMiddleware;
-use ACPL\FlarumCache\Middleware\VaryCookieMiddleware;
+use ACPL\FlarumCache\Compatibility\{
+    ClarkWinkelmann\AuthorChange\ClarkWinkelmannAuthorChangeEventSubscriber,
+    Flarum\Likes\FlarumLikesEventSubscriber,
+    Flarum\Tags\FlarumTagsEventSubscriber,
+    FriendsOfFlarum\Masquerade\FofMasqueradePurgeCacheMiddleware,
+    v17development\FlarumBlog\FlarumBlogEventSubscriber
+};
+use ACPL\FlarumCache\Listener\{
+    ClearingCacheListener,
+    DiscussionEventSubscriber,
+    PostEventSubscriber,
+    UserEventSubscriber
+};
+use ACPL\FlarumCache\Middleware\{
+    CacheControlMiddleware,
+    LoginMiddleware,
+    LogoutMiddleware,
+    LSTagsMiddlewareAbstract,
+    PurgeCacheMiddleware,
+    VaryCookieMiddleware
+};
 use Flarum\Extend;
 use Flarum\Foundation\Event\ClearingCache;
 use Flarum\Http\Middleware\CheckCsrfToken;

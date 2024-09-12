@@ -8,11 +8,8 @@ use Dflydev\FigCookies\FigResponseCookies;
 use Flarum\Http\CookieFactory;
 use Illuminate\Contracts\Session\Session;
 use Laminas\Diactoros\Response\RedirectResponse;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\{ResponseInterface, ResponseInterface as Response, ServerRequestInterface};
+use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 
 class LogoutMiddleware implements MiddlewareInterface
 {

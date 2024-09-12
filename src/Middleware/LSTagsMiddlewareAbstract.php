@@ -3,8 +3,7 @@
 namespace ACPL\FlarumCache\Middleware;
 
 use ACPL\FlarumCache\LSCache;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
 class LSTagsMiddlewareAbstract extends AbstractCacheTagsMiddleware

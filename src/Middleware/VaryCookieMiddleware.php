@@ -9,11 +9,8 @@ use Flarum\Http\CookieFactory;
 use Flarum\Http\RequestUtil;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Session\Session;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
+use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 
 class VaryCookieMiddleware implements MiddlewareInterface
 {
@@ -46,7 +43,7 @@ class VaryCookieMiddleware implements MiddlewareInterface
         return $this->withVaryCookie($response, $session);
     }
 
-    private function withVaryCookie(Response $response, ?Session $session): Response
+    private function withVaryCookie(ResponseInterface $response, ?Session $session): ResponseInterface
     {
         if (! $session) {
             return $response;

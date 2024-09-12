@@ -5,9 +5,7 @@ namespace ACPL\FlarumCache\Utility;
 use ACPL\FlarumCache\Command\LSCacheClearCommand;
 use ACPL\FlarumCache\Event\LSCachePurging;
 use Illuminate\Events\Dispatcher;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
-
+use Symfony\Component\Console\{Input\ArrayInput, Output\NullOutput};
 use const PHP_SAPI;
 
 /**
