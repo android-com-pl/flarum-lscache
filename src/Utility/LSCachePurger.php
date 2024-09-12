@@ -3,10 +3,10 @@
 namespace ACPL\FlarumCache\Utility;
 
 use ACPL\FlarumCache\Command\LSCacheClearCommand;
-use Illuminate\Contracts\Queue\Queue;
+use ACPL\FlarumCache\Event\LSCachePurging;
+use Illuminate\Events\Dispatcher;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
-
 use const PHP_SAPI;
 
 /**
@@ -15,14 +15,23 @@ use const PHP_SAPI;
  */
 class LSCachePurger
 {
-    private static array $purgeData = [];
+    /**
+     * @var array{
+     *   paths: string[],
+     *   tags: string[]
+     *  } $purgeData
+     */
+    private static array $purgeData = [
+        'paths' => [],
+        'tags' => [],
+    ];
 
     /**
      * @var array|string[]
      */
     public static array $resourcesSupportedByEvent = ['discussion', 'post', 'user'];
 
-    public function __construct(protected readonly LSCacheClearCommand $cacheClearCommand, protected Queue $queue)
+    public function __construct(protected readonly LSCacheClearCommand $cacheClearCommand, protected Dispatcher $events)
     {
     }
 
@@ -59,7 +68,10 @@ class LSCachePurger
 
     public function clearPurgeData(): void
     {
-        self::$purgeData = [];
+        self::$purgeData = [
+            'paths' => [],
+            'tags' => [],
+        ];
     }
 
     public function executePurge(): void
@@ -77,6 +89,8 @@ class LSCachePurger
     private function purgeViaCli(): void
     {
         $input = [];
+
+        $this->events->dispatch(new LSCachePurging(self::$purgeData));
 
         if (! empty(self::$purgeData['paths'])) {
             $input['--path'] = self::$purgeData['paths'];

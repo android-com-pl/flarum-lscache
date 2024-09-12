@@ -4,32 +4,23 @@ namespace ACPL\FlarumCache\Compatibility\FriendsOfFlarum\Masquerade;
 
 use ACPL\FlarumCache\Middleware\AbstractPurgeCacheMiddleware;
 use Flarum\User\User;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
 class FofMasqueradePurgeCacheMiddleware extends AbstractPurgeCacheMiddleware
 {
-    protected function processPurge(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $handler,
-        ResponseInterface $response,
-    ): ResponseInterface {
-        // Purge user profile cache when updating FriendsOfFlarum/masquerade fields
+    protected function preparePurgeData(ServerRequestInterface $request): void
+    {
         if ($this->currentRouteName === 'masquerade.api.configure.save') {
             $userID = $this->getRouteParams($request)['id'];
             $user = User::find($userID);
 
-            return $this->addPurgeParamsToResponse(
-                $response,
-                [
-                    "tag=user_$user->id",
-                    "tag=user_$user->username",
-                    "tag=masquerade_$user->id",
-                ],
-            );
+            if ($user) {
+                $this->cachePurger->addPurgeTags([
+                    "user_$user->id",
+                    "user_$user->username",
+                    "masquerade_$user->id",
+                ]);
+            }
         }
-
-        return $response;
     }
 }

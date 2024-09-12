@@ -36,7 +36,6 @@ class PostEventSubscriber extends AbstractCachePurgeSubscriber
             "discussion_{$event->post->discussion_id}",
             "user_{$event->post->user_id}",
             "user_{$event->post->user_id}",
-            "blog_{$event->post->discussion->id}",
         ]);
     }
 
