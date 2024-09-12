@@ -15,5 +15,7 @@ class LSCachePurging
      *   tags: string[]
      *  }  $data
      */
-    public function __construct(public array $data, public ?User $actor = null) { }
+    public function __construct(public array $data, public ?User $actor = null)
+    {
+    }
 }

@@ -72,6 +72,7 @@ abstract class AbstractPurgeCacheMiddleware implements MiddlewareInterface
                 array_map(fn (string $tag) => "tag=$tag", $purgeData['tags']),
             );
         }
+
         return $params;
     }
 
