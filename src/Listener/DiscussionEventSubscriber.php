@@ -2,15 +2,13 @@
 
 namespace ACPL\FlarumLSCache\Listener;
 
-use Flarum\Discussion\Event\Deleted;
-use Flarum\Discussion\Event\Hidden;
-use Flarum\Discussion\Event\Renamed;
-use Flarum\Discussion\Event\Restored;
-use Flarum\Discussion\Event\Started;
+use Flarum\Discussion\Event\{Deleted, Hidden, Renamed, Restored, Started};
 use Illuminate\Contracts\Events\Dispatcher;
 
 class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
 {
+    use DiscussionCachePurgeTrait;
+
     public function subscribe(Dispatcher $events): void
     {
         $shared = [Hidden::class, Started::class, Restored::class, Renamed::class];
@@ -27,10 +25,8 @@ class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
             return;
         }
 
+        $this->handleDiscussionUpdatePurge();
         $this->purger->addPurgeTags([
-            'default',
-            'index',
-            'discussions.index',
             "discussion_{$event->discussion->id}",
             "user_{$event->discussion->user->id}",
             "user_{$event->discussion->user->username}",

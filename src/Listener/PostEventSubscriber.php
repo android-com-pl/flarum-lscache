@@ -3,15 +3,13 @@
 namespace ACPL\FlarumLSCache\Listener;
 
 use Flarum\Approval\Event\PostWasApproved;
-use Flarum\Post\Event\Deleted;
-use Flarum\Post\Event\Hidden;
-use Flarum\Post\Event\Posted;
-use Flarum\Post\Event\Restored;
-use Flarum\Post\Event\Revised;
+use Flarum\Post\Event\{Deleted, Hidden, Posted, Restored, Revised};
 use Illuminate\Contracts\Events\Dispatcher;
 
 class PostEventSubscriber extends AbstractCachePurgeSubscriber
 {
+    use DiscussionCachePurgeTrait;
+
     public function subscribe(Dispatcher $events): void
     {
         $shared = [Hidden::class, Posted::class, Restored::class, PostWasApproved::class];
@@ -28,11 +26,9 @@ class PostEventSubscriber extends AbstractCachePurgeSubscriber
             return;
         }
 
+        $this->handleDiscussionUpdatePurge();
         $this->purger->addPurgeTags([
-            'default',
-            'index',
             'posts.index',
-            'discussions.index',
             "discussion_{$event->post->discussion_id}",
             "user_{$event->post->user_id}",
             "user_{$event->post->user_id}",
