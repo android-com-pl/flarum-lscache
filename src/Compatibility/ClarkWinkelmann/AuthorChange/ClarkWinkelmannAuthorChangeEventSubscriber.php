@@ -2,13 +2,14 @@
 
 namespace ACPL\FlarumLSCache\Compatibility\ClarkWinkelmann\AuthorChange;
 
-use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
-use ACPL\FlarumLSCache\Listener\DiscussionCachePurgeTrait;
-use ClarkWinkelmann\AuthorChange\Event\DiscussionCreateDateChanged;
-use ClarkWinkelmann\AuthorChange\Event\DiscussionUserChanged;
-use ClarkWinkelmann\AuthorChange\Event\PostCreateDateChanged;
-use ClarkWinkelmann\AuthorChange\Event\PostEditDateChanged;
-use ClarkWinkelmann\AuthorChange\Event\PostUserChanged;
+use ACPL\FlarumLSCache\Listener\{AbstractCachePurgeSubscriber, DiscussionCachePurgeTrait};
+use ClarkWinkelmann\AuthorChange\Event\{
+    DiscussionCreateDateChanged,
+    DiscussionUserChanged,
+    PostCreateDateChanged,
+    PostEditDateChanged,
+    PostUserChanged
+};
 use Illuminate\Contracts\Events\Dispatcher;
 
 class ClarkWinkelmannAuthorChangeEventSubscriber extends AbstractCachePurgeSubscriber
