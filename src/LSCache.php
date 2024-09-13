@@ -11,6 +11,11 @@ class LSCache
 
     public static function extractRootRouteName(string $name): string
     {
-        return Str::singular(explode('.', $name, 2)[0]);
+        return explode('.', $name, 2)[0];
+    }
+
+    public static function extractRootRouteSingularName(string $name): string
+    {
+        return Str::singular(self::extractRootRouteName($name));
     }
 }

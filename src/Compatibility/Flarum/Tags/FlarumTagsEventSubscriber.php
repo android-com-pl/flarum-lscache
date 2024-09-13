@@ -44,7 +44,7 @@ class FlarumTagsEventSubscriber extends AbstractCachePurgeSubscriber
             "discussion_{$event->discussion->id}",
             "user_{$event->discussion->user->id}",
             "user_{$event->discussion->user->username}",
-            'tags.index',
+            'tags',
             ...$this->generateCacheTagsForDiscussionTags($event->discussion),
         ]);
     }
@@ -61,7 +61,7 @@ class FlarumTagsEventSubscriber extends AbstractCachePurgeSubscriber
         }
 
         $this->purger->addPurgeTags([
-            'tags.index',
+            'tags',
             ...$this->generateCacheTagsForDiscussionTags($event->discussion),
         ]);
     }
@@ -77,7 +77,7 @@ class FlarumTagsEventSubscriber extends AbstractCachePurgeSubscriber
         }
 
         $this->purger->addPurgeTags([
-            'tags.index',
+            'tags',
             ...$this->generateCacheTagsForDiscussionTags($event->post->discussion),
         ]);
     }

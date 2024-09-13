@@ -38,8 +38,6 @@ abstract class AbstractCacheTagsMiddleware implements MiddlewareInterface
             );
         }
 
-        $newTags = array_unique($newTags);
-
-        return $response->withHeader(LSCacheHeader::TAG, implode(',', $newTags));
+        return $response->withHeader(LSCacheHeader::TAG, implode(',', array_unique($newTags)));
     }
 }

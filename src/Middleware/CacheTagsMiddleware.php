@@ -6,7 +6,7 @@ use ACPL\FlarumLSCache\LSCache;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-class LSTagsMiddleware extends AbstractCacheTagsMiddleware
+class CacheTagsMiddleware extends AbstractCacheTagsMiddleware
 {
     protected function processTags(
         ServerRequestInterface $request,
@@ -16,10 +16,14 @@ class LSTagsMiddleware extends AbstractCacheTagsMiddleware
         $routeName = $this->currentRouteName;
         $params = $request->getAttribute('routeParameters');
 
-        $tagParams = [$routeName];
+        if (str_ends_with($routeName, '.index')) {
+            $tagParams = [LSCache::extractRootRouteName($routeName)];
+        } else {
+            $tagParams = [$routeName];
+        }
 
         if (! empty($params)) {
-            $rootRouteName = LSCache::extractRootRouteName($routeName);
+            $rootRouteName = LSCache::extractRootRouteSingularName($routeName);
 
             // Discussion
             if (! empty($params['id'])) {

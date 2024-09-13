@@ -16,7 +16,7 @@ trait DiscussionCachePurgeTrait
         $this->purger->addPurgeTags([
             'default',
             'index',
-            'discussions.index',
+            'discussions',
         ]);
 
         $purgeList = $this->settings->get('acpl-lscache.purge_on_discussion_update');

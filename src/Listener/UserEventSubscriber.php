@@ -18,16 +18,21 @@ class UserEventSubscriber extends AbstractCachePurgeSubscriber
     /** Purge discussions where user has posted. */
     public function handleUserWithPosts(AvatarChanged|GroupsChanged|Renamed $event): void
     {
-        // TODO: If user has a lot discussion chunk it and push to the queue job
-        /** @phpstan-ignore-next-line Call to an undefined method Illuminate\Database\Eloquent\Relations\Relation::pluck(). */
-        $discussions = $event->user->posts()->getRelation('discussion')->pluck('id')->toArray();
-
         $this->purger->addPurgeTags([
             "user_{$event->user->id}",
             "user_{$event->user->username}",
-            'posts.index',
-            'discussions.index',
+            'posts',
+            'discussions',
             ...array_map(fn ($id) => "discussion_$id", $discussions),
         ]);
+
+        $discussionCount = $event->user->posts()->getRelation('discussion')->distinct()->count();
+        if ($discussionCount < 50) {
+            /** @phpstan-ignore-next-line Call to an undefined method Illuminate\Database\Eloquent\Relations\Relation::pluck(). */
+            $discussions = $event->user->posts()->getRelation('discussion')->pluck('id')->toArray();
+            $this->purger->addPurgeTags([
+
+            ]);
+        }
     }
 }

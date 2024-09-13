@@ -29,7 +29,6 @@ class SychOMovePostsSubscriber extends AbstractCachePurgeSubscriber
 
         $this->handleDiscussionUpdatePurge();
         $this->purger->addPurgeTags([
-            'posts.index',
             "discussion_{$event->sourceDiscussion->id}",
             "discussion_{$event->targetDiscussion->id}",
             ...$cacheTags,

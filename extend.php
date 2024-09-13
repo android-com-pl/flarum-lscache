@@ -29,7 +29,7 @@ use ACPL\FlarumLSCache\Listener\{
 };
 use ACPL\FlarumLSCache\Middleware\{
     CacheControlMiddleware,
-    LSTagsMiddleware,
+    CacheTagsMiddleware,
     LoginMiddleware,
     LogoutMiddleware,
     PurgeCacheMiddleware,
@@ -63,8 +63,8 @@ return [
     (new Extend\Middleware('forum'))->insertAfter(VaryCookieMiddleware::class, LogoutMiddleware::class),
 
     // Tag routes
-    (new Extend\Middleware('forum'))->add(LSTagsMiddleware::class),
-    (new Extend\Middleware('api'))->add(LSTagsMiddleware::class),
+    (new Extend\Middleware('forum'))->add(CacheTagsMiddleware::class),
+    (new Extend\Middleware('api'))->add(CacheTagsMiddleware::class),
 
     // Cache routes
     (new Extend\Middleware('forum'))->insertAfter(VaryCookieMiddleware::class, CacheControlMiddleware::class),

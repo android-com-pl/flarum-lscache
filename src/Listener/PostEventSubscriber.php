@@ -28,7 +28,7 @@ class PostEventSubscriber extends AbstractCachePurgeSubscriber
 
         $this->handleDiscussionUpdatePurge();
         $this->purger->addPurgeTags([
-            'posts.index',
+            'posts',
             "discussion_{$event->post->discussion_id}",
             "user_{$event->post->user_id}",
             "user_{$event->post->user_id}",
@@ -43,7 +43,7 @@ class PostEventSubscriber extends AbstractCachePurgeSubscriber
 
         // No need to purge homepage cache when post is revised
         $this->purger->addPurgeTags([
-            'posts.index',
+            'posts',
             "discussion_{$event->post->discussion_id}",
             "user_{$event->post->user_id}",
             "user_{$event->post->user_id}",
