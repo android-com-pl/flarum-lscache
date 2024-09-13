@@ -2,10 +2,7 @@
 
 namespace ACPL\FlarumLSCache\Listener;
 
-use Flarum\User\Event\AvatarChanged;
-use Flarum\User\Event\Deleted;
-use Flarum\User\Event\GroupsChanged;
-use Flarum\User\Event\Renamed;
+use Flarum\User\Event\{AvatarChanged, Deleted, GroupsChanged, Renamed};
 use Illuminate\Contracts\Events\Dispatcher;
 
 class UserEventSubscriber extends AbstractCachePurgeSubscriber
@@ -18,7 +15,7 @@ class UserEventSubscriber extends AbstractCachePurgeSubscriber
         }
     }
 
-    /** Purge discussions where user has posted, so new user data is visible there */
+    /** Purge discussions where user has posted. */
     public function handleUserWithPosts(AvatarChanged|GroupsChanged|Renamed $event): void
     {
         // TODO: If user has a lot discussion chunk it and push to the queue job
