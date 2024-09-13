@@ -11,7 +11,7 @@ class PurgeCacheMiddleware extends AbstractPurgeCacheMiddleware
     protected function preparePurgeData(ServerRequestInterface $request): void
     {
         $routeName = $this->currentRouteName;
-        $rootRouteName = LSCache::extractRootRouteName($routeName);
+        $rootRouteName = LSCache::extractRootRouteSingularName($routeName);
         $params = $this->getRouteParams($request);
 
         if (! empty($params['id']) && $this->shouldPurgeRoute($rootRouteName, $routeName)) {

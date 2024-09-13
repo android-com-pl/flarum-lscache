@@ -11,7 +11,7 @@ trait DiscussionCachePurgeTrait
     protected SettingsRepositoryInterface $settings;
     protected LSCachePurger $purger;
 
-    protected function handleDiscussionUpdatePurge(): void
+    protected function handleDiscussionRelatedPurge(): void
     {
         $this->purger->addPurgeTags([
             'default',

@@ -25,7 +25,7 @@ class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
             return;
         }
 
-        $this->handleDiscussionUpdatePurge();
+        $this->handleDiscussionRelatedPurge();
         $this->purger->addPurgeTags([
             "discussion_{$event->discussion->id}",
             "user_{$event->discussion->user->id}",

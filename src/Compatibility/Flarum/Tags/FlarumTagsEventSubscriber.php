@@ -39,7 +39,7 @@ class FlarumTagsEventSubscriber extends AbstractCachePurgeSubscriber
 
     public function handleDiscussionWasTagged(DiscussionWasTagged $event): void
     {
-        $this->handleDiscussionUpdatePurge();
+        $this->handleDiscussionRelatedPurge();
         $this->purger->addPurgeTags([
             "discussion_{$event->discussion->id}",
             "user_{$event->discussion->user->id}",

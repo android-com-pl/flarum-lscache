@@ -12,42 +12,29 @@ class PostEventSubscriber extends AbstractCachePurgeSubscriber
 
     public function subscribe(Dispatcher $events): void
     {
-        $shared = [Hidden::class, Posted::class, Restored::class, PostWasApproved::class];
-        foreach ($shared as $event) {
+        $postEvents = [Hidden::class, Posted::class, Restored::class, PostWasApproved::class, Revised::class];
+        foreach ($postEvents as $event) {
             $this->addPurgeListener($events, $event, [$this, 'handle']);
         }
-
-        $this->addPurgeListener($events, Revised::class, [$this, 'handleRevised']);
     }
 
-    protected function handle(Hidden|Posted|Restored|PostWasApproved $event): void
+
+    protected function handle(Hidden|Posted|Restored|PostWasApproved|Revised $event): void
     {
         if (! $this->shouldPurge($event)) {
             return;
         }
 
-        $this->handleDiscussionUpdatePurge();
         $this->purger->addPurgeTags([
             'posts',
             "discussion_{$event->post->discussion_id}",
             "user_{$event->post->user_id}",
             "user_{$event->post->user_id}",
         ]);
-    }
 
-    protected function handleRevised(Revised $event): void
-    {
-        if (! $this->shouldPurge($event)) {
-            return;
+        if (! $event instanceof Revised) {
+            $this->handleDiscussionRelatedPurge();
         }
-
-        // No need to purge homepage cache when post is revised
-        $this->purger->addPurgeTags([
-            'posts',
-            "discussion_{$event->post->discussion_id}",
-            "user_{$event->post->user_id}",
-            "user_{$event->post->user_id}",
-        ]);
     }
 
     protected function shouldPurge(Deleted|Hidden|Posted|Restored|Revised|PostWasApproved $event): bool

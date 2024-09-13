@@ -27,7 +27,7 @@ class SychOMovePostsSubscriber extends AbstractCachePurgeSubscriber
             $cacheTags[] = "user_{$post->user->username}";
         });
 
-        $this->handleDiscussionUpdatePurge();
+        $this->handleDiscussionRelatedPurge();
         $this->purger->addPurgeTags([
             "discussion_{$event->sourceDiscussion->id}",
             "discussion_{$event->targetDiscussion->id}",
