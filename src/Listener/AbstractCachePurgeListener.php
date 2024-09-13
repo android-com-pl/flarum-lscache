@@ -4,7 +4,6 @@ namespace ACPL\FlarumLSCache\Listener;
 
 use ACPL\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Settings\SettingsRepositoryInterface;
-use Illuminate\Contracts\Events\Dispatcher;
 
 abstract class AbstractCachePurgeListener
 {
@@ -12,11 +11,11 @@ abstract class AbstractCachePurgeListener
     {
     }
 
-    protected function handle(Dispatcher $event): void
+    public function handle($event): void
     {
         $this->addPurgeData($event);
         $this->purger->executePurge();
     }
 
-    abstract protected function addPurgeData(Dispatcher $event): void;
+    abstract protected function addPurgeData($event): void;
 }

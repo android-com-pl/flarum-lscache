@@ -12,7 +12,7 @@
 namespace ACPL\FlarumLSCache;
 
 use ACPL\FlarumLSCache\Api\Controller\{LSCacheCsrfResponseController, PurgeLSCacheController};
-use ACPL\FlarumLSCache\Command\LSCacheClearCommand;
+use ACPL\FlarumLSCache\Command\LSCachePurgeCommand;
 use ACPL\FlarumLSCache\Compatibility\{
     ClarkWinkelmann\AuthorChange\ClarkWinkelmannAuthorChangeEventSubscriber,
     Flarum\Likes\FlarumLikesEventSubscriber,
@@ -80,7 +80,7 @@ return [
 
     // Purge cache
     (new Extend\Routes('api'))->get('/lscache-purge', 'lscache.purge', PurgeLSCacheController::class),
-    (new Extend\Console)->command(LSCacheClearCommand::class),
+    (new Extend\Console)->command(LSCachePurgeCommand::class),
     (new Extend\Event)->listen(ClearingCache::class, ClearingCacheListener::class),
 
     (new Extend\Event)->subscribe(DiscussionEventSubscriber::class),

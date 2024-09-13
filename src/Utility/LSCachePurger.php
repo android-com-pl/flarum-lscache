@@ -2,10 +2,10 @@
 
 namespace ACPL\FlarumLSCache\Utility;
 
-use ACPL\FlarumLSCache\Command\LSCacheClearCommand;
 use ACPL\FlarumLSCache\Event\LSCachePurging;
+use ACPL\FlarumLSCache\Job\PurgeCacheViaCliJob;
+use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Events\Dispatcher;
-use Symfony\Component\Console\{Input\ArrayInput, Output\NullOutput};
 
 use const PHP_SAPI;
 
@@ -31,7 +31,7 @@ class LSCachePurger
      */
     public static array $resourcesSupportedByEvent = ['discussion', 'post', 'user'];
 
-    public function __construct(protected readonly LSCacheClearCommand $cacheClearCommand, protected Dispatcher $events)
+    public function __construct(protected Dispatcher $events, protected Queue $queue)
     {
     }
 
@@ -76,32 +76,15 @@ class LSCachePurger
 
     public function executePurge(): void
     {
-        if (empty(self::$purgeData) || (empty(self::$purgeData['paths']) || empty(self::$purgeData['tags']))) {
+        if (empty(self::$purgeData) || (empty(self::$purgeData['paths']) && empty(self::$purgeData['tags']))) {
             return;
         }
 
         if (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg') {
-            $this->purgeViaCli();
-        }
-        // else Data will be handled by middleware
-    }
-
-    private function purgeViaCli(): void
-    {
-        $input = [];
-
-        $this->events->dispatch(new LSCachePurging(self::$purgeData));
-
-        if (! empty(self::$purgeData['paths'])) {
-            $input['--path'] = self::$purgeData['paths'];
-        }
-
-        if (! empty(self::$purgeData['tags'])) {
-            $input['--tag'] = self::$purgeData['tags'];
-        }
-
-        $this->cacheClearCommand->run(new ArrayInput($input), new NullOutput());
-        $this->clearPurgeData();
+            $this->events->dispatch(new LSCachePurging(self::$purgeData));
+            $this->clearPurgeData();
+            $this->queue->push(new PurgeCacheViaCliJob(self::$purgeData));
+        } // else purge will be handled by middleware
     }
 
     public static function isResourceSupportedByEvent(string $resource): bool

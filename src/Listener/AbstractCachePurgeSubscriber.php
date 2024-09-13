@@ -2,6 +2,7 @@
 
 namespace ACPL\FlarumLSCache\Listener;
 
+use ACPL\FlarumLSCache\Event\LSCachePurging;
 use ACPL\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -18,7 +19,11 @@ abstract class AbstractCachePurgeSubscriber
     {
         $events->listen($event, function ($eventInstance) use ($handler) {
             $handler($eventInstance);
-            $this->purger->executePurge();
+
+            // Prevent infinite loop when something listens to LSCachePurging event
+            if (! $eventInstance instanceof LSCachePurging) {
+                $this->purger->executePurge();
+            }
         });
     }
 }
