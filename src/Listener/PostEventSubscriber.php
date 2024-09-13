@@ -18,7 +18,6 @@ class PostEventSubscriber extends AbstractCachePurgeSubscriber
         }
     }
 
-
     protected function handle(Hidden|Posted|Restored|PostWasApproved|Revised $event): void
     {
         if (! $this->shouldPurge($event)) {
