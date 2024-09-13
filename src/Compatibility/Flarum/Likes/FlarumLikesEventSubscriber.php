@@ -3,8 +3,7 @@
 namespace ACPL\FlarumLSCache\Compatibility\Flarum\Likes;
 
 use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
-use Flarum\Likes\Event\PostWasLiked;
-use Flarum\Likes\Event\PostWasUnliked;
+use Flarum\Likes\Event\{PostWasLiked, PostWasUnliked};
 use Illuminate\Contracts\Events\Dispatcher;
 
 class FlarumLikesEventSubscriber extends AbstractCachePurgeSubscriber

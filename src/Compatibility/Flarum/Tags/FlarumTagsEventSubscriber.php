@@ -2,23 +2,23 @@
 
 namespace ACPL\FlarumLSCache\Compatibility\Flarum\Tags;
 
-use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
+use ACPL\FlarumLSCache\Listener\{AbstractCachePurgeSubscriber, DiscussionCachePurgeTrait};
 use Flarum\Discussion\Discussion;
-use Flarum\Discussion\Event\Deleted as DiscussionDeleted;
-use Flarum\Discussion\Event\Hidden as DiscussionHidden;
-use Flarum\Discussion\Event\Renamed as DiscussionRenamed;
-use Flarum\Discussion\Event\Restored as DiscussionRestored;
-use Flarum\Discussion\Event\Started as DiscussionStarted;
-use Flarum\Post\Event\Deleted as PostDeleted;
-use Flarum\Post\Event\Hidden as PostHidden;
-use Flarum\Post\Event\Posted;
-use Flarum\Post\Event\Restored as PostRestored;
+use Flarum\Discussion\Event\{Deleted as DiscussionDeleted,
+    Hidden as DiscussionHidden,
+    Renamed as DiscussionRenamed,
+    Restored as DiscussionRestored,
+    Started as DiscussionStarted
+};
+use Flarum\Post\Event\{Deleted as PostDeleted, Hidden as PostHidden, Posted, Restored as PostRestored};
 use Flarum\Tags\Event\DiscussionWasTagged;
 use Flarum\Tags\Tag;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class FlarumTagsEventSubscriber extends AbstractCachePurgeSubscriber
 {
+    use DiscussionCachePurgeTrait;
+
     public function subscribe(Dispatcher $events): void
     {
         $this->addPurgeListener($events, DiscussionWasTagged::class, [$this, 'handleDiscussionWasTagged']);
@@ -39,10 +39,8 @@ class FlarumTagsEventSubscriber extends AbstractCachePurgeSubscriber
 
     public function handleDiscussionWasTagged(DiscussionWasTagged $event): void
     {
+        $this->handleDiscussionUpdatePurge();
         $this->purger->addPurgeTags([
-            'default',
-            'index',
-            'discussions.index',
             "discussion_{$event->discussion->id}",
             "user_{$event->discussion->user->id}",
             "user_{$event->discussion->user->username}",

@@ -3,12 +3,15 @@
 namespace ACPL\FlarumLSCache\Compatibility\SychO\MovePosts;
 
 use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
+use ACPL\FlarumLSCache\Listener\DiscussionCachePurgeTrait;
 use Flarum\Post\CommentPost;
 use Illuminate\Contracts\Events\Dispatcher;
 use SychO\MovePosts\Event\PostsMoved;
 
 class SychOMovePostsSubscriber extends AbstractCachePurgeSubscriber
 {
+    use DiscussionCachePurgeTrait;
+
     public function subscribe(Dispatcher $events): void
     {
         $this->addPurgeListener($events, PostsMoved::class, [$this, 'handlePostsMoved']);
@@ -24,11 +27,9 @@ class SychOMovePostsSubscriber extends AbstractCachePurgeSubscriber
             $cacheTags[] = "user_{$post->user->username}";
         });
 
+        $this->handleDiscussionUpdatePurge();
         $this->purger->addPurgeTags([
-            'default',
-            'index',
             'posts.index',
-            'discussions.index',
             "discussion_{$event->sourceDiscussion->id}",
             "discussion_{$event->targetDiscussion->id}",
             ...$cacheTags,
