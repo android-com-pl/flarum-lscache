@@ -15,7 +15,9 @@ class PurgeCacheViaCliJob extends AbstractJob implements ShouldQueue
      *   tags: string[]
      *  }  $data
      */
-    public function __construct(protected array $data = ['paths' => [], 'tags' => []]) { }
+    public function __construct(protected array $data = ['paths' => [], 'tags' => []])
+    {
+    }
 
     public function handle(LSCachePurgeCommand $command): void
     {
