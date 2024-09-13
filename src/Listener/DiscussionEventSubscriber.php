@@ -50,7 +50,8 @@ class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
     ): bool {
         return ! (
             $event->discussion->is_private
-            || $event->discussion?->is_approved === false
+            /** @phpstan-ignore-next-line  Access to an undefined property Flarum\Discussion\Discussion::$is_approved. */
+            || $event->discussion->is_approved === false
         );
     }
 }

@@ -22,6 +22,7 @@ class UserEventSubscriber extends AbstractCachePurgeSubscriber
     public function handleUserWithPosts(AvatarChanged|GroupsChanged|Renamed $event): void
     {
         // TODO: If user has a lot discussion chunk it and push to the queue job
+        /** @phpstan-ignore-next-line Call to an undefined method Illuminate\Database\Eloquent\Relations\Relation::pluck(). */
         $discussions = $event->user->posts()->getRelation('discussion')->pluck('id')->toArray();
 
         $this->purger->addPurgeTags([

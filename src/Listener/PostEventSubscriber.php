@@ -58,7 +58,8 @@ class PostEventSubscriber extends AbstractCachePurgeSubscriber
     {
         return ! (
             $event->post->discussion->is_private
-            || $event->post?->is_approved === false
+            /** @phpstan-ignore-next-line  Access to an undefined property Flarum\Post\Post::$is_approved. */
+            || $event->post->is_approved === false
         );
     }
 }

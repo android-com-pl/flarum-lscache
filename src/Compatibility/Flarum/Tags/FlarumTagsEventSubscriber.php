@@ -56,6 +56,7 @@ class FlarumTagsEventSubscriber extends AbstractCachePurgeSubscriber
     ): void {
         if (
             ($event instanceof DiscussionDeleted && $event->discussion->hidden_at !== null)
+            /** @phpstan-ignore-next-line  Access to an undefined property Flarum\Discussion\Discussion::$is_approved. */
             || $event->discussion->is_approved === false
         ) {
             return;
@@ -71,6 +72,7 @@ class FlarumTagsEventSubscriber extends AbstractCachePurgeSubscriber
     {
         if (
             ($event instanceof PostRestored && $event->post->discussion->hidden_at !== null)
+            /** @phpstan-ignore-next-line  Access to an undefined property Flarum\Discussion\Discussion::$is_approved. */
             || $event->post->discussion->is_approved === false
         ) {
             return;
@@ -84,6 +86,7 @@ class FlarumTagsEventSubscriber extends AbstractCachePurgeSubscriber
 
     protected function generateCacheTagsForDiscussionTags(Discussion $discussion): array
     {
+        /** @phpstan-ignore-next-line Access to an undefined property Flarum\Discussion\Discussion::$is_approved. */
         return $discussion->tags->map(fn (Tag $tag) => "tag_$tag->slug")->toArray();
     }
 }

@@ -20,6 +20,7 @@ class FlarumBlogEventSubscriber extends AbstractCachePurgeSubscriber
     {
         $this->purger->addPurgeTags([
             'blog.overview',
+            /** @phpstan-ignore-next-line  Access to an undefined property V17Development\FlarumBlog\BlogMeta\BlogMeta::$discussion_id. */
             "blog_{$event->blogMeta->discussion_id}",
         ]);
     }
