@@ -36,7 +36,7 @@
         "v17development/flarum-blog": "^v0.8.0"
     },
     "suggest": {
-        "blomstra/flarum-redis": "This library allows using Redis as cache, session and for the queue. https://github.com/blomstra/flarum-redis#set-up"
+        "fof/redis": "This library allows using Redis as cache, session and for the queue. https://github.com/FriendsOfFlarum/redis?tab=readme-ov-file#set-up"
     },
     "authors": [
         {
