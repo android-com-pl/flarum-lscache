@@ -27,6 +27,8 @@ acpl-lscache:
 
     purge_all: => acpl-lscache.ref.purge_cache
 
+    test_failed_alert: "It looks like your server does not support LSCache. Check your server configuration. Detected server: <b>{server}</b>, detected LiteSpeed type: <b>{type}</b>."
+
     permissions:
       purge: => acpl-lscache.ref.purge_cache
 

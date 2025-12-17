@@ -2,12 +2,14 @@ import app from 'flarum/admin/app';
 import Link from 'flarum/common/components/Link';
 import addPurgeLSCacheButton from './addPurgeLSCacheButton';
 import { PURGE_ICON } from '../common/constants';
+import LSCacheSupportTest from './components/LSCacheSupportTest';
 
 app.initializers.add('acpl-lscache', () => {
   addPurgeLSCacheButton();
 
   app.extensionData
     .for('acpl-lscache')
+    .registerSetting(() => <LSCacheSupportTest />)
     .registerSetting({
       setting: 'acpl-lscache.cache_enabled',
       label: app.translator.trans('acpl-lscache.admin.cache_enabled_label'),
