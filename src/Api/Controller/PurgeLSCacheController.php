@@ -13,12 +13,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class PurgeLSCacheController implements RequestHandlerInterface
 {
-    private SettingsRepositoryInterface $settings;
-
-    public function __construct(SettingsRepositoryInterface $settings)
-    {
-        $this->settings = $settings;
-    }
+    public function __construct(private readonly SettingsRepositoryInterface $settings) {}
 
     /**
      * @throws PermissionDeniedException

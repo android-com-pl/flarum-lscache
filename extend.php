@@ -11,7 +11,11 @@
 
 namespace ACPL\FlarumLSCache;
 
-use ACPL\FlarumLSCache\Api\Controller\{LSCacheCsrfResponseController, PurgeLSCacheController};
+use ACPL\FlarumLSCache\Api\Controller\{
+    LSCacheCsrfResponseController,
+    LSCacheDiagnoseController,
+    PurgeLSCacheController
+};
 use ACPL\FlarumLSCache\Command\LSCachePurgeCommand;
 use ACPL\FlarumLSCache\Compatibility\{
     ClarkWinkelmann\AuthorChangeEventSubscriber,
@@ -103,6 +107,9 @@ return [
     (new Extend\Event)->subscribe(DiscussionEventSubscriber::class),
     (new Extend\Event)->subscribe(PostEventSubscriber::class),
     (new Extend\Event)->subscribe(UserEventSubscriber::class),
+
+    // Diagnose
+    (new Extend\Routes('api'))->get('/lscache-diagnose','lscache.diagnose', LSCacheDiagnoseController::class),
 
     // Extensions
     (new Extend\Conditional)
