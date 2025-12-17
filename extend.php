@@ -109,7 +109,7 @@ return [
     (new Extend\Event)->subscribe(UserEventSubscriber::class),
 
     // Diagnose
-    (new Extend\Routes('api'))->get('/lscache-diagnose','lscache.diagnose', LSCacheDiagnoseController::class),
+    (new Extend\Routes('api'))->get('/lscache-diagnose', 'lscache.diagnose', LSCacheDiagnoseController::class),
 
     // Extensions
     (new Extend\Conditional)

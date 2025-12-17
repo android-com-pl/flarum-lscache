@@ -13,7 +13,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class PurgeLSCacheController implements RequestHandlerInterface
 {
-    public function __construct(private readonly SettingsRepositoryInterface $settings) {}
+    public function __construct(private readonly SettingsRepositoryInterface $settings)
+    {
+    }
 
     /**
      * @throws PermissionDeniedException

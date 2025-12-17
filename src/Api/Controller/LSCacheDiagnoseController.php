@@ -32,7 +32,7 @@ class LSCacheDiagnoseController implements RequestHandlerInterface
         };
 
         return new JsonResponse([
-            'cacheSupported' => !empty($_SERVER['X-LSCACHE']) || $litespeedServerType === LiteSpeedServerType::ADC,
+            'cacheSupported' => ! empty($_SERVER['X-LSCACHE']) || $litespeedServerType === LiteSpeedServerType::ADC,
             'litespeedServerType' => $litespeedServerType->value,
             'serverSoftware' => (string) $serverSoftware,
         ]);
