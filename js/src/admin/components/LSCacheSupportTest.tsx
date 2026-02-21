@@ -7,26 +7,28 @@ import { DiagnoseData } from '../types';
 interface TestAlertAttrs extends ComponentAttrs {}
 
 export default class LSCacheSupportTest extends Component<TestAlertAttrs> {
-  private diagnoseData: DiagnoseData | null = null;
-
   oninit(vnode: Vnode<TestAlertAttrs, this>) {
     super.oninit(vnode);
+
+    if (app.cache.lsCacheDiagnoseData) return;
     app
       .request<DiagnoseData>({
         url: `${app.forum.attribute<string>('apiUrl')}/lscache-diagnose`,
       })
       .then((data) => {
-        this.diagnoseData = data;
+        app.cache.lsCacheDiagnoseData = data;
         m.redraw();
       });
   }
 
   view(vnode: Vnode) {
-    if (!this.diagnoseData || this.diagnoseData.cacheSupported) {
+    const diagnoseData = app.cache.lsCacheDiagnoseData as DiagnoseData | undefined;
+
+    if (!diagnoseData || diagnoseData.cacheSupported) {
       return null;
     }
 
-    const { serverSoftware, litespeedServerType } = this.diagnoseData;
+    const { serverSoftware, litespeedServerType } = diagnoseData;
 
     return (
       <Alert type="error" dismissible={false} style={{ marginBottom: '1.4rem' }}>
