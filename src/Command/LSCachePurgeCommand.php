@@ -12,14 +12,9 @@ use Symfony\Component\Console\Input\InputOption;
 
 class LSCachePurgeCommand extends AbstractCommand
 {
-    protected UrlGenerator $url;
-    private SettingsRepositoryInterface $settings;
-
-    public function __construct(UrlGenerator $url, SettingsRepositoryInterface $settings)
+    public function __construct(protected UrlGenerator $url, private SettingsRepositoryInterface $settings)
     {
         parent::__construct();
-        $this->url = $url;
-        $this->settings = $settings;
     }
 
     public function configure(): void
