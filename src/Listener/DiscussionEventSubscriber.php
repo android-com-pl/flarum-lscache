@@ -13,10 +13,10 @@ class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
     {
         $shared = [Hidden::class, Started::class, Restored::class, Renamed::class];
         foreach ($shared as $event) {
-            $this->addPurgeListener($events, $event, [$this, 'handle']);
+            $this->addPurgeListener($events, $event, $this->handle(...));
         }
 
-        $this->addPurgeListener($events, Deleted::class, [$this, 'handleDeleted']);
+        $this->addPurgeListener($events, Deleted::class, $this->handleDeleted(...));
     }
 
     protected function handle(Deleted|Hidden|Started|Restored|Renamed $event): void
@@ -35,7 +35,7 @@ class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
 
     protected function handleDeleted(Deleted $event): void
     {
-        // If discussion was hidden before, there is no need to purge cache, because it is not visible for guests anyway
+        // If discussion was hidden before, there is no need to purge the cache because it is not visible for guests anyway
         if ($event->discussion->hidden_at === null && $this->shouldPurge($event)) {
             $this->handle($event);
         }

@@ -14,7 +14,7 @@ class PostEventSubscriber extends AbstractCachePurgeSubscriber
     {
         $postEvents = [Hidden::class, Posted::class, Restored::class, PostWasApproved::class, Revised::class];
         foreach ($postEvents as $event) {
-            $this->addPurgeListener($events, $event, [$this, 'handle']);
+            $this->addPurgeListener($events, $event, $this->handle(...));
         }
     }
 

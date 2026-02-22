@@ -11,7 +11,7 @@ class LikesEventSubscriber extends AbstractCachePurgeSubscriber
     public function subscribe(Dispatcher $events): void
     {
         foreach ([PostWasLiked::class, PostWasUnliked::class] as $event) {
-            $this->addPurgeListener($events, $event, [$this, 'handle']);
+            $this->addPurgeListener($events, $event, $this->handle(...));
         }
     }
 

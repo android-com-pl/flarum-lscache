@@ -12,8 +12,8 @@ class FlarumBlogEventSubscriber extends AbstractCachePurgeSubscriber
 {
     public function subscribe(Dispatcher $events): void
     {
-        $this->addPurgeListener($events, BlogMetaSaving::class, [$this, 'handle']);
-        $this->addPurgeListener($events, LSCachePurging::class, [$this, 'handleLSCachePurging']);
+        $this->addPurgeListener($events, BlogMetaSaving::class, $this->handle(...));
+        $this->addPurgeListener($events, LSCachePurging::class, $this->handleLSCachePurging(...));
     }
 
     public function handle(BlogMetaSaving $event): void
@@ -26,7 +26,7 @@ class FlarumBlogEventSubscriber extends AbstractCachePurgeSubscriber
     }
 
     /**
-     * If discussion is detected, also purge blog, because blog is a discussion.
+     * If discussion is detected, also purge a blog, because a blog is a discussion.
      */
     public function handleLSCachePurging(LSCachePurging $event): void
     {

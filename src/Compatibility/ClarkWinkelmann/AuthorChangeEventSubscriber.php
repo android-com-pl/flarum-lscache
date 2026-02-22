@@ -3,7 +3,8 @@
 namespace ACPL\FlarumLSCache\Compatibility\ClarkWinkelmann;
 
 use ACPL\FlarumLSCache\Listener\{AbstractCachePurgeSubscriber, DiscussionCachePurgeTrait};
-use ClarkWinkelmann\AuthorChange\Event\{DiscussionCreateDateChanged,
+use ClarkWinkelmann\AuthorChange\Event\{
+    DiscussionCreateDateChanged,
     DiscussionUserChanged,
     PostCreateDateChanged,
     PostEditDateChanged,
@@ -17,11 +18,11 @@ class AuthorChangeEventSubscriber extends AbstractCachePurgeSubscriber
 
     public function subscribe(Dispatcher $events): void
     {
-        $this->addPurgeListener($events, DiscussionCreateDateChanged::class, [$this, 'handleDiscussion']);
-        $this->addPurgeListener($events, DiscussionUserChanged::class, [$this, 'handleDiscussionUserChanged']);
-        $this->addPurgeListener($events, PostCreateDateChanged::class, [$this, 'handlePost']);
-        $this->addPurgeListener($events, PostEditDateChanged::class, [$this, 'handlePost']);
-        $this->addPurgeListener($events, PostUserChanged::class, [$this, 'handlePostUserChanged']);
+        $this->addPurgeListener($events, DiscussionCreateDateChanged::class, $this->handleDiscussion(...));
+        $this->addPurgeListener($events, DiscussionUserChanged::class, $this->handleDiscussionUserChanged(...));
+        $this->addPurgeListener($events, PostCreateDateChanged::class, $this->handlePost(...));
+        $this->addPurgeListener($events, PostEditDateChanged::class, $this->handlePost(...));
+        $this->addPurgeListener($events, PostUserChanged::class, $this->handlePostUserChanged(...));
     }
 
     protected function handleDiscussion(DiscussionCreateDateChanged|DiscussionUserChanged $event): void

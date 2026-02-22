@@ -4,7 +4,8 @@ namespace ACPL\FlarumLSCache\Compatibility\Flarum;
 
 use ACPL\FlarumLSCache\Listener\{AbstractCachePurgeSubscriber, DiscussionCachePurgeTrait};
 use Flarum\Discussion\Discussion;
-use Flarum\Discussion\Event\{Deleted as DiscussionDeleted,
+use Flarum\Discussion\Event\{
+    Deleted as DiscussionDeleted,
     Hidden as DiscussionHidden,
     Renamed as DiscussionRenamed,
     Restored as DiscussionRestored,
@@ -21,19 +22,19 @@ class TagsEventSubscriber extends AbstractCachePurgeSubscriber
 
     public function subscribe(Dispatcher $events): void
     {
-        $this->addPurgeListener($events, DiscussionWasTagged::class, [$this, 'handleDiscussionWasTagged']);
+        $this->addPurgeListener($events, DiscussionWasTagged::class, $this->handleDiscussionWasTagged(...));
 
         $discussionEvents = [
             DiscussionDeleted::class, DiscussionHidden::class, DiscussionRenamed::class, DiscussionRestored::class,
             DiscussionStarted::class,
         ];
         foreach ($discussionEvents as $event) {
-            $this->addPurgeListener($events, $event, [$this, 'handleDiscussionEvents']);
+            $this->addPurgeListener($events, $event, $this->handleDiscussionEvents(...));
         }
 
         $postEvents = [PostDeleted::class, PostHidden::class, Posted::class, PostRestored::class];
         foreach ($postEvents as $event) {
-            $this->addPurgeListener($events, $event, [$this, 'handlePostEvents']);
+            $this->addPurgeListener($events, $event, $this->handlePostEvents(...));
         }
     }
 

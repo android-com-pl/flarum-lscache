@@ -17,7 +17,7 @@ class MergeDiscussionsEventSubscriber extends AbstractCachePurgeSubscriber
 
     public function subscribe(Dispatcher $events): void
     {
-        $this->addPurgeListener($events, DiscussionWasMerged::class, [$this, 'handleDiscussionWasMerged']);
+        $this->addPurgeListener($events, DiscussionWasMerged::class, $this->handleDiscussionWasMerged(...));
     }
 
     protected function handleDiscussionWasMerged(DiscussionWasMerged $event): void

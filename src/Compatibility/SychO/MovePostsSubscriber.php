@@ -14,7 +14,7 @@ class MovePostsSubscriber extends AbstractCachePurgeSubscriber
 
     public function subscribe(Dispatcher $events): void
     {
-        $this->addPurgeListener($events, PostsMoved::class, [$this, 'handlePostsMoved']);
+        $this->addPurgeListener($events, PostsMoved::class, $this->handlePostsMoved(...));
     }
 
     protected function handlePostsMoved(PostsMoved $event): void
