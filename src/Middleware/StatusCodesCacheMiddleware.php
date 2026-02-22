@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Middleware;
+namespace Acpl\FlarumLSCache\Middleware;
 
-use ACPL\FlarumLSCache\LSCacheHeader;
+use Acpl\FlarumLSCache\LSCacheHeader;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};

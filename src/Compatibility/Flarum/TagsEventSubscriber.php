@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Compatibility\Flarum;
+namespace Acpl\FlarumLSCache\Compatibility\Flarum;
 
-use ACPL\FlarumLSCache\Listener\{AbstractCachePurgeSubscriber, DiscussionCachePurgeTrait};
+use Acpl\FlarumLSCache\Listener\{AbstractCachePurgeSubscriber, DiscussionCachePurgeTrait};
 use Flarum\Discussion\Discussion;
 use Flarum\Discussion\Event\{
     Deleted as DiscussionDeleted,

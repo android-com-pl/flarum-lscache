@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Listener;
+namespace Acpl\FlarumLSCache\Listener;
 
 use Flarum\User\Event\{AvatarChanged, Deleting, GroupsChanged, Renamed};
 use Illuminate\Contracts\Events\Dispatcher;

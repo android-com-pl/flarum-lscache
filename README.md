@@ -70,7 +70,7 @@ To disable this behavior and add your own event handling, add your resource to t
 
 ```php
 // 💡 resource name should be in singular form
-\ACPL\FlarumLSCache\Utility\LSCachePurger::$resourcesSupportedByEvent[] = 'example'
+\Acpl\FlarumLSCache\Utility\LSCachePurger::$resourcesSupportedByEvent[] = 'example'
 
 return [
     // ... your current extenders
@@ -94,7 +94,7 @@ return [
 
 ```php
 // ExampleUpdatedListener.php
-use ACPL\FlarumLSCache\Listener\AbstractCachePurgeListener;
+use Acpl\FlarumLSCache\Listener\AbstractCachePurgeListener;
 
 class ExampleUpdatedListener extends AbstractCachePurgeListener
 {
@@ -140,7 +140,7 @@ return [
 
 ```php
 // ExampleEventSubscriber.php
-use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
+use Acpl\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class ExampleEventSubscriber extends AbstractCachePurgeSubscriber

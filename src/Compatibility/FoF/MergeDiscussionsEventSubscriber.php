@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Compatibility\FoF;
+namespace Acpl\FlarumLSCache\Compatibility\FoF;
 
-use ACPL\FlarumLSCache\Listener\{
+use Acpl\FlarumLSCache\Listener\{
     AbstractCachePurgeSubscriber,
     DiscussionCachePurgeTrait
 };

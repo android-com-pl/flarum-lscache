@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Listener;
+namespace Acpl\FlarumLSCache\Listener;
 
 use Flarum\Foundation\Event\ClearingCache;
 

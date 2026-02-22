@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Api\Controller;
+namespace Acpl\FlarumLSCache\Api\Controller;
 
-use ACPL\FlarumLSCache\LSCacheHeader;
+use Acpl\FlarumLSCache\LSCacheHeader;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\Exception\PermissionDeniedException;

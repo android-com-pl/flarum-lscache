@@ -44,7 +44,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "ACPL\\FlarumLSCache\\": "src/"
+            "Acpl\\FlarumLSCache\\": "src/"
         }
     },
     "extra": {

@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Utility;
+namespace Acpl\FlarumLSCache\Utility;
 
-use ACPL\FlarumLSCache\LSCache;
+use Acpl\FlarumLSCache\LSCache;
 use Flarum\Foundation\Paths;
 use Flarum\Http\CookieFactory;
 use Flarum\Settings\SettingsRepositoryInterface;

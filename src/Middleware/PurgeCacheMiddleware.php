@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Middleware;
+namespace Acpl\FlarumLSCache\Middleware;
 
-use ACPL\FlarumLSCache\LSCache;
+use Acpl\FlarumLSCache\LSCache;
 use Illuminate\Support\Str;
 use Psr\Http\Message\ServerRequestInterface;
 

@@ -9,27 +9,27 @@
  * file that was distributed with this source code.
  */
 
-namespace ACPL\FlarumLSCache;
+namespace Acpl\FlarumLSCache;
 
-use ACPL\FlarumLSCache\Api\Controller\{
+use Acpl\FlarumLSCache\Api\Controller\{
     LSCacheCsrfResponseController,
     LSCacheDiagnoseController,
     PurgeLSCacheController
 };
-use ACPL\FlarumLSCache\Command\LSCachePurgeCommand;
-use ACPL\FlarumLSCache\Compatibility\{
+use Acpl\FlarumLSCache\Command\LSCachePurgeCommand;
+use Acpl\FlarumLSCache\Compatibility\{
     Flarum\LikesEventSubscriber,
     Flarum\TagsEventSubscriber,
     FoF\MergeDiscussionsEventSubscriber,
     SychO\MovePostsSubscriber,
 };
-use ACPL\FlarumLSCache\Listener\{
+use Acpl\FlarumLSCache\Listener\{
     ClearingCacheListener,
     DiscussionEventSubscriber,
     PostEventSubscriber,
     UserEventSubscriber
 };
-use ACPL\FlarumLSCache\Middleware\{
+use Acpl\FlarumLSCache\Middleware\{
     CacheControlMiddleware,
     CacheTagsMiddleware,
     LoginMiddleware,

@@ -1,10 +1,10 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Middleware;
+namespace Acpl\FlarumLSCache\Middleware;
 
-use ACPL\FlarumLSCache\Event\LSCachePurging;
-use ACPL\FlarumLSCache\LSCacheHeader;
-use ACPL\FlarumLSCache\Utility\LSCachePurger;
+use Acpl\FlarumLSCache\Event\LSCachePurging;
+use Acpl\FlarumLSCache\LSCacheHeader;
+use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Events\Dispatcher;

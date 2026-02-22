@@ -1,9 +1,9 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Listener;
+namespace Acpl\FlarumLSCache\Listener;
 
-use ACPL\FlarumLSCache\Event\LSCachePurging;
-use ACPL\FlarumLSCache\Utility\LSCachePurger;
+use Acpl\FlarumLSCache\Event\LSCachePurging;
+use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
 

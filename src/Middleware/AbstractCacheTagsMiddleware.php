@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Middleware;
+namespace Acpl\FlarumLSCache\Middleware;
 
-use ACPL\FlarumLSCache\LSCacheHeader;
+use Acpl\FlarumLSCache\LSCacheHeader;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 

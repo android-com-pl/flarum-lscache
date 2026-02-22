@@ -1,9 +1,9 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Utility;
+namespace Acpl\FlarumLSCache\Utility;
 
-use ACPL\FlarumLSCache\Event\LSCachePurging;
-use ACPL\FlarumLSCache\Job\PurgeCacheViaCliJob;
+use Acpl\FlarumLSCache\Event\LSCachePurging;
+use Acpl\FlarumLSCache\Job\PurgeCacheViaCliJob;
 use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Events\Dispatcher;
 

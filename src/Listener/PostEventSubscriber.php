@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Listener;
+namespace Acpl\FlarumLSCache\Listener;
 
 use Flarum\Approval\Event\PostWasApproved;
 use Flarum\Post\Event\{Deleted, Hidden, Posted, Restored, Revised};
