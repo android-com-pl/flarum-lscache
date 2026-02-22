@@ -38,6 +38,11 @@ You can clear the LSCache without clearing the Flarum cache via the admin panel.
 
 ## For Developers
 
+> [!IMPORTANT]  
+> These instructions are for Flarum 2.0.
+> For Flarum 1.x documentation, please refer to:
+> [Flarum 1.x Guide](https://github.com/android-com-pl/flarum-lscache/blob/3.x/README.md#for-developers)
+
 ### How the Extension Tags Paths
 
 First, it's useful to understand how the extension adds LSCache tags to forum paths.
