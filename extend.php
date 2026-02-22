@@ -38,7 +38,9 @@ use Acpl\FlarumLSCache\Middleware\{
     StatusCodesCacheMiddleware,
     VaryCookieMiddleware
 };
-use Flarum\Api\Serializer\UserSerializer;
+use Flarum\Api\Context;
+use Flarum\Api\Resource;
+use Flarum\Api\Schema;
 use Flarum\Extend;
 use Flarum\Foundation\Event\ClearingCache;
 use Flarum\Http\Middleware\CheckCsrfToken;
@@ -59,12 +61,10 @@ return [
         ->default('acpl-lscache.status_codes_cache', "404 3600\n403 3600\n500 120"),
     (new Extend\Event())->listen(Saved::class, Listener\UpdateSettingsListener::class),
 
-    // @TODO: Replace with the new implementation https://docs.flarum.org/2.x/extend/api#extending-api-resources
-    (new Extend\ApiSerializer(UserSerializer::class))
-        ->attribute(
-            'canPurgeLSCache',
-            fn (UserSerializer $serializer) => $serializer->getActor()->can('lscache.purge'),
-        ),
+    (new Extend\ApiResource(Resource\ForumResource::class))->fields(fn() => [
+        Schema\Boolean::make('canPurgeLSCache')
+            ->get(fn (object $forum, Context $context) => $context->getActor()->can('lscache.purge')),
+    ]),
 
     // Vary cookie
     (new Extend\Middleware('forum'))->insertAfter(CheckCsrfToken::class, VaryCookieMiddleware::class),
