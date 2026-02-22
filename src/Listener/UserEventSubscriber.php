@@ -24,6 +24,8 @@ class UserEventSubscriber extends AbstractCachePurgeSubscriber
             'posts',
             'discussions',
             ...$event->user->posts()
+                ->whereNull('hidden_at')
+                ->whereHas('discussion', fn ($query) => $query->whereNull('hidden_at')->where('is_private', false))
                 ->distinct()
                 ->pluck('discussion_id')
                 ->map(fn ($id) => "discussion_$id")
