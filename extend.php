@@ -17,6 +17,10 @@ use ACPL\FlarumLSCache\Api\Controller\{
     PurgeLSCacheController
 };
 use ACPL\FlarumLSCache\Command\LSCachePurgeCommand;
+use Flarum\Api\Context;
+use Flarum\Api\Endpoint;
+use Flarum\Api\Resource;
+use Flarum\Api\Schema;
 use ACPL\FlarumLSCache\Compatibility\{
     ClarkWinkelmann\AuthorChangeEventSubscriber,
     Flarum\LikesEventSubscriber,
@@ -62,7 +66,7 @@ return [
         ->default('acpl-lscache.status_codes_cache', "404 3600\n403 3600\n500 120"),
     (new Extend\Event())->listen(Saved::class, Listener\UpdateSettingsListener::class),
 
-    // Permissions
+    // @TODO: Replace with the new implementation https://docs.flarum.org/2.x/extend/api#extending-api-resources
     (new Extend\ApiSerializer(UserSerializer::class))
         ->attribute(
             'canPurgeLSCache',
