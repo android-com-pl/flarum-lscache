@@ -110,16 +110,16 @@ return [
 
     // Extensions
     (new Extend\Conditional)
-        ->whenExtensionEnabled('flarum-likes', [
+        ->whenExtensionEnabled('flarum-likes', fn () => [
             (new Extend\Event)->subscribe(LikesEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('flarum-tags', [
+        ->whenExtensionEnabled('flarum-tags', fn () => [
             (new Extend\Event)->subscribe(TagsEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('fof-merge-discussions', [
+        ->whenExtensionEnabled('fof-merge-discussions', fn () => [
             (new Extend\Event)->subscribe(MergeDiscussionsEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('sycho-move-posts', [
+        ->whenExtensionEnabled('sycho-move-posts', fn () => [
             (new Extend\Event)->subscribe(MovePostsSubscriber::class),
         ]),
 ];
