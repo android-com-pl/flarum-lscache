@@ -17,10 +17,6 @@ use ACPL\FlarumLSCache\Api\Controller\{
     PurgeLSCacheController
 };
 use ACPL\FlarumLSCache\Command\LSCachePurgeCommand;
-use Flarum\Api\Context;
-use Flarum\Api\Endpoint;
-use Flarum\Api\Resource;
-use Flarum\Api\Schema;
 use ACPL\FlarumLSCache\Compatibility\{
     ClarkWinkelmann\AuthorChangeEventSubscriber,
     Flarum\LikesEventSubscriber,
