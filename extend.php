@@ -61,7 +61,7 @@ return [
         ->default('acpl-lscache.status_codes_cache', "404 3600\n403 3600\n500 120"),
     (new Extend\Event())->listen(Saved::class, Listener\UpdateSettingsListener::class),
 
-    (new Extend\ApiResource(Resource\ForumResource::class))->fields(fn() => [
+    (new Extend\ApiResource(Resource\ForumResource::class))->fields(fn () => [
         Schema\Boolean::make('canPurgeLSCache')
             ->get(fn (object $forum, Context $context) => $context->getActor()->can('lscache.purge')),
     ]),
