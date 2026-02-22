@@ -7,7 +7,7 @@ import LSCacheSupportTest from './components/LSCacheSupportTest';
 app.initializers.add('acpl-lscache', () => {
   addPurgeLSCacheButton();
 
-  app.extensionData
+  app.registry
     .for('acpl-lscache')
     .registerSetting(() => <LSCacheSupportTest />)
     .registerSetting({
