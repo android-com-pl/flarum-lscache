@@ -18,13 +18,10 @@ use ACPL\FlarumLSCache\Api\Controller\{
 };
 use ACPL\FlarumLSCache\Command\LSCachePurgeCommand;
 use ACPL\FlarumLSCache\Compatibility\{
-    ClarkWinkelmann\AuthorChangeEventSubscriber,
     Flarum\LikesEventSubscriber,
     Flarum\TagsEventSubscriber,
-    FoF\MasqueradePurgeCacheMiddleware,
     FoF\MergeDiscussionsEventSubscriber,
     SychO\MovePostsSubscriber,
-    v17development\FlarumBlogEventSubscriber
 };
 use ACPL\FlarumLSCache\Listener\{
     ClearingCacheListener,
@@ -119,17 +116,8 @@ return [
         ->whenExtensionEnabled('flarum-tags', [
             (new Extend\Event)->subscribe(TagsEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('fof-masquerade', [
-            (new Extend\Middleware('api'))->add(MasqueradePurgeCacheMiddleware::class),
-        ])
         ->whenExtensionEnabled('fof-merge-discussions', [
             (new Extend\Event)->subscribe(MergeDiscussionsEventSubscriber::class),
-        ])
-        ->whenExtensionEnabled('v17development-blog', [
-            (new Extend\Event)->subscribe(FlarumBlogEventSubscriber::class),
-        ])
-        ->whenExtensionEnabled('clarkwinkelmann-author-change', [
-            (new Extend\Event)->subscribe(AuthorChangeEventSubscriber::class),
         ])
         ->whenExtensionEnabled('sycho-move-posts', [
             (new Extend\Event)->subscribe(MovePostsSubscriber::class),
