@@ -11,11 +11,11 @@ class UserEventSubscriber extends AbstractCachePurgeSubscriber
     {
         $shared = [AvatarChanged::class, Deleting::class, GroupsChanged::class, Renamed::class];
         foreach ($shared as $event) {
-            $this->addPurgeListener($events, $event, [$this, 'handleUserWithPosts']);
+            $this->addPurgeListener($events, $event, $this->handleUserWithPosts(...));
         }
     }
 
-    /** Purge discussions where user has posted. */
+    /** Purge discussions where a user has posted. */
     public function handleUserWithPosts(AvatarChanged|Deleting|GroupsChanged|Renamed $event): void
     {
         $this->purger->addPurgeTags([
@@ -23,11 +23,11 @@ class UserEventSubscriber extends AbstractCachePurgeSubscriber
             "user_{$event->user->username}",
             'posts',
             'discussions',
-            // TODO: If user has a lot of discussions chunk it and push to the queue job
-            ...array_map(
-                fn ($id) => "discussion_$id",
-                $event->user->posts()->pluck('discussion_id')->toArray(),
-            ),
+            ...$event->user->posts()
+                ->distinct()
+                ->pluck('discussion_id')
+                ->map(fn ($id) => "discussion_$id")
+                ->toArray(),
         ]);
     }
 }
