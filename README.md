@@ -106,21 +106,21 @@ class ExampleUpdatedListener extends AbstractCachePurgeListener
 {
     protected function addPurgeData(object $event): void  
     {
-        // Purge cache tag
-        $this->purger->addPurgeTag('examples');
-        // or purge multiple cache tags
-        $this->purger->addPurgeTags([
-            'examples',
-            "examples_{$event->example->id}"
-        ]);
-
-        // Purge a single path
-        $this->purger->addPurgePath('/examples');
-        // or purge multiple paths
-        $this->purger->addPurgePaths([
-            '/examples',
-            "/examples_{$event->example->id}",
-        ]);
+        $this->purger
+          // Purge cache tag
+          ->addPurgeTag('examples');
+          // or purge multiple cache tags
+          ->addPurgeTags([
+              'examples',
+              "examples_{$event->example->id}"
+          ]);
+          // Purge a single path
+          ->addPurgePath('/examples');
+          // or purge multiple paths
+          ->addPurgePaths([
+              '/examples',
+              "/examples_{$event->example->id}",
+          ]);
     }
 }
 ```
