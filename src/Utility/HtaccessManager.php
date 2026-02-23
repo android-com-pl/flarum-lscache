@@ -78,7 +78,7 @@ class HtaccessManager
 
         $block .= "\n</IfModule>";
 
-        return $block . ("\n" . self::END_LSCACHE);
+        return $block.("\n".self::END_LSCACHE);
     }
 
     /** Helper method for generating a line of the LSCache block content */
