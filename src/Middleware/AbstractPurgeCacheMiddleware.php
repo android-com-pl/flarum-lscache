@@ -2,8 +2,8 @@
 
 namespace Acpl\FlarumLSCache\Middleware;
 
-use Acpl\FlarumLSCache\Event\LSCachePurging;
 use Acpl\FlarumLSCache\CacheHeader;
+use Acpl\FlarumLSCache\Event\LSCachePurging;
 use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;

@@ -12,7 +12,9 @@ use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 
 readonly class CacheControlMiddleware implements MiddlewareInterface
 {
-    public function __construct(private SettingsRepositoryInterface $settings) {}
+    public function __construct(private SettingsRepositoryInterface $settings)
+    {
+    }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

@@ -2,9 +2,9 @@
 
 namespace Acpl\FlarumLSCache\Middleware;
 
+use Acpl\FlarumLSCache\CacheHeader;
 use Acpl\FlarumLSCache\CachePolicy;
 use Acpl\FlarumLSCache\LSCache;
-use Acpl\FlarumLSCache\CacheHeader;
 use Dflydev\FigCookies\FigResponseCookies;
 use Flarum\Http\CookieFactory;
 use Illuminate\Contracts\Session\Session;

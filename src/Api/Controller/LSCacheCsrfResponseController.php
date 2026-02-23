@@ -15,7 +15,9 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class LSCacheCsrfResponseController implements RequestHandlerInterface
 {
-    public function __construct(protected ConfigRepository $config) {}
+    public function __construct(protected ConfigRepository $config)
+    {
+    }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
