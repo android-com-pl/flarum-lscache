@@ -31,8 +31,8 @@ export default class LSCacheSupportTest extends Component<TestAlertAttrs> {
     const { serverSoftware, litespeedServerType } = diagnoseData;
 
     return (
-      <Alert type="error" dismissible={false} style={{ marginBottom: '1.4rem' }}>
-        {app.translator.trans('acpl-lscache.admin.test_failed_alert', { server: serverSoftware, type: litespeedServerType })}
+      <Alert type="error" dismissible={false}>
+        {app.translator.trans('acpl-lscache.admin.test_failed_alert', { b: <b />, server: serverSoftware, type: litespeedServerType })}
       </Alert>
     );
   }
