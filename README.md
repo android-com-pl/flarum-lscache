@@ -101,10 +101,10 @@ return [
 // ExampleUpdatedListener.php
 use Acpl\FlarumLSCache\Listener\AbstractCachePurgeListener;
 
+/** @extends AbstractCachePurgeListener<ExampleUpdated> */
 class ExampleUpdatedListener extends AbstractCachePurgeListener
 {
-    /** @param  ExampleUpdated  $event */
-    protected function addPurgeData($event): void  
+    protected function addPurgeData(object $event): void  
     {
         // Purge cache tag
         $this->purger->addPurgeTag('examples');
