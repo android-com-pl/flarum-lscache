@@ -10,7 +10,7 @@ export default function extendDiscussionControls() {
     const discussionId = discussion.id();
     const { user } = app.session;
 
-    if (!discussionId || !user || !user.canPurgeLSCache()) {
+    if (!discussionId || !user || !app.forum.attribute('canPurgeLSCache')) {
       return;
     }
 
