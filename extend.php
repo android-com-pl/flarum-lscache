@@ -9,30 +9,27 @@
  * file that was distributed with this source code.
  */
 
-namespace ACPL\FlarumLSCache;
+namespace Acpl\FlarumLSCache;
 
-use ACPL\FlarumLSCache\Api\Controller\{
+use Acpl\FlarumLSCache\Api\Controller\{
     LSCacheCsrfResponseController,
     LSCacheDiagnoseController,
     PurgeLSCacheController
 };
-use ACPL\FlarumLSCache\Command\LSCachePurgeCommand;
-use ACPL\FlarumLSCache\Compatibility\{
-    ClarkWinkelmann\AuthorChangeEventSubscriber,
+use Acpl\FlarumLSCache\Command\LSCachePurgeCommand;
+use Acpl\FlarumLSCache\Compatibility\{
     Flarum\LikesEventSubscriber,
     Flarum\TagsEventSubscriber,
-    FoF\MasqueradePurgeCacheMiddleware,
     FoF\MergeDiscussionsEventSubscriber,
     SychO\MovePostsSubscriber,
-    v17development\FlarumBlogEventSubscriber
 };
-use ACPL\FlarumLSCache\Listener\{
+use Acpl\FlarumLSCache\Listener\{
     ClearingCacheListener,
     DiscussionEventSubscriber,
     PostEventSubscriber,
     UserEventSubscriber
 };
-use ACPL\FlarumLSCache\Middleware\{
+use Acpl\FlarumLSCache\Middleware\{
     CacheControlMiddleware,
     CacheTagsMiddleware,
     LoginMiddleware,
@@ -41,7 +38,9 @@ use ACPL\FlarumLSCache\Middleware\{
     StatusCodesCacheMiddleware,
     VaryCookieMiddleware
 };
-use Flarum\Api\Serializer\UserSerializer;
+use Flarum\Api\Context;
+use Flarum\Api\Resource;
+use Flarum\Api\Schema;
 use Flarum\Extend;
 use Flarum\Foundation\Event\ClearingCache;
 use Flarum\Http\Middleware\CheckCsrfToken;
@@ -62,12 +61,10 @@ return [
         ->default('acpl-lscache.status_codes_cache', "404 3600\n403 3600\n500 120"),
     (new Extend\Event())->listen(Saved::class, Listener\UpdateSettingsListener::class),
 
-    // Permissions
-    (new Extend\ApiSerializer(UserSerializer::class))
-        ->attribute(
-            'canPurgeLSCache',
-            fn (UserSerializer $serializer) => $serializer->getActor()->can('lscache.purge'),
-        ),
+    (new Extend\ApiResource(Resource\ForumResource::class))->fields(fn (): array => [
+        Schema\Boolean::make('canPurgeLSCache')
+            ->get(fn (object $forum, Context $context): bool => $context->getActor()->can('lscache.purge')),
+    ]),
 
     // Vary cookie
     (new Extend\Middleware('forum'))->insertAfter(CheckCsrfToken::class, VaryCookieMiddleware::class),
@@ -113,25 +110,16 @@ return [
 
     // Extensions
     (new Extend\Conditional)
-        ->whenExtensionEnabled('flarum-likes', [
+        ->whenExtensionEnabled('flarum-likes', fn (): array => [
             (new Extend\Event)->subscribe(LikesEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('flarum-tags', [
+        ->whenExtensionEnabled('flarum-tags', fn (): array => [
             (new Extend\Event)->subscribe(TagsEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('fof-masquerade', [
-            (new Extend\Middleware('api'))->add(MasqueradePurgeCacheMiddleware::class),
-        ])
-        ->whenExtensionEnabled('fof-merge-discussions', [
+        ->whenExtensionEnabled('fof-merge-discussions', fn (): array => [
             (new Extend\Event)->subscribe(MergeDiscussionsEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('v17development-blog', [
-            (new Extend\Event)->subscribe(FlarumBlogEventSubscriber::class),
-        ])
-        ->whenExtensionEnabled('clarkwinkelmann-author-change', [
-            (new Extend\Event)->subscribe(AuthorChangeEventSubscriber::class),
-        ])
-        ->whenExtensionEnabled('sycho-move-posts', [
+        ->whenExtensionEnabled('sycho-move-posts', fn (): array => [
             (new Extend\Event)->subscribe(MovePostsSubscriber::class),
         ]),
 ];

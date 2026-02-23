@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Event;
+namespace Acpl\FlarumLSCache\Event;
 
 use Flarum\User\User;
 

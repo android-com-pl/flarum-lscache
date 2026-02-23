@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Api\Controller;
+namespace Acpl\FlarumLSCache\Api\Controller;
 
-use ACPL\FlarumLSCache\LiteSpeedServerType;
+use Acpl\FlarumLSCache\LiteSpeedServerType;
 use Flarum\Http\RequestUtil;
 use Flarum\User\Exception\PermissionDeniedException;
 use Illuminate\Support\Str;

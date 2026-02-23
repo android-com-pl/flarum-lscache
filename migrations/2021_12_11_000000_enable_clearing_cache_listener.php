@@ -7,8 +7,8 @@
  * DO NOT REMOVE THIS FILE.
  */
 return [
-    'up' => function () {
+    'up' => function (): void {
     },
-    'down' => function () {
+    'down' => function (): void {
     }
 ];

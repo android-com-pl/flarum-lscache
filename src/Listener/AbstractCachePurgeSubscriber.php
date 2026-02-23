@@ -1,9 +1,9 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Listener;
+namespace Acpl\FlarumLSCache\Listener;
 
-use ACPL\FlarumLSCache\Event\LSCachePurging;
-use ACPL\FlarumLSCache\Utility\LSCachePurger;
+use Acpl\FlarumLSCache\Event\LSCachePurging;
+use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
 
@@ -17,7 +17,7 @@ abstract class AbstractCachePurgeSubscriber
 
     protected function addPurgeListener(Dispatcher $events, string $event, callable $handler): void
     {
-        $events->listen($event, function ($eventInstance) use ($handler) {
+        $events->listen($event, function ($eventInstance) use ($handler): void {
             $handler($eventInstance);
 
             // Prevent infinite loop when something listens to LSCachePurging event

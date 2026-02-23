@@ -1,8 +1,9 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Api\Controller;
+namespace Acpl\FlarumLSCache\Api\Controller;
 
-use ACPL\FlarumLSCache\LSCacheHeader;
+use Acpl\FlarumLSCache\CacheHeader;
+use Acpl\FlarumLSCache\CachePolicy;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\Exception\PermissionDeniedException;
@@ -11,9 +12,9 @@ use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-class PurgeLSCacheController implements RequestHandlerInterface
+readonly class PurgeLSCacheController implements RequestHandlerInterface
 {
-    public function __construct(private readonly SettingsRepositoryInterface $settings)
+    public function __construct(private SettingsRepositoryInterface $settings)
     {
     }
 
@@ -51,13 +52,13 @@ class PurgeLSCacheController implements RequestHandlerInterface
             if (! empty($tags)) {
                 $purgeParams = array_merge(
                     $purgeParams,
-                    array_map(fn ($tag) => "tag=$tag", $tags),
+                    array_map(fn ($tag): string => "tag=$tag", $tags),
                 );
             }
         }
 
         return (new EmptyResponse())
-            ->withHeader(LSCacheHeader::PURGE, implode(',', $purgeParams))
-            ->withHeader(LSCacheHeader::CACHE_CONTROL, 'no-cache');
+            ->withHeader(CacheHeader::PURGE, implode(',', $purgeParams))
+            ->withHeader(CacheHeader::CACHE_CONTROL, CachePolicy::NO_CACHE->value);
     }
 }

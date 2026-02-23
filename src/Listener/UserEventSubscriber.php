@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Listener;
+namespace Acpl\FlarumLSCache\Listener;
 
 use Flarum\User\Event\{AvatarChanged, Deleting, GroupsChanged, Renamed};
 use Illuminate\Contracts\Events\Dispatcher;
@@ -28,7 +28,7 @@ class UserEventSubscriber extends AbstractCachePurgeSubscriber
                 ->whereHas('discussion', fn ($query) => $query->whereNull('hidden_at')->where('is_private', false))
                 ->distinct()
                 ->pluck('discussion_id')
-                ->map(fn ($id) => "discussion_$id")
+                ->map(fn ($id): string => "discussion_$id")
                 ->toArray(),
         ]);
     }

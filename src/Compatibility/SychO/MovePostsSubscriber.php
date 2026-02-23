@@ -1,9 +1,9 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Compatibility\SychO;
+namespace Acpl\FlarumLSCache\Compatibility\SychO;
 
-use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
-use ACPL\FlarumLSCache\Listener\DiscussionCachePurgeTrait;
+use Acpl\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
+use Acpl\FlarumLSCache\Listener\DiscussionCachePurgeTrait;
 use Flarum\Post\CommentPost;
 use Illuminate\Contracts\Events\Dispatcher;
 use SychO\MovePosts\Event\PostsMoved;
@@ -20,7 +20,7 @@ class MovePostsSubscriber extends AbstractCachePurgeSubscriber
     protected function handlePostsMoved(PostsMoved $event): void
     {
         $cacheTags = [];
-        $event->posts->each(function ($post) use (&$cacheTags) {
+        $event->posts->each(function ($post) use (&$cacheTags): void {
             /** @var CommentPost $post */
             $cacheTags[] = "post_{$post->id}";
             $cacheTags[] = "user_{$post->user->id}";

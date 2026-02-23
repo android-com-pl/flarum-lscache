@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Compatibility\Flarum;
+namespace Acpl\FlarumLSCache\Compatibility\Flarum;
 
-use ACPL\FlarumLSCache\Listener\{AbstractCachePurgeSubscriber, DiscussionCachePurgeTrait};
+use Acpl\FlarumLSCache\Listener\{AbstractCachePurgeSubscriber, DiscussionCachePurgeTrait};
 use Flarum\Discussion\Discussion;
 use Flarum\Discussion\Event\{
     Deleted as DiscussionDeleted,
@@ -86,6 +86,6 @@ class TagsEventSubscriber extends AbstractCachePurgeSubscriber
     protected function generateCacheTagsForDiscussionTags(Discussion $discussion): array
     {
         /** @phpstan-ignore-next-line Access to an undefined property Flarum\Discussion\Discussion::$tags. */
-        return $discussion->tags->map(fn (Tag $tag) => "tag_$tag->slug")->toArray();
+        return $discussion->tags->map(fn (Tag $tag): string => "tag_$tag->slug")->toArray();
     }
 }

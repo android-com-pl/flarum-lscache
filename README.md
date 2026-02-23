@@ -38,6 +38,11 @@ You can clear the LSCache without clearing the Flarum cache via the admin panel.
 
 ## For Developers
 
+> [!IMPORTANT]  
+> These instructions are for Flarum 2.0.
+> For Flarum 1.x documentation, please refer to:
+> [Flarum 1.x Guide](https://github.com/android-com-pl/flarum-lscache/blob/3.x/README.md#for-developers)
+
 ### How the Extension Tags Paths
 
 First, it's useful to understand how the extension adds LSCache tags to forum paths.
@@ -70,7 +75,7 @@ To disable this behavior and add your own event handling, add your resource to t
 
 ```php
 // 💡 resource name should be in singular form
-\ACPL\FlarumLSCache\Utility\LSCachePurger::$resourcesSupportedByEvent[] = 'example'
+\Acpl\FlarumLSCache\Utility\LSCachePurger::$resourcesSupportedByEvent[] = 'example'
 
 return [
     // ... your current extenders
@@ -94,28 +99,28 @@ return [
 
 ```php
 // ExampleUpdatedListener.php
-use ACPL\FlarumLSCache\Listener\AbstractCachePurgeListener;
+use Acpl\FlarumLSCache\Listener\AbstractCachePurgeListener;
 
+/** @extends AbstractCachePurgeListener<ExampleUpdated> */
 class ExampleUpdatedListener extends AbstractCachePurgeListener
 {
-    /** @param  ExampleUpdated  $event */
-    protected function addPurgeData($event): void  
+    protected function addPurgeData(object $event): void  
     {
-        // Purge cache tag
-        $this->purger->addPurgeTag('examples');
-        // or purge multiple cache tags
-        $this->purger->addPurgeTags([
-            'examples',
-            "examples_{$event->example->id}"
-        ]);
-
-        // Purge a single path
-        $this->purger->addPurgePath('/examples');
-        // or purge multiple paths
-        $this->purger->addPurgePaths([
-            '/examples',
-            "/examples_{$event->example->id}",
-        ]);
+        $this->purger
+          // Purge cache tag
+          ->addPurgeTag('examples');
+          // or purge multiple cache tags
+          ->addPurgeTags([
+              'examples',
+              "examples_{$event->example->id}"
+          ]);
+          // Purge a single path
+          ->addPurgePath('/examples');
+          // or purge multiple paths
+          ->addPurgePaths([
+              '/examples',
+              "/examples_{$event->example->id}",
+          ]);
     }
 }
 ```
@@ -140,7 +145,7 @@ return [
 
 ```php
 // ExampleEventSubscriber.php
-use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
+use Acpl\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class ExampleEventSubscriber extends AbstractCachePurgeSubscriber

@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Job;
+namespace Acpl\FlarumLSCache\Job;
 
-use ACPL\FlarumLSCache\Command\LSCachePurgeCommand;
+use Acpl\FlarumLSCache\Command\LSCachePurgeCommand;
 use Flarum\Queue\AbstractJob;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Symfony\Component\Console\{Input\ArrayInput, Output\NullOutput};

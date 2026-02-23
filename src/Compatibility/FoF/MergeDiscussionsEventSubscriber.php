@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Compatibility\FoF;
+namespace Acpl\FlarumLSCache\Compatibility\FoF;
 
-use ACPL\FlarumLSCache\Listener\{
+use Acpl\FlarumLSCache\Listener\{
     AbstractCachePurgeSubscriber,
     DiscussionCachePurgeTrait
 };
@@ -27,7 +27,7 @@ class MergeDiscussionsEventSubscriber extends AbstractCachePurgeSubscriber
         $discussions = $event->mergedDiscussions;
         $discussions->each(fn (Discussion $discussion) => $this->purger->addPurgeTag("discussion_$discussion->id"));
 
-        $event->posts->each(function (Post $post) {
+        $event->posts->each(function (Post $post): void {
             $this->purger->addPurgeTags([
                 "post_$post->id",
                 "user_$post->user_id",

@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Middleware;
+namespace Acpl\FlarumLSCache\Middleware;
 
-use ACPL\FlarumLSCache\LSCacheHeader;
+use Acpl\FlarumLSCache\CacheHeader;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
@@ -18,7 +18,7 @@ class StatusCodesCacheMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
-        if (! in_array($request->getMethod(), ['GET', 'HEAD']) || $response->hasHeader(LSCacheHeader::CACHE_CONTROL)) {
+        if (! in_array($request->getMethod(), ['GET', 'HEAD']) || $response->hasHeader(CacheHeader::CACHE_CONTROL)) {
             return $response;
         }
 
@@ -38,13 +38,13 @@ class StatusCodesCacheMiddleware implements MiddlewareInterface
 
         foreach ($lines as $line) {
             // [0] - status code, [1] - cache ttl
-            $codeTtl = array_map('intval', explode(' ', trim($line)));
+            $codeTtl = array_map(intval(...), explode(' ', trim($line)));
             if (empty($codeTtl[0]) || empty($codeTtl[1])) {
                 continue;
             }
 
             if ($codeTtl[0] === $statusCode) {
-                return $response->withHeader(LSCacheHeader::CACHE_CONTROL, "public,max-age=$codeTtl[1]");
+                return $response->withHeader(CacheHeader::CACHE_CONTROL, "public,max-age=$codeTtl[1]");
             }
         }
 

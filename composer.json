@@ -21,19 +21,17 @@
         }
     ],
     "require": {
-        "flarum/core": "^1.8",
-        "php": ">=8.1"
+        "flarum/core": "^v2.0.0-beta.7",
+        "php": "^8.2"
     },
     "require-dev": {
-        "clarkwinkelmann/flarum-ext-author-change": "^1.0",
-        "flarum/approval": "^1.8",
-        "flarum/likes": "^1.8",
-        "flarum/phpstan": "^1.8",
-        "flarum/tags": "^1.8",
-        "fof/masquerade": "^2.1",
-        "fof/merge-discussions": "^1.4",
-        "sycho/flarum-move-posts": "^0.1.7",
-        "v17development/flarum-blog": "^v0.8.0"
+        "flarum/approval": "*",
+        "flarum/likes": "*",
+        "flarum/phpstan": "^v2.0.0-beta.7",
+        "flarum/tags": "*",
+        "fof/merge-discussions": "^2.0.0-beta.2",
+        "rector/rector": "^2.3",
+        "sycho/flarum-move-posts": "^0.2"
     },
     "suggest": {
         "fof/redis": "This library allows using Redis as cache, session and for the queue. https://github.com/FriendsOfFlarum/redis?tab=readme-ov-file#set-up"
@@ -47,7 +45,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "ACPL\\FlarumLSCache\\": "src/"
+            "Acpl\\FlarumLSCache\\": "src/"
         }
     },
     "extra": {

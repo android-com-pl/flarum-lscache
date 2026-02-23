@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumLSCache;
+namespace Acpl\FlarumLSCache;
 
 enum LiteSpeedServerType: string
 {

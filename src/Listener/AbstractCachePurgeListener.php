@@ -1,21 +1,26 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Listener;
+namespace Acpl\FlarumLSCache\Listener;
 
-use ACPL\FlarumLSCache\Utility\LSCachePurger;
+use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Settings\SettingsRepositoryInterface;
 
+/**
+ * @template TEvent of object
+ */
 abstract class AbstractCachePurgeListener
 {
     public function __construct(protected LSCachePurger $purger, protected SettingsRepositoryInterface $settings)
     {
     }
 
-    public function handle($event): void
+    /** @param  TEvent  $event */
+    public function handle(object $event): void
     {
         $this->addPurgeData($event);
         $this->purger->executePurge();
     }
 
-    abstract protected function addPurgeData($event): void;
+    /** @param  TEvent  $event */
+    abstract protected function addPurgeData(object $event): void;
 }

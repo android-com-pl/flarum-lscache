@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Listener;
+namespace Acpl\FlarumLSCache\Listener;
 
-use ACPL\FlarumLSCache\Utility\LSCachePurger;
+use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Support\Arr;
 
@@ -21,14 +21,14 @@ trait DiscussionCachePurgeTrait
 
         $purgeList = $this->settings->get('acpl-lscache.purge_on_discussion_update');
         if (! empty($purgeList)) {
-            $purgeList = explode("\n", $purgeList);
+            $purgeList = explode("\n", (string) $purgeList);
 
-            $paths = Arr::where($purgeList, fn ($item) => str_starts_with($item, '/'));
+            $paths = Arr::where($purgeList, fn ($item): bool => str_starts_with($item, '/'));
             if (! empty($paths)) {
                 $this->purger->addPurgePaths($paths);
             }
 
-            $tags = Arr::where($purgeList, fn ($item) => str_starts_with($item, 'tag='));
+            $tags = Arr::where($purgeList, fn ($item): bool => str_starts_with($item, 'tag='));
             if (! empty($tags)) {
                 $this->purger->addPurgeTags($tags);
             }

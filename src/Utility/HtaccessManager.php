@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Utility;
+namespace Acpl\FlarumLSCache\Utility;
 
-use ACPL\FlarumLSCache\LSCache;
+use Acpl\FlarumLSCache\LSCache;
 use Flarum\Foundation\Paths;
 use Flarum\Http\CookieFactory;
 use Flarum\Settings\SettingsRepositoryInterface;
@@ -15,8 +15,8 @@ class HtaccessManager
     private const BEGIN_LSCACHE = '# BEGIN LSCACHE';
     private const END_LSCACHE = '# END LSCACHE';
 
-    private string $htaccessPath;
-    private Filesystem $filesystem;
+    private readonly string $htaccessPath;
+    private readonly Filesystem $filesystem;
 
     public function __construct(
         Paths $paths,
@@ -77,9 +77,8 @@ class HtaccessManager
         }
 
         $block .= "\n</IfModule>";
-        $block .= "\n".self::END_LSCACHE;
 
-        return $block;
+        return $block.("\n".self::END_LSCACHE);
     }
 
     /** Helper method for generating a line of the LSCache block content */

@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Listener;
+namespace Acpl\FlarumLSCache\Listener;
 
 use Flarum\Discussion\Event\{Deleted, Hidden, Renamed, Restored, Started};
 use Illuminate\Contracts\Events\Dispatcher;

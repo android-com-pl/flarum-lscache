@@ -1,9 +1,10 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Middleware;
+namespace Acpl\FlarumLSCache\Middleware;
 
-use ACPL\FlarumLSCache\LSCache;
-use ACPL\FlarumLSCache\LSCacheHeader;
+use Acpl\FlarumLSCache\CacheHeader;
+use Acpl\FlarumLSCache\CachePolicy;
+use Acpl\FlarumLSCache\LSCache;
 use Dflydev\FigCookies\FigResponseCookies;
 use Flarum\Http\CookieFactory;
 use Illuminate\Contracts\Session\Session;
@@ -21,7 +22,7 @@ class LogoutMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
         if ($request->getAttribute('routeName') === 'logout' && $response instanceof RedirectResponse) {
-            $response = $response->withHeader(LSCacheHeader::CACHE_CONTROL, 'no-cache');
+            $response = $response->withHeader(CacheHeader::CACHE_CONTROL, CachePolicy::NO_CACHE->value);
 
             return $this->withExpiredVaryCookie($response, $request->getAttribute('session'));
         }

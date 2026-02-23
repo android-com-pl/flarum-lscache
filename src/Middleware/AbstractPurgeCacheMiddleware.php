@@ -1,10 +1,10 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Middleware;
+namespace Acpl\FlarumLSCache\Middleware;
 
-use ACPL\FlarumLSCache\Event\LSCachePurging;
-use ACPL\FlarumLSCache\LSCacheHeader;
-use ACPL\FlarumLSCache\Utility\LSCachePurger;
+use Acpl\FlarumLSCache\CacheHeader;
+use Acpl\FlarumLSCache\Event\LSCachePurging;
+use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Events\Dispatcher;
@@ -49,8 +49,8 @@ abstract class AbstractPurgeCacheMiddleware implements MiddlewareInterface
         $purgeData = $this->cachePurger->getPurgeData();
         $newPurgeParams = $this->formatPurgeParams($purgeData);
 
-        if ($response->hasHeader(LSCacheHeader::PURGE)) {
-            $existingPurgeParams = explode(',', $response->getHeaderLine(LSCacheHeader::PURGE));
+        if ($response->hasHeader(CacheHeader::PURGE)) {
+            $existingPurgeParams = explode(',', $response->getHeaderLine(CacheHeader::PURGE));
             $newPurgeParams = array_merge($existingPurgeParams, $newPurgeParams);
         }
 
@@ -61,7 +61,7 @@ abstract class AbstractPurgeCacheMiddleware implements MiddlewareInterface
         $this->addStaleParamIfNeeded($newPurgeParams);
         $this->cachePurger->clearPurgeData();
 
-        return $response->withHeader(LSCacheHeader::PURGE, implode(',', array_unique($newPurgeParams)));
+        return $response->withHeader(CacheHeader::PURGE, implode(',', array_unique($newPurgeParams)));
     }
 
     protected function formatPurgeParams(array $purgeData): array
@@ -70,7 +70,7 @@ abstract class AbstractPurgeCacheMiddleware implements MiddlewareInterface
         if (! empty($purgeData['tags'])) {
             $params = array_merge(
                 $params,
-                array_map(fn (string $tag) => "tag=$tag", $purgeData['tags']),
+                array_map(fn (string $tag): string => "tag=$tag", $purgeData['tags']),
             );
         }
 
