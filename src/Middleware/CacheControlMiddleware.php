@@ -2,7 +2,7 @@
 
 namespace Acpl\FlarumLSCache\Middleware;
 
-use Acpl\FlarumLSCache\LSCacheHeader;
+use Acpl\FlarumLSCache\CacheHeader;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
@@ -28,7 +28,7 @@ class CacheControlMiddleware implements MiddlewareInterface
             return $this->withCacheControlHeader($response, 'no-cache');
         }
 
-        if (! in_array($method, ['GET', 'HEAD']) || $response->hasHeader(LSCacheHeader::CACHE_CONTROL)) {
+        if (! in_array($method, ['GET', 'HEAD']) || $response->hasHeader(CacheHeader::CACHE_CONTROL)) {
             return $response;
         }
 
@@ -86,6 +86,6 @@ class CacheControlMiddleware implements MiddlewareInterface
 
     private function withCacheControlHeader(ResponseInterface $response, string $paramsStr): ResponseInterface
     {
-        return $response->withHeader(LSCacheHeader::CACHE_CONTROL, $paramsStr);
+        return $response->withHeader(CacheHeader::CACHE_CONTROL, $paramsStr);
     }
 }

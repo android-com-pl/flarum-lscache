@@ -3,7 +3,7 @@
 namespace Acpl\FlarumLSCache\Middleware;
 
 use Acpl\FlarumLSCache\LSCache;
-use Acpl\FlarumLSCache\LSCacheHeader;
+use Acpl\FlarumLSCache\CacheHeader;
 use Dflydev\FigCookies\FigResponseCookies;
 use Flarum\Http\CookieFactory;
 use Flarum\Http\RequestUtil;
@@ -30,7 +30,7 @@ class VaryCookieMiddleware implements MiddlewareInterface
         $response = $handler->handle($request);
 
         $response = $response->withHeader(
-            LSCacheHeader::VARY,
+            CacheHeader::VARY,
             "cookie={$this->cookie->getName(LSCache::VARY_COOKIE)},cookie={$this->cookie->getName('remember')},cookie=locale",
         );
 

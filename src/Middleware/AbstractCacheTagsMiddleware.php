@@ -2,7 +2,7 @@
 
 namespace Acpl\FlarumLSCache\Middleware;
 
-use Acpl\FlarumLSCache\LSCacheHeader;
+use Acpl\FlarumLSCache\CacheHeader;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 
@@ -31,13 +31,13 @@ abstract class AbstractCacheTagsMiddleware implements MiddlewareInterface
 
     protected function addLSCacheTagsToResponse(ResponseInterface $response, array $newTags): ResponseInterface
     {
-        if ($response->hasHeader(LSCacheHeader::TAG)) {
+        if ($response->hasHeader(CacheHeader::TAG)) {
             $newTags = array_merge(
-                explode(',', $response->getHeaderLine(LSCacheHeader::TAG)),
+                explode(',', $response->getHeaderLine(CacheHeader::TAG)),
                 $newTags,
             );
         }
 
-        return $response->withHeader(LSCacheHeader::TAG, implode(',', array_unique($newTags)));
+        return $response->withHeader(CacheHeader::TAG, implode(',', array_unique($newTags)));
     }
 }
