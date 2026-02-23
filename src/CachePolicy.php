@@ -13,6 +13,7 @@ enum CachePolicy: string
         if ($this === self::NO_CACHE) {
             throw new \LogicException('Cannot set max-age for NO_CACHE policy.');
         }
+
         return "$this->value,max-age=$seconds";
     }
 }
