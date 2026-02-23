@@ -3,6 +3,7 @@
 namespace Acpl\FlarumLSCache\Api\Controller;
 
 use Acpl\FlarumLSCache\CacheHeader;
+use Acpl\FlarumLSCache\CachePolicy;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\Exception\PermissionDeniedException;
@@ -11,9 +12,9 @@ use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 
-class PurgeLSCacheController implements RequestHandlerInterface
+readonly class PurgeLSCacheController implements RequestHandlerInterface
 {
-    public function __construct(private readonly SettingsRepositoryInterface $settings)
+    public function __construct(private SettingsRepositoryInterface $settings)
     {
     }
 
@@ -58,6 +59,6 @@ class PurgeLSCacheController implements RequestHandlerInterface
 
         return (new EmptyResponse())
             ->withHeader(CacheHeader::PURGE, implode(',', $purgeParams))
-            ->withHeader(CacheHeader::CACHE_CONTROL, 'no-cache');
+            ->withHeader(CacheHeader::CACHE_CONTROL, CachePolicy::NO_CACHE->value);
     }
 }
