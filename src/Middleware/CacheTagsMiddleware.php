@@ -28,7 +28,7 @@ class CacheTagsMiddleware extends AbstractCacheTagsMiddleware
             // Discussion
             if (! empty($params['id'])) {
                 // The id parameter contains the slug. We only need id (int)
-                $id = explode('-', $params['id'], 2)[0];
+                $id = explode('-', (string) $params['id'], 2)[0];
                 if (! empty($id)) {
                     $tagParams[] = "{$rootRouteName}_$id";
                 }

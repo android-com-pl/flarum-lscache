@@ -70,7 +70,7 @@ abstract class AbstractPurgeCacheMiddleware implements MiddlewareInterface
         if (! empty($purgeData['tags'])) {
             $params = array_merge(
                 $params,
-                array_map(fn (string $tag) => "tag=$tag", $purgeData['tags']),
+                array_map(fn (string $tag): string => "tag=$tag", $purgeData['tags']),
             );
         }
 

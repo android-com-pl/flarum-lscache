@@ -20,7 +20,7 @@ class MovePostsSubscriber extends AbstractCachePurgeSubscriber
     protected function handlePostsMoved(PostsMoved $event): void
     {
         $cacheTags = [];
-        $event->posts->each(function ($post) use (&$cacheTags) {
+        $event->posts->each(function ($post) use (&$cacheTags): void {
             /** @var CommentPost $post */
             $cacheTags[] = "post_{$post->id}";
             $cacheTags[] = "user_{$post->user->id}";

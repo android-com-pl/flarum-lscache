@@ -17,7 +17,7 @@ abstract class AbstractCachePurgeSubscriber
 
     protected function addPurgeListener(Dispatcher $events, string $event, callable $handler): void
     {
-        $events->listen($event, function ($eventInstance) use ($handler) {
+        $events->listen($event, function ($eventInstance) use ($handler): void {
             $handler($eventInstance);
 
             // Prevent infinite loop when something listens to LSCachePurging event

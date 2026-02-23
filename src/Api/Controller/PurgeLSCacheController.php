@@ -51,7 +51,7 @@ class PurgeLSCacheController implements RequestHandlerInterface
             if (! empty($tags)) {
                 $purgeParams = array_merge(
                     $purgeParams,
-                    array_map(fn ($tag) => "tag=$tag", $tags),
+                    array_map(fn ($tag): string => "tag=$tag", $tags),
                 );
             }
         }

@@ -15,11 +15,11 @@ function lsCacheGetHtaccessManager(): HtaccessManager
 }
 
 return [
-    'up' => function () {
+    'up' => function (): void {
         $htaccessManager = lsCacheGetHtaccessManager();
         $htaccessManager->updateHtaccess();
     },
-    'down' => function () {
+    'down' => function (): void {
         $htaccessManager = lsCacheGetHtaccessManager();
         $htaccessManager->removeLsCacheBlock();
     },

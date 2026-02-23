@@ -30,6 +30,7 @@
         "flarum/phpstan": "^v2.0.0-beta.7",
         "flarum/tags": "*",
         "fof/merge-discussions": "^2.0.0-beta.2",
+        "rector/rector": "^2.3",
         "sycho/flarum-move-posts": "^0.2"
     },
     "suggest": {

@@ -61,9 +61,9 @@ return [
         ->default('acpl-lscache.status_codes_cache', "404 3600\n403 3600\n500 120"),
     (new Extend\Event())->listen(Saved::class, Listener\UpdateSettingsListener::class),
 
-    (new Extend\ApiResource(Resource\ForumResource::class))->fields(fn () => [
+    (new Extend\ApiResource(Resource\ForumResource::class))->fields(fn (): array => [
         Schema\Boolean::make('canPurgeLSCache')
-            ->get(fn (object $forum, Context $context) => $context->getActor()->can('lscache.purge')),
+            ->get(fn (object $forum, Context $context): bool => $context->getActor()->can('lscache.purge')),
     ]),
 
     // Vary cookie
@@ -110,16 +110,16 @@ return [
 
     // Extensions
     (new Extend\Conditional)
-        ->whenExtensionEnabled('flarum-likes', fn () => [
+        ->whenExtensionEnabled('flarum-likes', fn (): array => [
             (new Extend\Event)->subscribe(LikesEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('flarum-tags', fn () => [
+        ->whenExtensionEnabled('flarum-tags', fn (): array => [
             (new Extend\Event)->subscribe(TagsEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('fof-merge-discussions', fn () => [
+        ->whenExtensionEnabled('fof-merge-discussions', fn (): array => [
             (new Extend\Event)->subscribe(MergeDiscussionsEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('sycho-move-posts', fn () => [
+        ->whenExtensionEnabled('sycho-move-posts', fn (): array => [
             (new Extend\Event)->subscribe(MovePostsSubscriber::class),
         ]),
 ];

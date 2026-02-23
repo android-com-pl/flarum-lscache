@@ -38,7 +38,7 @@ class StatusCodesCacheMiddleware implements MiddlewareInterface
 
         foreach ($lines as $line) {
             // [0] - status code, [1] - cache ttl
-            $codeTtl = array_map('intval', explode(' ', trim($line)));
+            $codeTtl = array_map(intval(...), explode(' ', trim($line)));
             if (empty($codeTtl[0]) || empty($codeTtl[1])) {
                 continue;
             }
