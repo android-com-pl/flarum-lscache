@@ -38,6 +38,7 @@ class LSCachePurger
     public function addPurgePath(string $purgePath): self
     {
         self::$purgeData['paths'][] = $purgePath;
+
         return $this;
     }
 
@@ -47,12 +48,14 @@ class LSCachePurger
     public function addPurgePaths(array $paths): self
     {
         self::$purgeData['paths'] = array_merge(self::$purgeData['paths'] ?? [], $paths);
+
         return $this;
     }
 
     public function addPurgeTag(string $tag): self
     {
         self::$purgeData['tags'][] = $tag;
+
         return $this;
     }
 
@@ -62,6 +65,7 @@ class LSCachePurger
     public function addPurgeTags(array $tags): self
     {
         self::$purgeData['tags'] = array_merge(self::$purgeData['tags'] ?? [], $tags);
+
         return $this;
     }
 
@@ -76,6 +80,7 @@ class LSCachePurger
             'paths' => [],
             'tags' => [],
         ];
+
         return $this;
     }
 
