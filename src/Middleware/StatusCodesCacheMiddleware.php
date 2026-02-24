@@ -3,6 +3,7 @@
 namespace Acpl\FlarumLSCache\Middleware;
 
 use Acpl\FlarumLSCache\CacheHeader;
+use Acpl\FlarumLSCache\CachePolicy;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
@@ -44,7 +45,7 @@ class StatusCodesCacheMiddleware implements MiddlewareInterface
             }
 
             if ($codeTtl[0] === $statusCode) {
-                return $response->withHeader(CacheHeader::CACHE_CONTROL, "public,max-age=$codeTtl[1]");
+                return $response->withHeader(CacheHeader::CACHE_CONTROL, CachePolicy::PUBLIC->maxAge((int) $codeTtl[1]));
             }
         }
 
