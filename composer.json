@@ -32,7 +32,7 @@
         "flarum/tags": "^1.8",
         "fof/masquerade": "^2.1",
         "fof/merge-discussions": "^1.4",
-        "sycho/flarum-move-posts": "^0.1.7",
+        "fof/move-posts": "^1.1",
         "v17development/flarum-blog": "^v0.8.0"
     },
     "suggest": {
@@ -64,9 +64,10 @@
                 "flarum/tags",
                 "flarum/likes",
                 "fof/masquerade",
+                "fof/merge-discussions",
+                "fof/move-posts",
                 "v17development/flarum-blog",
-                "clarkwinkelmann/flarum-ext-author-change",
-                "sycho/flarum-move-posts"
+                "clarkwinkelmann/flarum-ext-author-change"
             ]
         },
         "flarum-cli": {

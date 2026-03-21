@@ -1,12 +1,12 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Compatibility\SychO;
+namespace ACPL\FlarumLSCache\Compatibility\FoF;
 
 use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
 use ACPL\FlarumLSCache\Listener\DiscussionCachePurgeTrait;
 use Flarum\Post\CommentPost;
+use FoF\MovePosts\Event\PostsMoved;
 use Illuminate\Contracts\Events\Dispatcher;
-use SychO\MovePosts\Event\PostsMoved;
 
 class MovePostsSubscriber extends AbstractCachePurgeSubscriber
 {
@@ -22,7 +22,7 @@ class MovePostsSubscriber extends AbstractCachePurgeSubscriber
         $cacheTags = [];
         $event->posts->each(function ($post) use (&$cacheTags) {
             /** @var CommentPost $post */
-            $cacheTags[] = "post_{$post->id}";
+            $cacheTags[] = "post_$post->id";
             $cacheTags[] = "user_{$post->user->id}";
             $cacheTags[] = "user_{$post->user->username}";
         });

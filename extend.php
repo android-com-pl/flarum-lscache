@@ -23,7 +23,7 @@ use ACPL\FlarumLSCache\Compatibility\{
     Flarum\TagsEventSubscriber,
     FoF\MasqueradePurgeCacheMiddleware,
     FoF\MergeDiscussionsEventSubscriber,
-    SychO\MovePostsSubscriber,
+    FoF\MovePostsSubscriber,
     v17development\FlarumBlogEventSubscriber
 };
 use ACPL\FlarumLSCache\Listener\{
@@ -131,7 +131,7 @@ return [
         ->whenExtensionEnabled('clarkwinkelmann-author-change', [
             (new Extend\Event)->subscribe(AuthorChangeEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('sycho-move-posts', [
+        ->whenExtensionEnabled('fof-move-posts', [
             (new Extend\Event)->subscribe(MovePostsSubscriber::class),
         ]),
 ];
