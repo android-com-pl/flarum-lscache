@@ -11,33 +11,25 @@
 
 namespace Acpl\FlarumLSCache;
 
-use Acpl\FlarumLSCache\Api\Controller\{
-    LSCacheCsrfResponseController,
+use Acpl\FlarumLSCache\Api\Controller\{LSCacheCsrfResponseController,
     LSCacheDiagnoseController,
-    PurgeLSCacheController
-};
+    PurgeLSCacheController};
 use Acpl\FlarumLSCache\Command\LSCachePurgeCommand;
-use Acpl\FlarumLSCache\Compatibility\{
-    Flarum\LikesEventSubscriber,
+use Acpl\FlarumLSCache\Compatibility\{Flarum\LikesEventSubscriber,
     Flarum\TagsEventSubscriber,
     FoF\MergeDiscussionsEventSubscriber,
-    SychO\MovePostsSubscriber,
-};
-use Acpl\FlarumLSCache\Listener\{
-    ClearingCacheListener,
+    FoF\MovePostsSubscriber,};
+use Acpl\FlarumLSCache\Listener\{ClearingCacheListener,
     DiscussionEventSubscriber,
     PostEventSubscriber,
-    UserEventSubscriber
-};
-use Acpl\FlarumLSCache\Middleware\{
-    CacheControlMiddleware,
+    UserEventSubscriber};
+use Acpl\FlarumLSCache\Middleware\{CacheControlMiddleware,
     CacheTagsMiddleware,
     LoginMiddleware,
     LogoutMiddleware,
     PurgeCacheMiddleware,
     StatusCodesCacheMiddleware,
-    VaryCookieMiddleware
-};
+    VaryCookieMiddleware};
 use Flarum\Api\Context;
 use Flarum\Api\Resource;
 use Flarum\Api\Schema;
@@ -119,7 +111,7 @@ return [
         ->whenExtensionEnabled('fof-merge-discussions', fn (): array => [
             (new Extend\Event)->subscribe(MergeDiscussionsEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('sycho-move-posts', fn (): array => [
+        ->whenExtensionEnabled('fof-move-posts', fn (): array => [
             (new Extend\Event)->subscribe(MovePostsSubscriber::class),
         ]),
 ];
