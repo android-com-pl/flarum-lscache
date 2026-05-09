@@ -2,10 +2,8 @@
 
 namespace Acpl\FlarumLSCache\Compatibility\FoF;
 
-use Acpl\FlarumLSCache\Listener\{
-    AbstractCachePurgeSubscriber,
-    DiscussionCachePurgeTrait
-};
+use Acpl\FlarumLSCache\Listener\{AbstractCachePurgeSubscriber, DiscussionCachePurgeTrait};
+use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Discussion\Discussion;
 use Flarum\Post\Post;
 use FoF\MergeDiscussions\Events\DiscussionWasMerged;
@@ -25,7 +23,7 @@ class MergeDiscussionsEventSubscriber extends AbstractCachePurgeSubscriber
         $this->handleDiscussionRelatedPurge();
 
         $discussions = $event->mergedDiscussions;
-        $discussions->each(fn (Discussion $discussion) => $this->purger->addPurgeTag("discussion_$discussion->id"));
+        $discussions->each(fn (Discussion $discussion): LSCachePurger => $this->purger->addPurgeTag("discussion_$discussion->id"));
 
         $event->posts->each(function (Post $post): void {
             $this->purger->addPurgeTags([

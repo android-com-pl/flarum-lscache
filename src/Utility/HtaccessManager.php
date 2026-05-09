@@ -12,8 +12,8 @@ use Illuminate\Support\Str;
 
 class HtaccessManager
 {
-    private const BEGIN_LSCACHE = '# BEGIN LSCACHE';
-    private const END_LSCACHE = '# END LSCACHE';
+    private const string BEGIN_LSCACHE = '# BEGIN LSCACHE';
+    private const string END_LSCACHE = '# END LSCACHE';
 
     private readonly string $htaccessPath;
     private readonly Filesystem $filesystem;
