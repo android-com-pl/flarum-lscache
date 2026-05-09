@@ -86,7 +86,7 @@ class LSCachePurger
 
     public function executePurge(): void
     {
-        if (empty(self::$purgeData) || (empty(self::$purgeData['paths']) && empty(self::$purgeData['tags']))) {
+        if (empty(self::$purgeData['paths']) && empty(self::$purgeData['tags'])) {
             return;
         }
 
