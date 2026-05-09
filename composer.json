@@ -21,16 +21,16 @@
         }
     ],
     "require": {
-        "flarum/core": "^v2.0.0-beta.7",
-        "php": "^8.2"
+        "flarum/core": "^2.0",
+        "php": "^8.3"
     },
     "require-dev": {
         "flarum/approval": "*",
         "flarum/likes": "*",
-        "flarum/phpstan": "^v2.0.0-beta.7",
+        "flarum/phpstan": "^v2.0",
         "flarum/tags": "*",
-        "fof/merge-discussions": "^2.0.0-beta.2",
-        "fof/move-posts": "^2.0@beta",
+        "fof/merge-discussions": "^2.0",
+        "fof/move-posts": "^2.0",
         "rector/rector": "^2.3"
     },
     "suggest": {
