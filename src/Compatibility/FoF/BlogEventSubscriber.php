@@ -1,14 +1,14 @@
 <?php
 
-namespace ACPL\FlarumLSCache\Compatibility\v17development;
+namespace ACPL\FlarumLSCache\Compatibility\FoF;
 
 use ACPL\FlarumLSCache\Event\LSCachePurging;
 use ACPL\FlarumLSCache\Listener\AbstractCachePurgeSubscriber;
+use FoF\Blog\Event\BlogMetaSaving;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
-use V17Development\FlarumBlog\Event\BlogMetaSaving;
 
-class FlarumBlogEventSubscriber extends AbstractCachePurgeSubscriber
+class BlogEventSubscriber extends AbstractCachePurgeSubscriber
 {
     public function subscribe(Dispatcher $events): void
     {
@@ -20,7 +20,6 @@ class FlarumBlogEventSubscriber extends AbstractCachePurgeSubscriber
     {
         $this->purger->addPurgeTags([
             'blog.overview',
-            /** @phpstan-ignore-next-line  Access to an undefined property V17Development\FlarumBlog\BlogMeta\BlogMeta::$discussion_id. */
             "blog_{$event->blogMeta->discussion_id}",
         ]);
     }

@@ -21,10 +21,10 @@ use ACPL\FlarumLSCache\Compatibility\{
     ClarkWinkelmann\AuthorChangeEventSubscriber,
     Flarum\LikesEventSubscriber,
     Flarum\TagsEventSubscriber,
+    FoF\BlogEventSubscriber,
     FoF\MasqueradePurgeCacheMiddleware,
     FoF\MergeDiscussionsEventSubscriber,
-    FoF\MovePostsSubscriber,
-    v17development\FlarumBlogEventSubscriber
+    FoF\MovePostsSubscriber
 };
 use ACPL\FlarumLSCache\Listener\{
     ClearingCacheListener,
@@ -125,8 +125,8 @@ return [
         ->whenExtensionEnabled('fof-merge-discussions', [
             (new Extend\Event)->subscribe(MergeDiscussionsEventSubscriber::class),
         ])
-        ->whenExtensionEnabled('v17development-blog', [
-            (new Extend\Event)->subscribe(FlarumBlogEventSubscriber::class),
+        ->whenExtensionEnabled('fof-blog', [
+            (new Extend\Event)->subscribe(BlogEventSubscriber::class),
         ])
         ->whenExtensionEnabled('clarkwinkelmann-author-change', [
             (new Extend\Event)->subscribe(AuthorChangeEventSubscriber::class),
