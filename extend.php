@@ -22,7 +22,7 @@ use ACPL\FlarumLSCache\Compatibility\{
     Flarum\LikesEventSubscriber,
     Flarum\TagsEventSubscriber,
     FoF\BlogEventSubscriber,
-    FoF\MasqueradePurgeCacheMiddleware,
+    FoF\MasqueradePurgeCacheSubscriber,
     FoF\MergeDiscussionsEventSubscriber,
     FoF\MovePostsSubscriber
 };
@@ -120,7 +120,7 @@ return [
             (new Extend\Event)->subscribe(TagsEventSubscriber::class),
         ])
         ->whenExtensionEnabled('fof-masquerade', [
-            (new Extend\Middleware('api'))->add(MasqueradePurgeCacheMiddleware::class),
+            (new Extend\Event)->subscribe(MasqueradePurgeCacheSubscriber::class),
         ])
         ->whenExtensionEnabled('fof-merge-discussions', [
             (new Extend\Event)->subscribe(MergeDiscussionsEventSubscriber::class),
