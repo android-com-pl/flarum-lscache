@@ -28,7 +28,7 @@ class PurgeLSCacheController implements RequestHandlerInterface
         if (! $canPurge) {
             $key = $this->settings->get('acpl-lscache.purgeKey');
             $reqKey = $request->getHeaderLine('LSCachePurgeKey');
-            if (! empty($key) && ! empty($reqKey) && $key === $reqKey) {
+            if (! empty($key) && ! empty($reqKey) && hash_equals($key,$reqKey)) {
                 $canPurge = true;
             }
         }
