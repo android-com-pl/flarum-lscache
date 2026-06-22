@@ -20,9 +20,10 @@ class LSCacheDiagnoseController implements RequestHandlerInterface
     {
         RequestUtil::getActor($request)->assertAdmin();
 
-        $lscacheXHttp = Str::of($_SERVER['HTTP_X_LSCACHE'] ?? '');
-        $lswsEdition = Str::of($_SERVER['LSWS_EDITION'] ?? '');
-        $serverSoftware = Str::of($_SERVER['SERVER_SOFTWARE'] ?? '');
+        $serverParams = $request->getServerParams();
+        $lscacheXHttp = Str::of($serverParams['HTTP_X_LSCACHE'] ?? '');
+        $lswsEdition = Str::of($serverParams['LSWS_EDITION'] ?? '');
+        $serverSoftware = Str::of($serverParams['SERVER_SOFTWARE'] ?? '');
 
         $litespeedServerType = match (true) {
             $lscacheXHttp->isNotEmpty() => LiteSpeedServerType::ADC,
@@ -32,7 +33,7 @@ class LSCacheDiagnoseController implements RequestHandlerInterface
         };
 
         return new JsonResponse([
-            'cacheSupported' => ! empty($_SERVER['X-LSCACHE']) || $litespeedServerType === LiteSpeedServerType::ADC,
+            'cacheSupported' => ! empty($serverParams['X-LSCACHE']) || $litespeedServerType === LiteSpeedServerType::ADC,
             'litespeedServerType' => $litespeedServerType->value,
             'serverSoftware' => (string) $serverSoftware,
         ]);
