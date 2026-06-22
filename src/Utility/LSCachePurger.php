@@ -92,8 +92,8 @@ class LSCachePurger
 
         if (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg') {
             $this->events->dispatch(new LSCachePurging(self::$purgeData));
-            $this->clearPurgeData();
             $this->queue->push(new PurgeCacheViaCliJob(self::$purgeData));
+            $this->clearPurgeData();
         } // else purge will be handled by middleware
     }
 
