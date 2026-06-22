@@ -29,6 +29,7 @@
         "flarum/likes": "*",
         "flarum/phpstan": "^v2.0",
         "flarum/tags": "*",
+        "fof/masquerade": "^3.0",
         "fof/merge-discussions": "^2.0",
         "fof/move-posts": "^2.0",
         "rector/rector": "^2.3"
@@ -61,6 +62,7 @@
                 "flarum/approval",
                 "flarum/likes",
                 "flarum/tags",
+                "fof/masquerade",
                 "fof/merge-discussions",
                 "fof/move-posts"
             ]
