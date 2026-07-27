@@ -91,7 +91,7 @@ use Flarum\Extend;
 return [
     // ... your current extenders
     (new Extend\Conditional)
-        ->whenExtensionEnabled('acpl-lscache', [
+        ->whenExtensionEnabled('acpl-lscache', fn () => [
             (new Extend\Event)->listen(ExampleUpdated::class, ExampleUpdatedListener::class)
         ]),
 ];
@@ -137,7 +137,7 @@ use Flarum\Extend;
 return [
     // ... your current extenders
     (new Extend\Conditional)
-        ->whenExtensionEnabled('acpl-lscache', [
+        ->whenExtensionEnabled('acpl-lscache', fn () => [
             (new Extend\Event)->subscribe(ExampleEventSubscriber::class),
         ]),
 ];
@@ -152,7 +152,7 @@ class ExampleEventSubscriber extends AbstractCachePurgeSubscriber
 {
     public function subscribe(Dispatcher $events): void
     {
-        $this->addPurgeListener($events, ExampleUpdated::class, [$this, 'handleExampleUpdated']);
+        $this->addPurgeListener($events, ExampleUpdated::class, $this->handleExampleUpdated(...));
         // ... rest of listeners
     }
 
