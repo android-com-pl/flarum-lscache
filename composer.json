@@ -1,13 +1,22 @@
 {
     "name": "acpl/flarum-lscache",
+    "type": "flarum-extension",
     "description": "LSCache implementation for Flarum.",
+    "scripts": {
+        "analyse:phpstan": "phpstan analyse",
+        "clear-cache:phpstan": "phpstan clear-result-cache",
+        "rector:check": "rector --dry-run",
+        "rector": "rector",
+        "test": "@test:integration",
+        "test:integration": "phpunit -c tests/phpunit.integration.xml",
+        "test:setup": "@php tests/integration/setup.php"
+    },
     "keywords": [
         "flarum",
         "LSCache",
         "LiteSpeed",
         "Cache"
     ],
-    "type": "flarum-extension",
     "license": "GPL-3.0-or-later",
     "support": {
         "issues": "https://github.com/android-com-pl/flarum-lscache/issues",
@@ -29,6 +38,7 @@
         "flarum/likes": "*",
         "flarum/phpstan": "^v2.0",
         "flarum/tags": "*",
+        "flarum/testing": "^2.0.0",
         "fof/masquerade": "^3.0",
         "fof/merge-discussions": "^2.0",
         "fof/move-posts": "^2.0",
@@ -47,6 +57,11 @@
     "autoload": {
         "psr-4": {
             "Acpl\\FlarumLSCache\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Acpl\\FlarumLSCache\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -87,12 +102,6 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "scripts": {
-        "analyse:phpstan": "phpstan analyse",
-        "clear-cache:phpstan": "phpstan clear-result-cache",
-        "rector:check": "rector --dry-run",
-        "rector": "rector"
-    },
     "scripts-descriptions": {
         "analyse:phpstan": "Run static analysis"
     },
