@@ -20,6 +20,7 @@ use Acpl\FlarumLSCache\Command\LSCachePurgeCommand;
 use Acpl\FlarumLSCache\Compatibility\{
     Flarum\LikesEventSubscriber,
     Flarum\TagsEventSubscriber,
+    FoF\BlogEventSubscriber,
     FoF\MasqueradePurgeCacheSubscriber,
     FoF\MergeDiscussionsEventSubscriber,
     FoF\MovePostsSubscriber
@@ -116,6 +117,9 @@ return [
         ])
         ->whenExtensionEnabled('flarum-tags', fn (): array => [
             (new Extend\Event)->subscribe(TagsEventSubscriber::class),
+        ])
+        ->whenExtensionEnabled('fof-blog', fn (): array => [
+            (new Extend\Event)->subscribe(BlogEventSubscriber::class),
         ])
         ->whenExtensionEnabled('fof-merge-discussions', fn (): array => [
             (new Extend\Event)->subscribe(MergeDiscussionsEventSubscriber::class),
