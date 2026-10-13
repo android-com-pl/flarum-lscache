@@ -36,9 +36,9 @@
     "require-dev": {
         "flarum/approval": "*",
         "flarum/likes": "*",
-        "flarum/phpstan": "^v2.0",
+        "flarum/phpstan": "^2.0",
         "flarum/tags": "*",
-        "flarum/testing": "^2.0.0",
+        "flarum/testing": "^2.0",
         "fof/masquerade": "^3.0",
         "fof/merge-discussions": "^2.0",
         "fof/move-posts": "^2.0",

@@ -1,15 +1,16 @@
 {
   "name": "@acpl/flarum-lscache",
+  "type": "module",
   "private": true,
   "prettier": "@flarum/prettier-config",
   "devDependencies": {
     "@flarum/prettier-config": "^1.0.0",
     "@types/mithril": "^2.2.9",
     "flarum-tsconfig": "^2.0.0",
-    "flarum-webpack-config": "^3.0.4",
-    "prettier": "^3.9.6",
+    "flarum-webpack-config": "^3.0.6",
+    "prettier": "^3.9.10",
     "typescript": "^7.0.2",
-    "webpack": "^5.110.3",
+    "webpack": "^5.111.1",
     "webpack-cli": "^7.2.3"
   },
   "scripts": {
@@ -26,13 +27,8 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": ">=11 <13",
+      "version": "^12.11.2",
       "onFail": "download"
-    },
-    "runtime": {
-      "name": "node",
-      "version": ">=24",
-      "onFail": "warn"
     }
   }
 }
