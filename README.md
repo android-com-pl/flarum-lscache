@@ -1,4 +1,4 @@
-# LiteSpeed Cache for Flarum
+# ⚡ LiteSpeed Cache for Flarum
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/acpl/flarum-lscache)](https://packagist.org/packages/acpl/flarum-lscache) [![Total Downloads](https://img.shields.io/packagist/dt/acpl/flarum-lscache.svg)](https://packagist.org/packages/acpl/flarum-lscache) [![GitHub Sponsors](https://img.shields.io/badge/Donate-%E2%9D%A4-%23db61a2.svg?&logo=github&logoColor=white&labelColor=181717)](https://github.com/android-com-pl/flarum-lscache?sponsor=1)
 
@@ -8,7 +8,7 @@ If your forum runs on LiteSpeed, this is a must-have for heavy guest and bot tra
 
 Requires LiteSpeed Web Server or OpenLiteSpeed with LSCache enabled.
 
-## Installation
+## 📥 Installation
 
 Install with Composer:
 
@@ -18,7 +18,7 @@ composer require acpl/flarum-lscache
 
 Back up your `.htaccess` before enabling the extension. It adds its cache rules to that file on activation.
 
-### Updating
+### 🔄 Updating
 
 ```sh
 composer update acpl/flarum-lscache
@@ -26,7 +26,7 @@ php flarum migrate
 php flarum cache:clear
 ```
 
-## Cache Management
+## 🧹 Cache Management
 
 Changes invalidate the affected cache entries. For example, a new public post clears the cache for its discussion, tag pages, and the homepage.
 
@@ -39,7 +39,7 @@ php flarum lscache:clear
 php flarum lscache:clear --path=/tags --path=/d/1-test
 ```
 
-## FAQ
+## ❓ FAQ
 
 ### Does it cache pages for logged-in users?
 
@@ -51,12 +51,12 @@ A separate cache for each user would still need to generate each page on that us
 
 No. It requires the LSCache engine in LiteSpeed Web Server or OpenLiteSpeed.
 
-## For Developers
+## 🧑🏻‍💻 For Developers
 
 > [!NOTE]
 > [Cache tags](https://docs.litespeedtech.com/lscache/devguide/controls/#x-litespeed-tag) are labels used to invalidate cached responses. They are separate from the discussion tags provided by `flarum/tags`.
 
-### How the Extension Tags Paths
+### 🏷️ How the Extension Tags Paths
 
 Cache tags come from route names. For example, an extension could register these API routes:
 
@@ -76,7 +76,7 @@ For GET and HEAD responses:
 > [!TIP]
 > To see the cache tags added for a given request, check the value of the `X-LiteSpeed-Tag` header in the Network tab of DevTools.
 
-### Purging Cache
+### 🗑️ Purging Cache
 
 Successful POST, PUT, PATCH, and DELETE requests to `.create`, `.update`, or `.delete` routes purge the resource's ID tag when an `id` route parameter is present. A collection's `.create` route usually has no `id`, so use events to invalidate its list cache.
 
@@ -166,7 +166,7 @@ class ExampleEventSubscriber extends AbstractCachePurgeSubscriber
 }
 ```
 
-## Links
+## 🔗 Links
 
 - [Packagist](https://packagist.org/packages/acpl/flarum-lscache)
 - [GitHub](https://github.com/android-com-pl/flarum-lscache)
