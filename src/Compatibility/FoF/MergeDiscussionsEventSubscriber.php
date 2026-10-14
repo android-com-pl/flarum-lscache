@@ -30,11 +30,14 @@ class MergeDiscussionsEventSubscriber extends AbstractCachePurgeSubscriber
         $discussions->each(fn (Discussion $discussion): LSCachePurger => $this->purger->addPurgeTag("discussion_$discussion->id"));
 
         $event->posts->each(function (Post $post): void {
-            $this->purger->addPurgeTags([
-                "post_$post->id",
-                "user_$post->user_id",
-                "user_{$post->user->username}",
-            ]);
+            $this->purger->addPurgeTag("post_$post->id");
+
+            if ($post->user !== null) {
+                $this->purger->addPurgeTags([
+                    "user_$post->user_id",
+                    "user_{$post->user->username}",
+                ]);
+            }
         });
     }
 }

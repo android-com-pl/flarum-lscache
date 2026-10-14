@@ -31,6 +31,8 @@ class PurgeCacheViaCliJob extends AbstractJob implements ShouldQueue
             $input['--tag'] = $this->data['tags'];
         }
 
-        $command->run(new ArrayInput($input), new NullOutput());
+        if ($command->run(new ArrayInput($input), new NullOutput()) !== 0) {
+            throw new \RuntimeException('Failed to purge LiteSpeed cache.');
+        }
     }
 }

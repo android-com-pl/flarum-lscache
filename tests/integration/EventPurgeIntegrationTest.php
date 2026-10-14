@@ -2,13 +2,24 @@
 
 namespace Acpl\FlarumLSCache\Tests\integration;
 
+use Acpl\FlarumLSCache\Compatibility\Flarum\{LikesEventSubscriber, TagsEventSubscriber};
+use Acpl\FlarumLSCache\Compatibility\FoF\{MergeDiscussionsEventSubscriber, MovePostsSubscriber};
+use Acpl\FlarumLSCache\Listener\DiscussionEventSubscriber;
 use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Discussion\Discussion;
+use Flarum\Discussion\Event\Hidden;
 use Flarum\Extend\ExtenderInterface;
 use Flarum\Extension\Extension;
+use Flarum\Likes\Event\PostWasLiked;
 use Flarum\Post\Post;
+use Flarum\Settings\SettingsRepositoryInterface;
+use Flarum\Tags\Event\DiscussionWasTagged;
 use Flarum\User\User;
+use FoF\MergeDiscussions\Events\DiscussionWasMerged;
+use FoF\MovePosts\Event\PostsMoved;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Events\Dispatcher;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -87,6 +98,60 @@ class EventPurgeIntegrationTest extends ResourceTagsTest
         foreach (['user_normal', 'user_renamed', 'user_2', 'posts', 'discussions', 'discussion_1'] as $tag) {
             self::assertContains("tag=$tag", $tags);
         }
+    }
+
+    public function test_changing_exclusions_does_not_purge_existing_cache(): void
+    {
+        $response = $this->send($this->request('POST', '/api/settings', [
+            'authenticatedAs' => 1,
+            'json' => ['acpl-lscache.cache_exclude' => '^/discussions$'],
+        ]));
+
+        self::assertSame(204, $response->getStatusCode());
+        self::assertFalse($response->hasHeader('X-LiteSpeed-Purge'));
+    }
+
+    public static function authorlessEvents(): array
+    {
+        return [
+            'discussion' => [DiscussionEventSubscriber::class, ['discussion_1']],
+            'retagging' => [TagsEventSubscriber::class, ['discussion_1', 'tags']],
+            'liking' => [LikesEventSubscriber::class, ['discussion_1', 'post_1', 'user_admin']],
+            'merging' => [MergeDiscussionsEventSubscriber::class, ['discussion_1', 'discussion_2', 'post_1']],
+            'moving' => [MovePostsSubscriber::class, ['discussion_1', 'discussion_2', 'post_1']],
+        ];
+    }
+
+    #[DataProvider('authorlessEvents')]
+    public function test_events_without_authors_still_purge_content(string $subscriberClass, array $expectedTags): void
+    {
+        $container = $this->app()->getContainer();
+        $discussion = Discussion::findOrFail(1);
+        $discussion->user_id = null;
+        $discussion->setRelation('user', null)->setRelation('tags', new Collection());
+        $post = Post::findOrFail(1);
+        $post->user_id = null;
+        $post->setRelation('user', null)->setRelation('discussion', $discussion);
+        $otherDiscussion = new Discussion();
+        $otherDiscussion->id = 2;
+        $actor = User::findOrFail(1);
+        $event = match ($subscriberClass) {
+            DiscussionEventSubscriber::class => new Hidden($discussion),
+            TagsEventSubscriber::class => new DiscussionWasTagged($discussion, $actor, []),
+            LikesEventSubscriber::class => new PostWasLiked($post, $actor),
+            MergeDiscussionsEventSubscriber::class => new DiscussionWasMerged($actor, new Collection([$post]), $discussion, new Collection([$otherDiscussion])),
+            MovePostsSubscriber::class => new PostsMoved(new Collection([$post]), $otherDiscussion, $discussion, $actor),
+        };
+        $purger = $container->make(LSCachePurger::class);
+        $events = new Dispatcher();
+        (new $subscriberClass($purger, $container->make(SettingsRepositoryInterface::class)))->subscribe($events);
+        $events->dispatch($event);
+
+        $tags = $purger->getPurgeData()['tags'];
+        foreach ($expectedTags as $tag) {
+            self::assertContains($tag, $tags);
+        }
+        self::assertNotContains('user_', $tags);
     }
 
     public function test_merging_purges_destination_source_and_post_list(): void

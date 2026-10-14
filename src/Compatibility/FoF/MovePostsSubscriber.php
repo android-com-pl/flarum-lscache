@@ -19,19 +19,20 @@ class MovePostsSubscriber extends AbstractCachePurgeSubscriber
 
     protected function handlePostsMoved(PostsMoved $event): void
     {
-        $cacheTags = [];
-        $event->posts->each(function ($post) use (&$cacheTags): void {
-            /** @var CommentPost $post */
-            $cacheTags[] = "post_$post->id";
-            $cacheTags[] = "user_{$post->user->id}";
-            $cacheTags[] = "user_{$post->user->username}";
-        });
-
         $this->handleDiscussionRelatedPurge();
         $this->purger->addPurgeTags([
             "discussion_{$event->sourceDiscussion->id}",
             "discussion_{$event->targetDiscussion->id}",
-            ...$cacheTags,
         ]);
+
+        $event->posts->each(function (CommentPost $post): void {
+            $this->purger->addPurgeTag("post_$post->id");
+            if ($post->user !== null) {
+                $this->purger->addPurgeTags([
+                    "user_{$post->user->id}",
+                    "user_{$post->user->username}",
+                ]);
+            }
+        });
     }
 }

@@ -114,12 +114,14 @@ class CacheHeadersTest extends TestCase
             'custom error TTL' => [null, "invalid\n404\n404 0\n404 75", 'public,max-age=75'],
             'unconfigured error' => [null, '500 120', ''],
             'authenticated error' => [2, '404 3600', ''],
+            'disabled cache' => [null, '404 3600', 'no-cache', false],
         ];
     }
 
     #[DataProvider('missingRoutes')]
-    public function test_missing_route_cache_policy(?int $userId, string $settings, string $expected): void
+    public function test_missing_route_cache_policy(?int $userId, string $settings, string $expected, bool $enabled = true): void
     {
+        $this->setting('acpl-lscache.cache_enabled', $enabled);
         $this->setting('acpl-lscache.status_codes_cache', $settings);
         $response = $this->send($this->request('GET', '/api/nonexistent-lscache-route', ['authenticatedAs' => $userId]));
 

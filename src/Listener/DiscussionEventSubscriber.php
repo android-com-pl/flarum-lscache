@@ -26,11 +26,14 @@ class DiscussionEventSubscriber extends AbstractCachePurgeSubscriber
         }
 
         $this->handleDiscussionRelatedPurge();
-        $this->purger->addPurgeTags([
-            "discussion_{$event->discussion->id}",
-            "user_{$event->discussion->user->id}",
-            "user_{$event->discussion->user->username}",
-        ]);
+        $this->purger->addPurgeTag("discussion_{$event->discussion->id}");
+
+        if ($event->discussion->user !== null) {
+            $this->purger->addPurgeTags([
+                "user_{$event->discussion->user->id}",
+                "user_{$event->discussion->user->username}",
+            ]);
+        }
     }
 
     protected function handleDeleted(Deleted $event): void

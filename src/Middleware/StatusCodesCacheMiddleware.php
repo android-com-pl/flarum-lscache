@@ -19,6 +19,10 @@ class StatusCodesCacheMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
+        if (! $this->settings->get('acpl-lscache.cache_enabled')) {
+            return $response->withHeader(CacheHeader::CACHE_CONTROL, CachePolicy::NO_CACHE->value);
+        }
+
         if (! in_array($request->getMethod(), ['GET', 'HEAD']) || $response->hasHeader(CacheHeader::CACHE_CONTROL)) {
             return $response;
         }
