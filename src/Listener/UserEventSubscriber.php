@@ -18,6 +18,10 @@ class UserEventSubscriber extends AbstractCachePurgeSubscriber
     /** Purge discussions where a user has posted. */
     public function handleUserWithPosts(AvatarChanged|Deleting|GroupsChanged|Renamed $event): void
     {
+        if ($event instanceof Renamed) {
+            $this->purger->addPurgeTag("user_$event->oldUsername");
+        }
+
         $this->purger->addPurgeTags([
             "user_{$event->user->id}",
             "user_{$event->user->username}",

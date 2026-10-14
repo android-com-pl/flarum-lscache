@@ -21,10 +21,15 @@ class LikesEventSubscriber extends AbstractCachePurgeSubscriber
             'posts',
             "post_{$event->post->id}",
             "discussion_{$event->post->discussion->id}",
-            "user_{$event->post->user->id}",
-            "user_{$event->post->user->username}",
             "user_{$event->user->id}",
             "user_{$event->user->username}",
         ]);
+
+        if ($event->post->user !== null) {
+            $this->purger->addPurgeTags([
+                "user_{$event->post->user->id}",
+                "user_{$event->post->user->username}",
+            ]);
+        }
     }
 }

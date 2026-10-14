@@ -15,7 +15,7 @@ class PurgeCacheMiddleware extends AbstractPurgeCacheMiddleware
         $params = $this->getRouteParams($request);
 
         if (! empty($params['id']) && $this->shouldPurgeRoute($rootRouteName, $routeName)) {
-            $this->cachePurger->addPurgeTag("tag={$rootRouteName}_{$params['id']}");
+            $this->cachePurger->addPurgeTag("{$rootRouteName}_{$params['id']}");
         }
     }
 

@@ -16,7 +16,7 @@ use Acpl\FlarumLSCache\Api\Controller\{
     LSCacheDiagnoseController,
     PurgeLSCacheController
 };
-use Acpl\FlarumLSCache\Command\LSCachePurgeCommand;
+use Acpl\FlarumLSCache\Command\{LSCachePurgeCommand, RotatePurgeKeyCommand};
 use Acpl\FlarumLSCache\Compatibility\{
     Flarum\LikesEventSubscriber,
     Flarum\TagsEventSubscriber,
@@ -101,7 +101,9 @@ return [
 
     // Purge cache
     (new Extend\Routes('api'))->get('/lscache-purge', 'lscache.purge', PurgeLSCacheController::class),
-    (new Extend\Console)->command(LSCachePurgeCommand::class),
+    (new Extend\Console)
+        ->command(LSCachePurgeCommand::class)
+        ->command(RotatePurgeKeyCommand::class),
     (new Extend\Event)->listen(ClearingCache::class, ClearingCacheListener::class),
 
     (new Extend\Event)->subscribe(DiscussionEventSubscriber::class),

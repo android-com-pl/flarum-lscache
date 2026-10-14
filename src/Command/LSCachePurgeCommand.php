@@ -2,17 +2,17 @@
 
 namespace Acpl\FlarumLSCache\Command;
 
-use Flarum\Api\ApiKey;
 use Flarum\Console\AbstractCommand;
 use Flarum\Http\UrlGenerator;
-use Flarum\Settings\SettingsRepositoryInterface;
+use Flarum\Settings\DatabaseSettingsRepository;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class LSCachePurgeCommand extends AbstractCommand
 {
-    public function __construct(protected UrlGenerator $url, private readonly SettingsRepositoryInterface $settings)
+    public function __construct(protected UrlGenerator $url, private readonly DatabaseSettingsRepository $settings)
     {
         parent::__construct();
     }
@@ -20,31 +20,35 @@ class LSCachePurgeCommand extends AbstractCommand
     public function configure(): void
     {
         $this->setName('lscache:clear')
-            ->setDescription('Purge LsCache.')
+            ->setDescription('Purge LiteSpeed cache entries')
             ->addOption(
                 'path',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'The path whose cache you want to purge. E.g. "--path=/test"',
+                'Purge cache entries for this path. Repeat for multiple paths, e.g. --path=/test --path=/tags.',
             )
             ->addOption(
                 'tag',
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Tge cache tag whose cache you want to purge. E.g. "--tag=test"',
+                'Purge entries with this cache tag (not a Flarum discussion tag). Repeat for multiple tags, e.g. --tag=discussions --tag=users.',
             );
     }
 
+    /**
+     * This integration purges the cache through X-LiteSpeed-Purge response headers.
+     * CLI commands call the HTTP endpoint so the response passes through LiteSpeed.
+     */
     protected function fire(): int
     {
         $this->info('Sending a request to purge LSCache entries...');
 
-        //Create a temporary API key to authorize a request
-        $apiKey = new ApiKey();
-        $key = $apiKey::generate()->key;
-        //The key is saved temporarily in the settings.
-        //The native Flarum API key is not used because it requires a user ID but in the case of the command, the user is not logged in.
-        $this->settings->set('acpl-lscache.purgeKey', $key);
+        // CLI requests have no logged-in user, so a secret key authorizes cache purges.
+        $key = $this->settings->get('acpl-lscache.purgeKey');
+        if (empty($key)) {
+            $key = Str::password();
+            $this->settings->set('acpl-lscache.purgeKey', $key);
+        }
 
         $options = [
             'headers' => ['LSCachePurgeKey' => $key],
@@ -60,18 +64,18 @@ class LSCachePurgeCommand extends AbstractCommand
             $options['query']['tags'] = $tags;
         }
 
-        $client = new Client();
+        $client = new Client([
+            'timeout' => 30,
+        ]);
 
         try {
-            //GET does not require the Flarum API key
+            // GET skips Flarum's CSRF check; POST would also need a CSRF token or a Flarum API key.
             $client->request('GET', $this->url->to('api')->route('lscache.purge'), $options);
         } catch (GuzzleException $exception) {
             $this->error('Something went wrong while sending the request.');
             $this->error($exception->getMessage());
 
             return 1;
-        } finally {
-            $this->settings->delete('acpl-lscache.purgeKey');
         }
 
         $this->info('Notified LiteSpeed Web Server to purge'.((empty($paths) && empty($tags)) ? ' all' : '').' LSCache entries');

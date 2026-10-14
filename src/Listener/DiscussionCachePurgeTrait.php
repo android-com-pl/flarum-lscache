@@ -30,7 +30,9 @@ trait DiscussionCachePurgeTrait
 
             $tags = Arr::where($purgeList, fn ($item): bool => str_starts_with($item, 'tag='));
             if (! empty($tags)) {
-                $this->purger->addPurgeTags($tags);
+                $this->purger->addPurgeTags(
+                    array_map(fn (string $tag): string => substr($tag, 4), $tags)
+                );
             }
         }
     }
