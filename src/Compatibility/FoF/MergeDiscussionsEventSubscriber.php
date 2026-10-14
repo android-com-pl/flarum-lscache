@@ -21,6 +21,10 @@ class MergeDiscussionsEventSubscriber extends AbstractCachePurgeSubscriber
     protected function handleDiscussionWasMerged(DiscussionWasMerged $event): void
     {
         $this->handleDiscussionRelatedPurge();
+        $this->purger->addPurgeTags([
+            'posts',
+            "discussion_{$event->discussion->id}",
+        ]);
 
         $discussions = $event->mergedDiscussions;
         $discussions->each(fn (Discussion $discussion): LSCachePurger => $this->purger->addPurgeTag("discussion_$discussion->id"));

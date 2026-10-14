@@ -46,6 +46,7 @@ class TagsEventSubscriber extends AbstractCachePurgeSubscriber
             "user_{$event->discussion->user->id}",
             "user_{$event->discussion->user->username}",
             'tags',
+            ...array_map(fn (Tag $tag): string => "tag_{$tag->slug}", $event->oldTags),
             ...$this->generateCacheTagsForDiscussionTags($event->discussion),
         ]);
     }
