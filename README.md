@@ -1,22 +1,22 @@
 # LiteSpeed Cache for Flarum
 
-
 [![Latest Stable Version](https://img.shields.io/packagist/v/acpl/flarum-lscache)](https://packagist.org/packages/acpl/flarum-lscache) [![Total Downloads](https://img.shields.io/packagist/dt/acpl/flarum-lscache.svg)](https://packagist.org/packages/acpl/flarum-lscache) [![GitHub Sponsors](https://img.shields.io/badge/Donate-%E2%9D%A4-%23db61a2.svg?&logo=github&logoColor=white&labelColor=181717)](https://github.com/android-com-pl/flarum-lscache?sponsor=1)
 
-A [Flarum](http://flarum.org) extension. Integrates [LSCache](https://lscache.io/) with your forum.
+Full-page [LiteSpeed caching](https://lscache.io/) for [Flarum](https://flarum.org).
 
-Requires a LiteSpeed Web Server or OpenLiteSpeed.
+If your forum runs on LiteSpeed, this is a must-have for heavy guest and bot traffic. The first request generates a response; LiteSpeed serves later requests for the same cached page directly, without running PHP or querying the database again. This can substantially reduce server load.
+
+Requires LiteSpeed Web Server or OpenLiteSpeed with LSCache enabled.
 
 ## Installation
 
-### Install with composer:
+Install with Composer:
 
 ```sh
 composer require acpl/flarum-lscache
 ```
 
-Upon initial activation, the extension will add its configurations to the `.htaccess` file.
-It's recommended to back up your `.htaccess` file before installing the extension.
+Back up your `.htaccess` before enabling the extension. It adds its cache rules to that file on activation.
 
 ### Updating
 
@@ -26,74 +26,77 @@ php flarum migrate
 php flarum cache:clear
 ```
 
-### Cache Management
+## Cache Management
 
-This extension smartly manages the cache by purging it only where needed. For instance, when a new post is added in a discussion, the cache for that specific discussion, its tags, and the homepage are purged.
+Changes invalidate the affected cache entries. For example, a new public post clears the cache for its discussion, tag pages, and the homepage.
 
-When you clear the Flarum cache, the LSCache is also cleared automatically unless you disable this feature in the settings.
+Clearing Flarum's cache also clears LSCache, unless you disable this in the extension settings.
 
-You can clear the LSCache without clearing the Flarum cache via the admin panel. This option is available under the standard Flarum cache clearing option. There is also the `php flarum lscache:clear` command. The command supports the `--path` argument. For example, `php flarum lscache:clear --path=/tags --path=/d/1-test`. You can use this if you only want to purge specific paths instead of the entire cache.
+To clear only LSCache, use the admin panel's cache menu or the CLI:
 
----
+```sh
+php flarum lscache:clear
+php flarum lscache:clear --path=/tags --path=/d/1-test
+```
+
+## FAQ
+
+### Does it cache pages for logged-in users?
+
+No. Forum pages are cached for guests only. Logged-in users can see different content, permissions, notifications, and read states. Sharing their cached pages would be unsafe.
+
+A separate cache for each user would still need to generate each page on that user's first visit, then rebuild it whenever their content changes. That means fewer cache hits and more invalidation work. Guest caching lets many visitors reuse the same response.
+
+### Does it work on Apache or nginx?
+
+No. It requires the LSCache engine in LiteSpeed Web Server or OpenLiteSpeed.
 
 ## For Developers
 
-> [!IMPORTANT]  
-> These instructions are for Flarum 2.0.
-> For Flarum 1.x documentation, please refer to:
-> [Flarum 1.x Guide](https://github.com/android-com-pl/flarum-lscache/blob/3.x/README.md#for-developers)
+> [!NOTE]
+> [Cache tags](https://docs.litespeedtech.com/lscache/devguide/controls/#x-litespeed-tag) are labels used to invalidate cached responses. They are separate from the discussion tags provided by `flarum/tags`.
 
 ### How the Extension Tags Paths
 
-First, it's useful to understand how the extension adds LSCache tags to forum paths.
-The extension uses route names. For example, if you registered routes for a resource in your extension named `examples`:
+Cache tags come from route names. For example, an extension could register these API routes:
 
 ```php
 (new Extend\Routes('api'))
     ->get('/examples', 'examples.index', ExamplesListController::class)
-    ->post('/examples', 'examples.create', ExamplesCreateController::class)
-    // and so on
+    ->get('/examples/{id}', 'examples.show', ExamplesShowController::class)
+    ->post('/examples', 'examples.create', ExamplesCreateController::class);
 ```
 
-The extension will automatically add the following tags to the response:
-- For paths with the `.index` suffix (e.g., `examples.index`):
-  - A tag corresponding to the main resource name is added (e.g., `examples`)
-- For other paths:
-  - A tag with the full path name is added (e.g., `examples.overview`)
-- If the request contains parameters:
-  - For the `id` parameter: a tag `{resource}_{id}` is added (e.g., `example_1`)
-  - For the `slug` parameter: a tag `{resource}_{slug}` is added (e.g., `example_example-slug`)
+For GET and HEAD responses:
+
+- `.index` routes get the resource tag: `examples.index` → `examples`.
+- Other routes get their full name: `examples.show` → `examples.show`.
+- An `id` or `slug` route parameter adds a tag using the singular resource name: `example_1` or `example_example-slug`.
 
 > [!TIP]
 > To see the cache tags added for a given request, check the value of the `X-LiteSpeed-Tag` header in the Network tab of DevTools.
 
 ### Purging Cache
 
-By default, the extension purges the cache for a resource with a given ID if it detects successful requests to paths with the suffixes `.create`, `.update`, `.delete`.
+Successful POST, PUT, PATCH, and DELETE requests to `.create`, `.update`, or `.delete` routes purge the resource's ID tag when an `id` route parameter is present. A collection's `.create` route usually has no `id`, so use events to invalidate its list cache.
 
-To disable this behavior and add your own event handling, add your resource to the `$resourcesSupportedByEvent` array:
-
-```php
-// 💡 resource name should be in singular form
-\Acpl\FlarumLSCache\Utility\LSCachePurger::$resourcesSupportedByEvent[] = 'example'
-
-return [
-    // ... your current extenders
-];
-```
-
-Then you can create an event listener:
+For event-based purging, register the singular resource name in `$resourcesSupportedByEvent` to disable automatic ID purging. Keep this registration inside the condition so your extension also works when LSCache is disabled or absent:
 
 ```php
 // extend.php
+use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Extend;
 
 return [
     // ... your current extenders
     (new Extend\Conditional)
-        ->whenExtensionEnabled('acpl-lscache', fn () => [
-            (new Extend\Event)->listen(ExampleUpdated::class, ExampleUpdatedListener::class)
-        ]),
+        ->whenExtensionEnabled('acpl-lscache', function () {
+            LSCachePurger::$resourcesSupportedByEvent[] = 'example';
+
+            return [
+                (new Extend\Event)->listen(ExampleUpdated::class, ExampleUpdatedListener::class),
+            ];
+        }),
 ];
 ```
 
@@ -104,42 +107,38 @@ use Acpl\FlarumLSCache\Listener\AbstractCachePurgeListener;
 /** @extends AbstractCachePurgeListener<ExampleUpdated> */
 class ExampleUpdatedListener extends AbstractCachePurgeListener
 {
-    protected function addPurgeData(object $event): void  
+    protected function addPurgeData(object $event): void
     {
-        $this->purger
-          // Purge cache tag
-          ->addPurgeTag('examples');
-          // or purge multiple cache tags
-          ->addPurgeTags([
-              'examples',
-              "examples_{$event->example->id}"
-          ]);
-          // Purge a single path
-          ->addPurgePath('/examples');
-          // or purge multiple paths
-          ->addPurgePaths([
-              '/examples',
-              "/examples_{$event->example->id}",
-          ]);
+        $this->purger->addPurgeTags([
+            'examples',
+            "example_{$event->example->id}",
+        ]);
     }
 }
 ```
 
 > [!TIP]
-> It is recommended to purge cache tags instead of paths, as they also apply to different versions of the address, e.g., with query strings.
+> Prefer tags: they also invalidate cached URL variants, including query strings.
 
-It's also possible to create an event subscriber if you want to group multiple listeners in one class:
+For one tag, use `addPurgeTag('examples')`. To purge URLs directly, use `addPurgePath('/api/examples')` or `addPurgePaths(['/api/examples', '/api/examples/1'])`.
+
+To handle multiple events in one class, use a subscriber instead:
 
 ```php
 // extend.php
+use Acpl\FlarumLSCache\Utility\LSCachePurger;
 use Flarum\Extend;
 
 return [
     // ... your current extenders
     (new Extend\Conditional)
-        ->whenExtensionEnabled('acpl-lscache', fn () => [
-            (new Extend\Event)->subscribe(ExampleEventSubscriber::class),
-        ]),
+        ->whenExtensionEnabled('acpl-lscache', function () {
+            LSCachePurger::$resourcesSupportedByEvent[] = 'example';
+
+            return [
+                (new Extend\Event)->subscribe(ExampleEventSubscriber::class),
+            ];
+        }),
 ];
 ```
 
@@ -171,4 +170,5 @@ class ExampleEventSubscriber extends AbstractCachePurgeSubscriber
 
 - [Packagist](https://packagist.org/packages/acpl/flarum-lscache)
 - [GitHub](https://github.com/android-com-pl/flarum-lscache)
+- [Donate](https://github.com/android-com-pl/flarum-lscache?sponsor=1)
 - [Discuss](https://discuss.flarum.org/d/29475)
