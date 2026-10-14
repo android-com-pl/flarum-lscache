@@ -92,6 +92,8 @@ abstract class AbstractPurgeCacheMiddleware implements MiddlewareInterface
     protected function dispatchLSCachePurgingEvent(ServerRequestInterface $request): void
     {
         $purgeData = $this->cachePurger->getPurgeData();
-        $this->events->dispatch(new LSCachePurging($purgeData), RequestUtil::getActor($request));
+        $this->events->dispatch(
+            new LSCachePurging($purgeData, RequestUtil::getActor($request))
+        );
     }
 }
