@@ -7,6 +7,7 @@ use Flarum\Extend;
 use Flarum\Http\CookieFactory;
 use Flarum\Testing\integration\RetrievesAuthorizedUsers;
 use Flarum\Testing\integration\TestCase;
+use Flarum\User\Exception\PermissionDeniedException;
 use Laminas\Diactoros\Response\EmptyResponse;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Http\Message\ResponseInterface;
@@ -133,25 +134,50 @@ class CacheHeadersTest extends TestCase
     public static function authenticationRoutes(): array
     {
         return [
-            'auth extension' => ['auth.test'],
-            'OAuth extension' => ['fof-oauth.test'],
+            'auth extension' => ['auth.test', '/auth/test', 204],
+            'OAuth extension' => ['fof-oauth.test', '/auth/test/callback', 204],
+            'auth failure' => ['auth.test', '/auth/test', 403],
+            'OAuth failure' => ['fof-oauth.test', '/auth/test/callback', 403],
         ];
     }
 
     #[DataProvider('authenticationRoutes')]
-    public function test_authentication_callbacks_are_not_cached(string $route): void
+    public function test_authentication_callbacks_are_not_cached(string $route, string $path, int $status): void
     {
         // Represent callbacks supplied by auth extensions without requiring an OAuth provider.
-        $this->extend((new Extend\Routes('forum'))->get('/test-auth', $route, fn () => new class implements RequestHandlerInterface {
+        $this->extend((new Extend\Routes('forum'))->get($path, $route, fn () => new class($status) implements RequestHandlerInterface {
+            public function __construct(private int $status)
+            {
+            }
+
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
+                if ($this->status === 403) {
+                    throw new PermissionDeniedException();
+                }
+
                 return new EmptyResponse();
             }
         }));
-        $response = $this->send($this->request('GET', '/test-auth'));
+        $response = $this->send($this->request('GET', $path));
 
-        self::assertSame(204, $response->getStatusCode());
+        self::assertSame($status, $response->getStatusCode());
         self::assertSame('no-cache', $response->getHeaderLine('X-LiteSpeed-Cache-Control'));
+    }
+
+    public function test_other_forbidden_responses_keep_configured_cache_ttl(): void
+    {
+        $this->setting('acpl-lscache.status_codes_cache', '403 75');
+        $this->extend((new Extend\Routes('forum'))->get('/test-forbidden', 'test.forbidden', fn () => new class implements RequestHandlerInterface {
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                throw new PermissionDeniedException();
+            }
+        }));
+        $response = $this->send($this->request('GET', '/test-forbidden'));
+
+        self::assertSame(403, $response->getStatusCode());
+        self::assertSame('public,max-age=75', $response->getHeaderLine('X-LiteSpeed-Cache-Control'));
     }
 
     public function test_password_reset_page_is_not_cached(): void

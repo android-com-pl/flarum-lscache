@@ -64,9 +64,9 @@ class PurgeHeadersTest extends TestCase
         );
 
         self::assertSame($status, $response->getStatusCode());
+        self::assertSame('no-cache', $response->getHeaderLine('X-LiteSpeed-Cache-Control'));
         if ($status === 204) {
             self::assertSame('*', $response->getHeaderLine('X-LiteSpeed-Purge'));
-            self::assertSame('no-cache', $response->getHeaderLine('X-LiteSpeed-Cache-Control'));
         } else {
             self::assertFalse($response->hasHeader('X-LiteSpeed-Purge'));
         }

@@ -6,6 +6,7 @@ use Acpl\FlarumLSCache\CacheHeader;
 use Acpl\FlarumLSCache\CachePolicy;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
+use Illuminate\Support\Str;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 
@@ -25,6 +26,11 @@ class StatusCodesCacheMiddleware implements MiddlewareInterface
 
         if (! in_array($request->getMethod(), ['GET', 'HEAD']) || $response->hasHeader(CacheHeader::CACHE_CONTROL)) {
             return $response;
+        }
+
+        $path = rtrim($request->getUri()->getPath(), '/');
+        if ($path === '/lscache-purge' || Str::startsWith($path, ['/auth/', '/reset/'])) {
+            return $response->withHeader(CacheHeader::CACHE_CONTROL, CachePolicy::NO_CACHE->value);
         }
 
         $actor = RequestUtil::getActor($request);
