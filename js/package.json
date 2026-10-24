@@ -7,10 +7,10 @@
     "@flarum/prettier-config": "^1.0.0",
     "@types/mithril": "^2.2.9",
     "flarum-tsconfig": "^2.0.0",
-    "flarum-webpack-config": "^3.0.6",
+    "flarum-webpack-config": "^3.1.0",
     "prettier": "^3.9.10",
     "typescript": "^7.0.2",
-    "webpack": "^5.111.1",
+    "webpack": "^5.112.2",
     "webpack-cli": "^7.2.3"
   },
   "scripts": {
@@ -27,7 +27,7 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^12.11.2",
+      "version": "^12.15.0",
       "onFail": "download"
     }
   }
