@@ -26,6 +26,7 @@ use Acpl\FlarumLSCache\Compatibility\{
     FoF\MergeDiscussionsEventSubscriber,
     FoF\MovePostsSubscriber
 };
+use Acpl\FlarumLSCache\Frontend\DisableAssetsRevisionCheck;
 use Acpl\FlarumLSCache\Listener\{
     ClearingCacheListener,
     DiscussionEventSubscriber,
@@ -52,7 +53,9 @@ use Flarum\Settings\Event\Saved;
 
 return [
     (new Extend\Frontend('admin'))->js(__DIR__.'/js/dist/admin.js'),
-    (new Extend\Frontend('forum'))->js(__DIR__.'/js/dist/forum.js'),
+    (new Extend\Frontend('forum'))
+        ->js(__DIR__.'/js/dist/forum.js')
+        ->content(DisableAssetsRevisionCheck::class),
     new Extend\Locales(__DIR__.'/locale'),
 
     // Settings
