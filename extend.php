@@ -11,7 +11,6 @@
 
 namespace Acpl\FlarumLSCache;
 
-use Flarum\User\User;
 use Acpl\FlarumLSCache\Api\Controller\{
     LSCacheCsrfResponseController,
     LSCacheDiagnoseController,
@@ -53,6 +52,7 @@ use Flarum\Foundation\Event\ClearingCache;
 use Flarum\Http\Middleware\CheckCsrfToken;
 use Flarum\Http\Middleware\InjectActorReference;
 use Flarum\Settings\Event\Saved;
+use Flarum\User\User;
 
 return [
     (new Extend\Frontend('admin'))->js(__DIR__.'/js/dist/admin.js'),
