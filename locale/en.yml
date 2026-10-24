@@ -7,6 +7,7 @@ acpl-lscache:
     public_cache_ttl_help: "Define how long, in seconds, public pages should be cached. The default value is 604800 seconds (one week)."
 
     clearing_cache_listener_label: "Purge LSCache When Flarum Cache is Cleared"
+    clearing_cache_listener_help: "Disabling this avoids rebuilding the page cache after minor asset changes. Cached pages can load rebuilt assets from the same URLs, while a CDN such as Cloudflare may continue serving older versions from its cache. Page settings and extension data may also remain outdated. With this option disabled, purge LSCache manually after major updates or extension changes."
 
     serve_stale_label: "Serve Stale Content"
     serve_stale_help: "If enabled, an outdated version of a cached page will be served to visitors until a fresh cache copy is generated. This reduces server load. If disabled, the page will be dynamically generated during the cache update, which may increase wait times. By design, this option can serve out-of-date content. Please do not enable this if you find that unacceptable."

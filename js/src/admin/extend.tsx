@@ -32,6 +32,7 @@ export default [
     .setting(() => ({
       setting: 'acpl-lscache.clearing_cache_listener',
       label: app.translator.trans('acpl-lscache.admin.clearing_cache_listener_label'),
+      help: app.translator.trans('acpl-lscache.admin.clearing_cache_listener_help'),
       type: 'boolean',
     }))
     .setting(() => ({
