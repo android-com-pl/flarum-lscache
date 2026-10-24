@@ -10,10 +10,7 @@ use Flarum\User\User;
 class LSCachePurging
 {
     /**
-     * @param  array{
-     *   paths: string[],
-     *   tags: string[]
-     *  }  $data
+     * @param  array{paths: array<string>, tags: array<string>}  $data
      */
     public function __construct(public array $data, public ?User $actor = null)
     {

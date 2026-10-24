@@ -16,10 +16,7 @@ use const PHP_SAPI;
 class LSCachePurger
 {
     /**
-     * @var array{
-     *   paths: string[],
-     *   tags: string[]
-     *  } $purgeData
+     * @var array{paths: array<string>, tags: array<string>}
      */
     private static array $purgeData = [
         'paths' => [],
@@ -27,7 +24,7 @@ class LSCachePurger
     ];
 
     /**
-     * @var array|string[]
+     * @var array<string>
      */
     public static array $resourcesSupportedByEvent = ['discussion', 'post', 'user'];
 

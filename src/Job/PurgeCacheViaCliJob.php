@@ -10,10 +10,7 @@ use Symfony\Component\Console\{Input\ArrayInput, Output\NullOutput};
 class PurgeCacheViaCliJob extends AbstractJob implements ShouldQueue
 {
     /**
-     * @param  array{
-     *   paths: string[],
-     *   tags: string[]
-     *  }  $data
+     * @param  array{paths: array<string>, tags: array<string>}  $data
      */
     public function __construct(protected array $data = ['paths' => [], 'tags' => []])
     {

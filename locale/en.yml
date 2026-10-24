@@ -43,3 +43,9 @@ acpl-lscache:
 
   ref:
     purge_cache: "Purge LSCache"
+
+flarum-audit:
+  lib:
+    browser:
+      acpl-lscache:
+        cache_purged: "Purged LiteSpeed cache"

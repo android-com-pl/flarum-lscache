@@ -11,6 +11,7 @@
 
 namespace Acpl\FlarumLSCache;
 
+use Flarum\User\User;
 use Acpl\FlarumLSCache\Api\Controller\{
     LSCacheCsrfResponseController,
     LSCacheDiagnoseController,
@@ -26,6 +27,7 @@ use Acpl\FlarumLSCache\Compatibility\{
     FoF\MergeDiscussionsEventSubscriber,
     FoF\MovePostsSubscriber
 };
+use Acpl\FlarumLSCache\Event\LSCachePurged;
 use Acpl\FlarumLSCache\Frontend\DisableAssetsRevisionCheck;
 use Acpl\FlarumLSCache\Listener\{
     ClearingCacheListener,
@@ -45,6 +47,7 @@ use Acpl\FlarumLSCache\Middleware\{
 use Flarum\Api\Context;
 use Flarum\Api\Resource;
 use Flarum\Api\Schema;
+use Flarum\Audit\Extend\Audit;
 use Flarum\Extend;
 use Flarum\Foundation\Event\ClearingCache;
 use Flarum\Http\Middleware\CheckCsrfToken;
@@ -118,6 +121,11 @@ return [
 
     // Extensions
     (new Extend\Conditional)
+        ->whenExtensionEnabled('flarum-audit', fn (): array => [
+            (new Audit)
+                // Queue workers also purge via CLI; skip CLI auditing to avoid log spam and special-case detection.
+                ->listen(LSCachePurged::class, 'acpl-lscache.cache_purged', fn (LSCachePurged $event): ?array => ($event->actor instanceof User && ! $event->actor->isGuest()) ? $event->data : null),
+        ])
         ->whenExtensionEnabled('flarum-likes', fn (): array => [
             (new Extend\Event)->subscribe(LikesEventSubscriber::class),
         ])

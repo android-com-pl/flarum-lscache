@@ -35,6 +35,7 @@
     },
     "require-dev": {
         "flarum/approval": "*",
+        "flarum/audit": "*",
         "flarum/likes": "*",
         "flarum/phpstan": "^2.0",
         "flarum/tags": "*",
@@ -77,6 +78,7 @@
             },
             "optional-dependencies": [
                 "flarum/approval",
+                "flarum/audit",
                 "flarum/likes",
                 "flarum/tags",
                 "fof/author-change",
