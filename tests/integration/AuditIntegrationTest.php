@@ -32,6 +32,9 @@ class AuditIntegrationTest extends TestCase
         $logs = AuditLog::where('action', 'acpl-lscache.cache_purged')->orderBy('id')->get();
         self::assertCount(1, $logs);
         self::assertEquals(1, $logs->last()->actor_id);
-        self::assertSame(['paths' => ['*'], 'tags' => []], $logs->last()->payload);
+        $payload = $logs->last()->payload;
+        self::assertCount(2, $payload);
+        self::assertSame(['*'], $payload['paths']);
+        self::assertSame([], $payload['tags']);
     }
 }
