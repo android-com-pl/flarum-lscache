@@ -33,6 +33,17 @@ acpl-lscache:
     permissions:
       purge: => acpl-lscache.ref.purge_cache
 
+    purge_modal:
+      title: => acpl-lscache.ref.purge_cache
+      type_label: "Purge by"
+      all_label: "All cached pages"
+      paths_label: "URL"
+      paths_help: "Enter one URL or path per line, for example <code>{url}/t/general</code> or <code>/t/general</code>."
+      tags_label: "Cache tag"
+      tags_help: "Enter one LSCache tag per line, for example <code>discussion_123</code> or <code>discussions</code>."
+      submit_button: "Purge"
+      empty_list_error: Enter at least one item.
+
   forum:
     purge:
       discussion: => acpl-lscache.ref.purge_cache

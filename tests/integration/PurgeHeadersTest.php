@@ -24,6 +24,7 @@ class PurgeHeadersTest extends TestCase
             'all' => [[], false, '*'],
             'stale all' => [[], true, 'stale,*'],
             'paths' => [['paths' => ['/d/1', '/']], false, '/d/1,/'],
+            'full URL' => [['paths' => ['https://forum.example.com/d/123?sort=new#post-5']], false, '/d/123?sort=new'],
             'tags' => [['tags' => ['discussion_1', 'discussions']], false, 'tag=discussion_1,tag=discussions'],
             'combined stale' => [['paths' => ['/'], 'tags' => ['discussions']], true, 'stale,/,tag=discussions'],
         ];

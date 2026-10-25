@@ -1,6 +1,6 @@
 import app from 'flarum/common/app';
 
-export default async function purgeLSCache(tags?: string[], paths?: string[]) {
+export default async function purgeLSCache({ tags, paths }: { tags?: string[]; paths?: string[] }) {
   const queryParams: Record<string, string[]> = {};
 
   if (tags?.length) {

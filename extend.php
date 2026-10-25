@@ -57,6 +57,7 @@ use Flarum\User\User;
 return [
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js')
+        ->jsDirectory(__DIR__.'/js/dist/admin')
         ->css(__DIR__.'/less/admin.less'),
     (new Extend\Frontend('forum'))
         ->js(__DIR__.'/js/dist/forum.js')

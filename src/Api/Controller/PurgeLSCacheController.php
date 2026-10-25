@@ -52,6 +52,14 @@ readonly class PurgeLSCacheController implements RequestHandlerInterface
             $paths = ['*'];
         } else {
             if (! empty($paths)) {
+                $paths = array_map(static function (string $path): string {
+                    $url = parse_url($path);
+                    if ($url === false) {
+                        return $path;
+                    }
+
+                    return ($url['path'] ?? '/').(isset($url['query']) ? '?'.$url['query'] : '');
+                }, $paths);
                 $purgeParams = array_merge($purgeParams, $paths);
             }
             if (! empty($tags)) {

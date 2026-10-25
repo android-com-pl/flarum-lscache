@@ -16,7 +16,7 @@ export default function extendDiscussionControls() {
 
     items.add(
       'acpl-lscache-purge',
-      <Button icon={PURGE_ICON} onclick={() => purgeLSCache([`discussion_${discussionId}`])}>
+      <Button icon={PURGE_ICON} onclick={() => purgeLSCache({ tags: [`discussion_${discussionId}`] })}>
         {app.translator.trans('acpl-lscache.forum.purge.discussion')}
       </Button>
     );

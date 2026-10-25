@@ -5,8 +5,10 @@
     "rootDir": "./src",
     "declarationDir": "./dist-typings",
     "moduleResolution": "bundler",
+    "types": ["mithril"],
     "paths": {
-      "flarum/*": ["../vendor/flarum/core/js/dist-typings/*"]
+      "flarum/*": ["../vendor/flarum/core/js/dist-typings/*"],
+      "mithril/stream": ["./node_modules/@types/mithril/stream"]
     }
   }
 }
