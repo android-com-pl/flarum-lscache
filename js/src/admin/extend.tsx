@@ -66,6 +66,7 @@ export default [
       setting: 'acpl-lscache.drop_qs',
       label: app.translator.trans('acpl-lscache.admin.drop_qs_label'),
       help: app.translator.trans('acpl-lscache.admin.drop_qs_help', {
+        br: <br />,
         a: (
           <Link
             href="https://docs.litespeedtech.com/lscache/start/#drop-junk-query-strings"
