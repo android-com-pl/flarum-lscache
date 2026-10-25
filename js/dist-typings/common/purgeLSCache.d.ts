@@ -1,1 +1,4 @@
-export default function purgeLSCache(tags?: string[], paths?: string[]): Promise<void>;
+export default function purgeLSCache({ tags, paths }: {
+    tags?: string[];
+    paths?: string[];
+}): Promise<void>;
