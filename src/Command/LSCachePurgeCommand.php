@@ -4,7 +4,7 @@ namespace Acpl\FlarumLSCache\Command;
 
 use Flarum\Console\AbstractCommand;
 use Flarum\Http\UrlGenerator;
-use Flarum\Settings\DatabaseSettingsRepository;
+use Flarum\Settings\SettingsRepositoryInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Str;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 class LSCachePurgeCommand extends AbstractCommand
 {
-    public function __construct(protected UrlGenerator $url, private readonly DatabaseSettingsRepository $settings)
+    public function __construct(protected UrlGenerator $url, private readonly SettingsRepositoryInterface $settings)
     {
         parent::__construct();
     }
