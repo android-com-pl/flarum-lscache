@@ -34,9 +34,8 @@ class CacheExclusions
             }
         }
 
-        $currentPath = Str::of($path);
-        foreach (Str::of($excludedPaths)->explode("\n") as $pattern) {
-            if (! empty(trim($pattern)) && $currentPath->test('/'.addcslashes($pattern, '/').'/')) {
+        foreach (explode("\n", $excludedPaths ?? '') as $pattern) {
+            if (! empty(trim($pattern)) && @preg_match('/'.addcslashes($pattern, '/').'/', $path) === 1) {
                 return true;
             }
         }

@@ -37,6 +37,14 @@ class CacheExclusionsTest extends TestCase
         ]);
     }
 
+    public function test_invalid_exclusion_pattern_is_skipped(): void
+    {
+        $request = $this->request('GET', '/discussion');
+
+        self::assertFalse(\Acpl\FlarumLSCache\CacheExclusions::matches($request, "[\n^/other"));
+        self::assertTrue(\Acpl\FlarumLSCache\CacheExclusions::matches($request, "[\n^/discussion"));
+    }
+
     public static function coreRequests(): array
     {
         return [
