@@ -3,7 +3,6 @@
 namespace Acpl\FlarumLSCache\Api\Controller;
 
 use Acpl\FlarumLSCache\CacheHeader;
-use Acpl\FlarumLSCache\CachePolicy;
 use Acpl\FlarumLSCache\Event\LSCachePurged;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
@@ -71,8 +70,7 @@ readonly class PurgeLSCacheController implements RequestHandlerInterface
         }
 
         $response = (new EmptyResponse())
-            ->withHeader(CacheHeader::PURGE, implode(',', $purgeParams))
-            ->withHeader(CacheHeader::CACHE_CONTROL, CachePolicy::NO_CACHE->value);
+            ->withHeader(CacheHeader::PURGE, implode(',', $purgeParams));
 
         $this->events->dispatch(new LSCachePurged([
             'paths' => $paths ?: [],

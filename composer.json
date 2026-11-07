@@ -31,6 +31,7 @@
     ],
     "require": {
         "flarum/core": "^2.0",
+        "guzzlehttp/guzzle": "^7 || ^8",
         "php": "^8.3"
     },
     "require-dev": {

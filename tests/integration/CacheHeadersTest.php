@@ -136,6 +136,8 @@ class CacheHeadersTest extends TestCase
         return [
             'auth extension' => ['auth.test', '/auth/test', 204],
             'OAuth extension' => ['fof-oauth.test', '/auth/test/callback', 204],
+            'auth extension with custom path' => ['auth.test', '/provider-sign-in', 204],
+            'OAuth extension with custom path' => ['fof-oauth.test', '/provider/callback', 204],
             'auth failure' => ['auth.test', '/auth/test', 403],
             'OAuth failure' => ['fof-oauth.test', '/auth/test/callback', 403],
         ];

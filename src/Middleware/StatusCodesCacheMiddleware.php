@@ -2,11 +2,11 @@
 
 namespace Acpl\FlarumLSCache\Middleware;
 
+use Acpl\FlarumLSCache\CacheExclusions;
 use Acpl\FlarumLSCache\CacheHeader;
 use Acpl\FlarumLSCache\CachePolicy;
 use Flarum\Http\RequestUtil;
 use Flarum\Settings\SettingsRepositoryInterface;
-use Illuminate\Support\Str;
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
 
@@ -24,13 +24,16 @@ class StatusCodesCacheMiddleware implements MiddlewareInterface
             return $response->withHeader(CacheHeader::CACHE_CONTROL, CachePolicy::NO_CACHE->value);
         }
 
-        if (! in_array($request->getMethod(), ['GET', 'HEAD']) || $response->hasHeader(CacheHeader::CACHE_CONTROL)) {
+        if (! in_array($request->getMethod(), ['GET', 'HEAD'])) {
             return $response;
         }
 
-        $path = rtrim($request->getUri()->getPath(), '/');
-        if ($path === '/lscache-purge' || Str::startsWith($path, ['/auth/', '/reset/'])) {
+        if (CacheExclusions::matches($request, $this->settings->get('acpl-lscache.cache_exclude'))) {
             return $response->withHeader(CacheHeader::CACHE_CONTROL, CachePolicy::NO_CACHE->value);
+        }
+
+        if ($response->hasHeader(CacheHeader::CACHE_CONTROL)) {
+            return $response;
         }
 
         $actor = RequestUtil::getActor($request);
