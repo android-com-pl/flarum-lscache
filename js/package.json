@@ -11,7 +11,7 @@
     "prettier": "^3.9.10",
     "typescript": "^7.0.2",
     "webpack": "^5.112.2",
-    "webpack-cli": "^7.2.3"
+    "webpack-cli": "^7.3.1"
   },
   "scripts": {
     "dev": "webpack --mode development --watch",
@@ -27,7 +27,7 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^12.15.0",
+      "version": "^12.18.0",
       "onFail": "download"
     }
   }
